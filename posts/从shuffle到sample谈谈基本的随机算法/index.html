@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>从Shuffle到Sample——谈谈基本的随机算法</title>
+
+
+<meta name="generator" content="Hugo 0.76.4" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="http://localhost:1313/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="http://localhost:1313/about" title="About">
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div><body>
+		<main class="content">
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+
+
+<div class="wrapper-toc">
+    <div class="toc">
+		
+		
+		
+			<div class="toc-content">
+			
+				
+				
+				
+				<label style="margin: auto;">-Catalogue-</label>
+				
+				
+				<ul></ul>
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#1-%e4%b9%b1%e5%ba%8fshuffle" onclick="onNavClick(`#1-乱序shuffle-nav`)" id="1-乱序shuffle-nav" class="animated-visibility">
+											1. 乱序(Shuffle)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#11-%e7%ad%89%e6%a6%82%e7%8e%87%e8%ae%ba%e8%af%81" onclick="onNavClick(`#11-等概率论证-nav`)" id="11-等概率论证-nav" class="animated-visibility">
+											1.1 等概率论证
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#12-%e9%9a%8f%e6%9c%ba%e7%9a%84%e5%85%ac%e5%b9%b3%e6%80%a7" onclick="onNavClick(`#12-随机的公平性-nav`)" id="12-随机的公平性-nav" class="animated-visibility">
+											1.2 随机的公平性
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#2-%e6%8a%bd%e6%a0%b7sample" onclick="onNavClick(`#2-抽样sample-nav`)" id="2-抽样sample-nav" class="animated-visibility">
+											2. 抽样(Sample)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#21-%e9%9a%8f%e6%9c%ba%e7%9a%84%e7%ad%89%e6%a6%82%e7%8e%87%e6%80%a7%e8%af%81%e6%98%8e" onclick="onNavClick(`#21-随机的等概率性证明-nav`)" id="21-随机的等概率性证明-nav" class="animated-visibility">
+											2.1 随机的等概率性证明
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#22-%e5%8a%a0%e6%9d%83%e6%8a%bd%e6%a0%b7weighted-sampling" onclick="onNavClick(`#22-加权抽样weighted-sampling-nav`)" id="22-加权抽样weighted-sampling-nav" class="animated-visibility">
+											2.2 加权抽样(Weighted Sampling)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#3-%e6%80%bb%e7%bb%93" onclick="onNavClick(`#3-总结-nav`)" id="3-总结-nav" class="animated-visibility">
+											3. 总结
+										</a>
+									</li>
+								
+								
+							
+						
+					
+				</ul>
+			</div>
+		
+    </div>
+</div>
+
+
+<div class="post-list">
+	<div class="single-post">
+		<div class="post-head-wrapper">
+			<div class="post-title">
+				从Shuffle到Sample——谈谈基本的随机算法
+				
+				<div class="post-meta">
+    <time class="post-meta-date" itemprop="datePublished">
+        2021-02-04
+    </time>
+
+    <ul class="post-meta-tags">
+        #
+        
+        
+        
+            <li><a href="http://localhost:1313/tags/%E7%AE%97%E6%B3%95/" title="算法">算法</a></li>
+        
+            <li><a href="http://localhost:1313/tags/%E9%9A%8F%E6%9C%BA/" title="随机">随机</a></li>
+        
+    </ul>
+</div>
+			</div>
+		</div>
+        
+		<div class="post-body-wrapper">
+			<div class="post-body" v-pre>
+				
+				
+				<p>在笔者日常的工作中，常常会碰到类似这样的功能需求：<strong>从奖励池(含有$n$种奖励)中随机$m$种给用户，其中$n&gt;m$。</strong><br>
+<em>p.s. 笔者的工作语言是Java，因此下面的代码都是以java的方式展现的。</em></p>
+<h2 id="1-乱序shuffle">1. 乱序(Shuffle)<a hidden class="anchor" aria-hidden="true" href="#1-乱序shuffle">#</a></h2>
+<p>最直接的做法可能就是，将该$n$种奖励随机打乱后，选取前$m$种给玩家，即：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">randomPrizeIds</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">allPrizeIds</span><span class="o">,</span> <span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArraysList</span><span class="o">(</span><span class="n">allPrizeIds</span><span class="o">);</span>
+	<span class="n">Collections</span><span class="o">.</span><span class="na">shuffle</span><span class="o">(</span><span class="n">copy</span><span class="o">);</span> <span class="c1">// 打乱列表元素原本的排列顺序
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="na">subList</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">num</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但如此做法是否真的足够随机？这就取决于<code>shuffle</code>函数的具体实现逻辑。</p>
+<h3 id="11-等概率论证">1.1 等概率论证<a hidden class="anchor" aria-hidden="true" href="#11-等概率论证">#</a></h3>
+<p>要足够随机，则要求shuffle乱序过程中，每个元素重排到各个位置的概率是相等的。<code>Collections.Shuffle</code>使用的是Knuth-Durstenfeld Shuffle算法(或说Fisher–Yates Shuffle算法)，方法内部实现逻辑大致如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">shuffle</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="n">Random</span> <span class="n">rnd</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+		<span class="n">swap</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">1</span><span class="o">,</span> <span class="n">rnd</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其乱序的实现方式其实就是：从后往前将列表中的元素置换到首位到当前位置的任意下标位置。假定一个包含<code>n</code>个元素的列表，那么从后往前：</p>
+<ul>
+<li>对于<code>n-1</code>位置，每个可选择的元素置换到此位置的概率均为$\frac{1}{n}$，则留在到$[0,n-2]$下标位置的概率为$\frac{n-1}{n}$；</li>
+<li>对于<code>n-2</code>位置，每个可选择的元素置换到此位置的概率均为$\frac{n-1}{n}\cdot\frac{1}{n-1}=\frac{1}{n}$，则留在到$[0,n-3]$区间的概率为$\frac{n-1}{n-2}$。</li>
+<li>对于<code>n-3</code>位置，每个可选择的元素置换到此位置的概率均为$\frac{n-1}{n}\cdot\frac{n-2}{n-1}\cdot\frac{1}{n-2}=\frac{1}{n}$，则留在到$[0,n-4]$区间的概率为$\frac{n-1}{n-2}$。</li>
+<li>&hellip;&hellip;.<br>
+<em>上述 可选择的元素 即为首位到当前位置的任意下标位置，即<a href="1%3C=i%3C=n">0,i-1</a>；位置为从0开始，至n-1</em></li>
+</ul>
+<p>以此类推，对于<code>n-i</code>位置($i\in[1,n]$)，每个元素置换到此位置的概率为：
+$$
+\frac{n-1}{n}\cdot\frac{n-2}{n-1}\cdot\frac{n-3}{n-2}\cdot\cdot\cdot\frac{n-i-1}{n-i}\cdot\frac{1}{n-i-1}=\frac{1}{n}
+$$</p>
+<p>故可得知，乱序中每个元素分配到列表中各个位置的概率都是相等的，为：$\frac{1}{n}$。</p>
+<h3 id="12-随机的公平性">1.2 随机的公平性<a hidden class="anchor" aria-hidden="true" href="#12-随机的公平性">#</a></h3>
+<p>但这个算法有一个假定的前提——要进行交换的下标选取的概率是均等的。这即是要求区间随机数算法是足够随机的。Java的<code>Random</code>类的伪随机数生成，使用的是<strong>线性同余法(LCG,Linear Congruent Generators)：</strong>
+$$
+X_{n+1}=(AX_n+C)\mod m
+$$
+根据《计算机程序设计艺术》所引述的文献(R. Salfi: *COMPSTAT 1974*. Vienna: 1974, pp 28-35)阐述所言：</p>
+<blockquote>
+<p>If the outcome of a random generator is solely based on the value of the previous outcome, like a linear congruential method, then the outcome of a shuffle depends on exactly three things: the shuffling algorithm, the input and the seed of the random generator. Hence, for a given list and a given algorithm, the outcome of the shuffle is purely based on the seed.</p>
+<p>Hence, there are at most 2^32 possible shuffles of a list, foreach of the possible algorithms. But for a list of n elements, there are n! possible permutations. Which means  that a shuffle of a list of 13 elements will not generate certain permutations, as 13! &gt; 2^32.</p>
+</blockquote>
+<p>即当使用模$m$的线性同余法生成伪随机数时，不能生成多于$m$个的不同伪随机数排列。例如，在Java的<code>Random</code>类中，$m=48$，因$2^{48}\approx2.8E15&lt;17!$，则线性同余法产生的序列不能完全列举17个及以上的元素的不同排列。这也是线性同余法作为伪随机数产生器的缺陷，这或许也是线性同余法具备简洁且高性能特性所付出的代价吧。<del>当然，在大多数应用中，此缺陷是可以忽略不考虑的</del>。</p>
+<h2 id="2-抽样sample">2. 抽样(Sample)<a hidden class="anchor" aria-hidden="true" href="#2-抽样sample">#</a></h2>
+<p>回到最初设定的业务场景，其实本质上要解决的需求就是：从$n$个东西中抽取$m$。也就是从某个数据池中，随机抽样$m$个数据。因此可以使用常规的<strong>蓄水池抽样(Reservior Sampling)算法</strong>进行解决。</p>
+<p>蓄水池抽样算法——从一个包含$n$个元素的集合$S$中随机抽选$k$个元素，其中$n$可为不定值。因为集合的大小可以是不确定的，因此也常用于数据挖掘的模型训练中的在线数据抽样以作优化。<!-- raw HTML omitted -->
+该算法的伪代码逻辑如下：
+$$
+\begin{aligned}
+&amp;for\space i \rightarrow from \space 0 \space to \space k-1 \\ 
+&amp;\enspace\enspace C\lbrack i \rbrack = S \lbrack i \rbrack \\ 
+&amp;for\space i \rightarrow from \space k \space to \space m \\ 
+&amp;\enspace\enspace j = random(0,i-1) \\ 
+&amp;\enspace\enspace if(j &lt; k) \\ 
+&amp;\enspace\enspace\enspace\enspace C\lbrack j \rbrack = S \lbrack i \rbrack
+\end{aligned}
+$$</p>
+<h3 id="21-随机的等概率性证明">2.1 随机的等概率性证明<a hidden class="anchor" aria-hidden="true" href="#21-随机的等概率性证明">#</a></h3>
+<p>使用蓄水池抽样算法，每个元素被选中的概率都是均等的，且为$\frac{k}{n+1}$。下面使用<strong>数学归纳法</strong>进行证明：</p>
+<ol>
+<li>当$n&lt;k$时，选中的概率为$\frac{n}{n}=1$</li>
+<li>当$n=k+1$时，第$k+1$个元素选中的概率为$\frac{k}{k+1}$；前$k$个元素选中的概率，即第$k+1$个元素没选中的概率$+$自己未被替换的概率，为：
+$\frac{n}{n}\cdot\lbrack(1-\frac{k}{k+1})+(\frac{k}{k+1}\cdot \frac{k-1}{k})\rbrack=\frac{k}{k+1}$</li>
+<li>假设当$n=N(N&gt;k)$时，选中的概率均为$\frac{k}{N}$</li>
+<li>当$n=N+1$时，第$N+1$个元素选中的概率为$\frac{k}{N+1}$，前$k$个元素选中的概率为：
+$\frac{k}{N}\cdot\lbrack(1-\frac{k}{N+1})+(\frac{k}{N+1}\cdot \frac{k-1}{k})\rbrack=\frac{k}{N+1}$</li>
+<li>证毕。</li>
+</ol>
+<h3 id="22-加权抽样weighted-sampling">2.2 加权抽样(Weighted Sampling)<a hidden class="anchor" aria-hidden="true" href="#22-加权抽样weighted-sampling">#</a></h3>
+<p>常规的蓄水池抽样算法能够很好地解决<strong>均匀随机多个元素的问题</strong>。但是假若要求元素的随机概率均不同，即每个元素都有其独立的随机概率——权重，那么就需要相应地对抽样算法进行修改变形，使其变成更普遍的算法公式。因此我们可以得到如下的<strong>加权蓄水池抽样算法</strong>：
+$$
+\begin{aligned}
+&amp;while\ S\ Has\ Data \\ 
+&amp;\enspace\enspace E=S.next,\ \ p=random(0,1),\ \ r=\frac{1}{p^{E.weight}} \\ 
+&amp;\enspace\enspace if\ \ C.size&lt;k \\ 
+&amp;\enspace\enspace\enspace\enspace C.insert(r, E) \\ 
+&amp;\enspace\enspace elseif\ \ C.minimun()&lt;r \\ 
+&amp;\enspace\enspace\enspace\enspace C.removeMin() \\ 
+&amp;\enspace\enspace\enspace\enspace C.insert(r,E) \\ 
+\end{aligned}
+$$</p>
+<h2 id="3-总结">3. 总结<a hidden class="anchor" aria-hidden="true" href="#3-总结">#</a></h2>
+<p>乱序和抽样算法，是简单但十分实用的算法，在日常工作或者代码编写中，基本上都会遇到需要使用二者之一解决问题的场景。</p>
+<p>Knuth-Durstenfeld Shuffle算法，或者说Fisher–Yates Shuffle算法，是一个简单但十分实用的算法。在许多场景中都有应用，如：乱序服务器IP、序号以实现负载均衡；随机平均分配数据/资源等等。而在一次性从资源池中抽取一批资源时，就是抽样算法施展的时候。特别是当对不同的资源进行不同的加权随机时，而这则常常是实际需求场景经常遇到的。</p>
+<hr>
+<p><strong>参考资料：</strong></p>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">维基百科：伪随机数生成器</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Pseudo-random_number_sampling">维基百科：伪随机数采样</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Reservoir_sampling">维基百科：蓄水池抽样</a></li>
+<li><a href="">计算机程序设计艺术 卷二：半数值算法</a></li>
+</ol>
+
+			</div>
+			<div class="post-copyright">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+	<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+</a>
+<br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+进行许可。
+<br />
+转载时请附上原文链接以注明出处，图片在使用时请保留全部内容(可适当缩放)并附上图片所属的文章链接。若进行商业性使用，请先联系笔者获取许可。
+			</div>
+		</div>
+		<div class="post-footer-wrapper">
+			<hr class="hr-fade"/>
+			<div class="post-comment-wrapper"><div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+<script>
+  var gitalk = new Gitalk({
+    id: '2021-02-04 12:40:47 \u002b0800 CST',
+    title: '从Shuffle到Sample——谈谈基本的随机算法',
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    body: decodeURI(location.href)
+  });
+  gitalk.render('gitalk-container');
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript></div> 
+		</div>
+	</div>
+</div>
+
+</main>
+	</body>
+</html>

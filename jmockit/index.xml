@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JMockit on Lzero的小站</title>
+    <link>http://localhost:1313/jmockit/</link>
+    <description>Recent content in JMockit on Lzero的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Sun, 19 Jan 2020 21:04:11 +0900</lastBuildDate><atom:link href="http://localhost:1313/jmockit/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mock相关概念</title>
+      <link>http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
+      
+      <guid>http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</guid>
+      <description>在讲解JMockit的使用之前，笔者想先简单描述一些与Mock相关的概念和定义，以便后面更好的进行讲解叙述。
+Test Doubles 在自动化测试或者进行单元测试中，我们常常希望能够将某个模块隔离解耦出来，单独地进行测试。如此我们可以降低测试用例构建的难度和复杂度，并且无需担心测试的模块会受到系统其他模块的影响。为此，我们就需要构建一些行为与实际生产环境类似的简化的对象。Gerard Meszaros在其著作《xUnit Test Patterns: Refactoring Test Code》将此类对象用一个概括性的通用术语表示——Test Doubles(此术语源于stunt double，特技替身演员)：
+ When we are writing a test in which we cannot (or chose not to) use a real depended-on component (DOC), we can replace it with a Test Double. The Test Double doesn&amp;rsquo;t have to behave exactly like the real DOC; it merely has to provide the same API as the real one so that the SUT thinks it is the real one!</description>
+    </item>
+    
+  </channel>
+</rss>

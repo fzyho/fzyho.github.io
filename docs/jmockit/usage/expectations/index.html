@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>Expectations</title>
+
+
+<meta name="generator" content="Hugo 0.76.4" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div><div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="http://localhost:1313/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="http://localhost:1313/about" title="About">
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div></div>
+	<body class="docs">
+		<input type="checkbox" class="hidden toggle" id="menu-control" />
+		<main class="container flex single-post">
+			<aside class="book-menu">
+				<div class="book-menu-content">
+					<nav>
+  <h2 class="book-brand">
+  <a href="/"><span>Lzero的小站</span>
+  </a>
+</h2>
+
+  
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+  
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="">Mock相关概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/" class="">库API使用</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/expectations/" class=" active">Expectations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/verifications/" class="">Verifications</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/" class="">方法参数匹配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mockup/" class="">MockUp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/" class="">Mock注解</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/application/" class="">综合运用</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+</nav>
+
+
+
+ 
+				</div>
+			</aside>
+		
+			<div class="book-page post-body-wrapper">
+			<header class="book-header">
+				
+				<div class="flex align-center justify-between">
+					<label for="menu-control">
+						<img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+					</label>
+				</div>
+			</header>
+			
+			
+			<article class="post-body"><p>前面我们提到<strong>Record-Replay-Verify模型</strong>，在JMockit中，Expectations{}则是用于录制(Record)。</p>
+<h2 id="record录制">Record(录制)</h2>
+<p>录制类/对象的调用 Expectations代码块中，可以让特定方法调用(实例方法、静态方法皆可)输出指定的结果，而不用走原本方法内部的逻辑，并且可以指定只有当输入特定(范围)的参数时，才输出特定结果。需要注意的是，Expectations只能够改写非private且非static的非构造函数的方法。如果要仿造构造方法/静态方法，可以使用MockUp。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">Example</span> <span class="n">mockInstance</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span>
+      <span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;mocked&#34;</span><span class="o">;</span>
+   <span class="o">}};</span>
+
+	<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
+	<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如上，在Expectations代码块中指定当sayHello方法被调用且参数为<code>1, &quot;test&quot;</code>时，直接返回结果<code>&quot;mocked&quot;</code>。而参数为其他值是，走原本的方法逻辑返回结果。</p>
+<p>除了上述代码例子，Expectations是配合Mock实例对象(@Mocked/@Injectable/@Capturing)进行录制的。Mock对象是对方法和字段都进行mock了。但某些情况我们需要使用真实的实例，但只需要对部分方法进行结果返回修改。此时可以使用<code>Expectations(Object... )</code>构造函数，指定对象修改其方法。</p>
+<p>如下代码例子，向<code>Expectations()</code>构造函数中传入参数Example实例对象<code>example1</code>以及OtherExample类，并改写sayHello()方法。可以看到Example对象的sayHello方法分别返回了不同的值，而OtherExample对象的sayHello方法则返回相同结果。另外，Expectations构造函数传入的参数并没有<code>example2</code>，但Expectations代码块中有Mock<code>example2</code>的实例方法，并且也生效了。这是因为构造函数参数只会区分是是类定义还是类实例，若是类定义则会整个类方法生效，若是类实例，则只会对代码块中mock的实例方法生效。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample2</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Example</span> <span class="n">example1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Example</span><span class="o">();</span>
+    <span class="n">Example</span> <span class="n">example2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Example</span><span class="o">();</span>
+    <span class="n">OtherExample</span> <span class="n">otherExample1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OtherExample</span><span class="o">();</span>
+    <span class="n">OtherExample</span> <span class="n">otherExample2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OtherExample</span><span class="o">();</span>
+    <span class="k">new</span> <span class="n">Expectations</span><span class="o">(</span><span class="n">example1</span><span class="o">,</span> <span class="n">OtherExample</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{{</span>
+        <span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;mocked1&#34;</span><span class="o">;</span>
+
+        <span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;mocked2&#34;</span><span class="o">;</span>
+
+        <span class="n">otherExample2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;mocked&#34;</span><span class="o">;</span>
+    <span class="o">}};</span>
+
+    <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="s">&#34;mocked1&#34;</span><span class="o">,</span> <span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">());</span>
+    <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="s">&#34;mocked2&#34;</span><span class="o">,</span> <span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">());</span>
+    <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="s">&#34;mocked&#34;</span><span class="o">,</span> <span class="n">otherExample1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">());</span>
+    <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="s">&#34;mocked&#34;</span><span class="o">,</span> <span class="n">otherExample2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="定制结果">定制结果</h2>
+<p>Expectations()代码块可以录制(Record)特定方法调用的返回结果。对于non-void返回类型的方法，返回结果通过对result赋值来录制。若需要调用的方法抛出异常，也可以通过对result字段赋值异常(Expectation)对象来完成。而使用<code>returns(val1, val2，...)</code>方式，可以让方法调用顺序地返回指定的结果——即val1，val2等。另外通过对result字段赋值list或者array的方式，也可以达到相同效果。当调用次数超过指定的返回结果的数量时，会返回指定的最后一个结果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample3</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Example</span> <span class="n">example1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Example</span><span class="o">();</span>
+    <span class="n">Example</span> <span class="n">example2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Example</span><span class="o">();</span>
+    <span class="n">OtherExample</span> <span class="n">otherExample1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OtherExample</span><span class="o">();</span>
+    <span class="k">new</span> <span class="n">Expectations</span><span class="o">(</span><span class="n">example1</span><span class="o">,</span> <span class="n">OtherExample</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{{</span>
+        <span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">returns</span><span class="o">(</span><span class="s">&#34;mocked1&#34;</span><span class="o">,</span> <span class="s">&#34;mocked3&#34;</span><span class="o">);</span>
+
+        <span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">&#34;mocked2&#34;</span><span class="o">,</span> <span class="s">&#34;mocked4&#34;</span><span class="o">);</span>
+
+        <span class="n">otherExample1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;test exception....&#34;</span><span class="o">);</span>
+    <span class="o">}};</span>
+
+    <span class="c1">// 以此输出：mocked1 mocked2 mocked3 mocked4 mocked3 mocked4 
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">otherExample1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="自定义result">自定义result</h2>
+<p>当生成期望结果result的逻辑比较复杂时，可能很难直接对result直接赋值对象实例。此时可以采用<strong>Delegate</strong>的方式去编写一个生成返回结果的代码逻辑方法。如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample4</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Example</span> <span class="n">example1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Example</span><span class="o">();</span>
+    <span class="k">new</span> <span class="n">Expectations</span><span class="o">(</span><span class="n">example1</span><span class="o">,</span> <span class="n">OtherExample</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{{</span>
+        <span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">anyInt</span><span class="o">,</span> <span class="n">anyString</span><span class="o">);</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Delegate</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="nf">toDelegate</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">,</span> <span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="n">1</span> <span class="o">?</span> <span class="s">&#34;mock&#34;</span> <span class="o">+</span> <span class="n">num</span> <span class="o">:</span> <span class="n">str</span> <span class="o">+</span> <span class="n">num</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+
+        <span class="k">new</span> <span class="n">OtherExample</span><span class="o">(</span><span class="n">anyInt</span><span class="o">);</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Delegate</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kt">void</span> <span class="nf">constructorDelegate</span><span class="o">(</span><span class="kt">int</span> <span class="n">ee</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;can not create Other Example...&#34;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">}};</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+    <span class="k">new</span> <span class="n">OtherExample</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Delegate相当于一个接口类，其实现方法的方法名可以是任意名字(符合java的方法名规范即可)，方法必须是non-private的访问权限。而方法参数必须与要录制的方法的参数类型一致，或者是为无参数方法。另外，Delegate方法的第一个参数可以Invocation类型，用以在replay阶段录制的方法被调用，获取调用该方法的实例对象以及传入的真实参数。</p>
+</article>
+		
+			
+		
+			
+		
+			<label for="menu-control" class="hidden book-menu-overlay"></label>
+			</div>
+		
+			<aside class="book-toc">
+				<div class="book-toc-content">
+					<nav id="TableOfContents">
+  <ul>
+    <li><a href="#record录制">Record(录制)</a></li>
+    <li><a href="#定制结果">定制结果</a></li>
+    <li><a href="#自定义result">自定义result</a></li>
+  </ul>
+</nav> 
+				</div>
+			</aside>
+		</main>
+	</body>
+</html>

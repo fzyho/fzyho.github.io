@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>Verifications</title>
+
+
+<meta name="generator" content="Hugo 0.76.4" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div><div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="http://localhost:1313/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="http://localhost:1313/about" title="About">
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div></div>
+	<body class="docs">
+		<input type="checkbox" class="hidden toggle" id="menu-control" />
+		<main class="container flex single-post">
+			<aside class="book-menu">
+				<div class="book-menu-content">
+					<nav>
+  <h2 class="book-brand">
+  <a href="/"><span>Lzero的小站</span>
+  </a>
+</h2>
+
+  
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+  
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="">Mock相关概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/" class="">库API使用</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/expectations/" class="">Expectations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/verifications/" class=" active">Verifications</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/" class="">方法参数匹配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mockup/" class="">MockUp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/" class="">Mock注解</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/application/" class="">综合运用</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+</nav>
+
+
+
+ 
+				</div>
+			</aside>
+		
+			<div class="book-page post-body-wrapper">
+			<header class="book-header">
+				
+				<div class="flex align-center justify-between">
+					<label for="menu-control">
+						<img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+					</label>
+				</div>
+			</header>
+			
+			
+			<article class="post-body"><h2 id="verifications">Verifications</h2>
+<p>Verifications{}代码块可用于验证Mock对象调用某个方法的情况是否符合预期——调用了多少次，调用该方法调用的参数是否符合预期。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">()</span>
+
+    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+
+        <span class="c1">// 没有设定次数时，默认需要调用至少一次
+</span><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+
+        <span class="c1">// 1 to 5 invocations are expected:
+</span><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+        <span class="n">minTimes</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
+        <span class="n">maxTimes</span> <span class="o">=</span> <span class="n">5</span><span class="o">;</span>
+        <span class="n">result</span><span class="o">=</span><span class="s">&#34;Injectable...&#34;</span><span class="o">;</span>
+    <span class="o">}};</span>
+	<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>Verifications</code>类只有公开的一个无参的构造函数，因此只能对<code>@Injectable</code>、<code>@Mocked</code>等Mock出来的类/对象进行验证，而不能像<code>Expectations</code>那样通过传参来进行指定对象方法的验证。不过在实际的程序测试中，我们对于类的某个方法有没调用，调用多少次的测试场景并不是太多；一般都可以通过Assert的方式对程序结果进行验证。</p>
+<p>Verifications有三个子类<code>VerificationsInOrder</code>，<code>FullVerifications</code>以及二者的结合<code>FullVerificationsInOrder</code>。</p>
+<ol>
+<li>VerificationsInOrder和Verification是相似的，但是加上了方法调用顺序的验证。如下如果在voidMethod方法调用之前调用stringReturningMethod，程序运行就会抛出异常——在调用stringReturningMethod之前<strong>Missing invocation</strong>(缺少依赖的方法调用)。</li>
+<li>如果需要验证<strong>有且仅有</strong>Verifications()代码块中的仿造对象方法有被调用到，可以使用new FullVerifications() {&hellip;}。如下如果FullVerifications代码块中注释掉<code>example.voidMethod();</code>，程序也会运行失败。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+
+    <span class="k">new</span> <span class="n">VerificationsInOrder</span><span class="o">()</span> <span class="o">{{</span>
+        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+    <span class="o">}};</span>
+
+    <span class="k">new</span> <span class="n">FullVerifications</span><span class="o">()</span> <span class="o">{{</span>
+        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+    <span class="o">}};</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="withcapture">withCapture</h2>
+<p>在Verifications代码块中，Jmockit提供<code>withCapture(...)</code>语法用于获取测试过程中仿造的类生成过的对象或者仿造对象的方法调用传入过的参数。</p>
+<ul>
+<li>获取某个仿造方法中最后一次调用传入的参数，<code>withCapture()</code></li>
+<li>获取某个仿造方法所有调用传入的参数，<code>withCapture(List&lt;T&gt;)</code>，T为某个参数的类型</li>
+<li>获取仿造的构造函数或者仿造类(Mocked修饰)的new方法调用生成的对象/所有对象，<code>withCapture()</code>/<code>withCapture(List&lt;T&gt;)</code></li>
+</ul>
+<h3 id="方法单次调用参数">方法单次调用参数</h3>
+<p>如果测试过程中，方法多次被调用，最后一次调用的参数会被capture。<code>withCapture()</code>只能下Verifications中使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCapture</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+
+    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+        <span class="kt">double</span> <span class="n">d</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">s</span><span class="o">;</span>
+        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">d</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">());</span>
+
+        <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1d</span><span class="o">,</span> <span class="n">d</span><span class="o">,</span> <span class="n">0</span><span class="o">.</span><span class="na">0</span><span class="o">);</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+    <span class="o">}};</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="方法所有调用使用到的参数">方法所有调用使用到的参数</h3>
+<p>与<code>withCapture()</code>不同，<code>withCapture(List)</code>可以用在Verifications，也可以用在Expectations。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCaptures</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">2</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test2&#34;</span><span class="o">);</span>
+
+    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">doubles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">doubles</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">withCapture</span><span class="o">(</span><span class="n">strings</span><span class="o">));</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">doubles</span><span class="o">);</span> <span class="c1">// [0.1, 0.2]
+</span><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">strings</span><span class="o">);</span> <span class="c1">// [test, test2]
+</span><span class="c1"></span>    <span class="o">}};</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="获取新创建的mocked类对象">获取新创建的Mocked类对象</h3>
+<p><code>withCapture</code>还可以用来获取指定Mocked的类的所有创建对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">capturingNewInstances</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">Person</span> <span class="n">mockedPerson</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Paul&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">));</span>
+   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Mary&#34;</span><span class="o">,</span> <span class="n">15</span><span class="o">));</span>
+   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Joe&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">));</span>
+
+   <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+       <span class="c1">// 获取到目前为止所有Mocked的Person对象
+</span><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsInstantiated</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="n">anyString</span><span class="o">,</span> <span class="n">anyInt</span><span class="o">));</span>
+
+      <span class="c1">// 使用withCapture获取create()方法的参数对象
+</span><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsCreated</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+      <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">personsCreated</span><span class="o">));</span>
+
+      <span class="c1">// 可以得出，personsInstantiated和personsCreated列表中所有元素都是相同的
+</span><span class="c1"></span>      <span class="n">assertEquals</span><span class="o">(</span><span class="n">personsInstantiated</span><span class="o">,</span> <span class="n">personsCreated</span><span class="o">);</span>
+   <span class="o">}};</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></article>
+		
+			
+		
+			
+		
+			<label for="menu-control" class="hidden book-menu-overlay"></label>
+			</div>
+		
+			<aside class="book-toc">
+				<div class="book-toc-content">
+					<nav id="TableOfContents">
+  <ul>
+    <li><a href="#verifications">Verifications</a></li>
+    <li><a href="#withcapture">withCapture</a>
+      <ul>
+        <li><a href="#方法单次调用参数">方法单次调用参数</a></li>
+        <li><a href="#方法所有调用使用到的参数">方法所有调用使用到的参数</a></li>
+        <li><a href="#获取新创建的mocked类对象">获取新创建的Mocked类对象</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav> 
+				</div>
+			</aside>
+		</main>
+	</body>
+</html>

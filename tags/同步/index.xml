@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>同步 on Lzero的小站</title>
+    <link>http://localhost:1313/tags/%E5%90%8C%E6%AD%A5/</link>
+    <description>Recent content in 同步 on Lzero的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Wed, 08 Sep 2021 14:16:15 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E5%90%8C%E6%AD%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从CLH锁聊聊AQS的设计</title>
+      <link>http://localhost:1313/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Wed, 08 Sep 2021 14:16:15 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
+      <description>AbstractQueuedSynchronizer(简称AQS)是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础，它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。
+CLH Lock CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列/链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。在队列中，每个线程通过检测其前驱线程是否已完成(获得并释放锁)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。
+一开始，CLHLock的队列只有一个尾部节点。然后线程A和B同时竞争上锁，两线程会调用原子的GetAndSet()的方式，获取尾部节点，并将此节点设置为自己的前驱节点作为，然后将自己线程转成节点插入队列的尾部。完成这些操作后，便进入自旋状态，直到前驱节点释放锁，即字段locked为false。
+AQS </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>Mock相关概念</title>
+
+
+<meta name="generator" content="Hugo 0.76.4" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div><div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="http://localhost:1313/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="http://localhost:1313/about" title="About">
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div></div>
+	<body class="docs">
+		<input type="checkbox" class="hidden toggle" id="menu-control" />
+		<main class="container flex single-post">
+			<aside class="book-menu">
+				<div class="book-menu-content">
+					<nav>
+  <h2 class="book-brand">
+  <a href="/"><span>Lzero的小站</span>
+  </a>
+</h2>
+
+  
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+  
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class=" active">Mock相关概念</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/" class="">库API使用</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/expectations/" class="">Expectations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/verifications/" class="">Verifications</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/" class="">方法参数匹配</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mockup/" class="">MockUp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/" class="">Mock注解</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="http://localhost:1313/docs/jmockit/application/" class="">综合运用</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+</nav>
+
+
+
+ 
+				</div>
+			</aside>
+		
+			<div class="book-page post-body-wrapper">
+			<header class="book-header">
+				
+				<div class="flex align-center justify-between">
+					<label for="menu-control">
+						<img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+					</label>
+				</div>
+			</header>
+			
+			
+			<article class="post-body"><p>在讲解JMockit的使用之前，笔者想先简单描述一些与Mock相关的概念和定义，以便后面更好的进行讲解叙述。</p>
+<h2 id="test-doubles">Test Doubles</h2>
+<p>在自动化测试或者进行单元测试中，我们常常希望能够将某个模块隔离解耦出来，单独地进行测试。如此我们可以降低测试用例构建的难度和复杂度，并且无需担心测试的模块会受到系统其他模块的影响。为此，我们就需要构建一些行为与实际生产环境类似的简化的对象。Gerard Meszaros在其著作《<a href="http://xunitpatterns.com/Test%20Double.html">xUnit Test Patterns: Refactoring Test Code</a>》将此类对象用一个概括性的通用术语表示——<strong>Test Doubles</strong>(此术语源于<em>stunt double</em>，特技替身演员)：</p>
+<blockquote>
+<p>When we are writing a test in which we cannot (or chose not to) use a real depended-on component (DOC), we can replace it with a <em>Test Double</em>. The <em>Test Double</em> doesn&rsquo;t have to behave exactly like the real DOC; it merely has to provide the same API as the real one so that the SUT <em>thinks</em> it is the real one!</p>
+</blockquote>
+<p>书中，Gerard Meszaros将<strong>Test Doubles</strong>大体分为五种类型：<em>Dummy Object</em>、<em>Test Stub</em>、<em>Test Spy</em>、<em>Mock Object</em> 以及<em>Fake Object</em>，并对各种类型赋予不同的定义，详细地描述了各自的使用场景。不过通常的，人们会更喜欢直接使用<strong>Mock</strong>一词来统一表达不同的Test Doubles，这也就是JMockit的<em>Mock</em>之意。</p>
+<hr>
+<h4 id="此处有图片test-doubles的包含结构">此处有图片：Test Doubles的包含结构</h4>
+<hr>
+<p>第三方Mock库一般都会都会提供各种Test Doubles的构建方法，JMockit也是如此。JMockit允许使用者在non-mock类上mock其构造函数和方法——不论其权限是pulic、private、static还是final。根据<a href="https://jmockit.github.io/tutorial/Introduction.html">官方文档</a>的介绍，Jmockit提供的API可以大体分为两类：</p>
+<ul>
+<li><strong>mocking API</strong>——用于使用Mock后的依赖进行测试</li>
+<li><strong>faking API</strong>——用于创建并使用虚假实现来避免原本逻辑会导致的额外/巨大的性能消耗</li>
+</ul>
+<p>这两类接口其实都可以达到mock测试想要的效果，故容易混用。可以通过其使用意图来区分何时应该使用对应接口。</p>
+<h2 id="record-replay-verify模型">Record-Replay-Verify模型</h2>
+<p>Record-Replay-Verify模型，中文直译为“记录-重演-验证模型”，是Mock框架普遍使用的模型(有时也被称为Arrange-Act-Assert模型)，基本上所有Mocking库都会提供支持此模型，或者干脆就是直接按照此模型搭建框架。这模型将测试用例分成三部分：</p>
+<ul>
+<li><strong>Record阶段:</strong> 在此阶段，我们可以进行Mock对象/方法的替换；</li>
+<li><strong>Replay阶段:</strong> 在此阶段，核心的测试代码逻辑将会被调用，Record中进行Mock的对象/方法将可能被使用/调用到。此外Record和Replay并不存在一一对应的关系，即可以先执行多个Record，然后再执行Replay；</li>
+<li><strong>Verify阶段:</strong> 在此阶段，我们可以验证Record的调用是否有按照我们预期的设想执行——我们可以在此验证调用的执行次数、调用的输入以及输出；</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">mockit.*</span><span class="o">;</span>
+<span class="c1">// ... other imports ...
+</span><span class="c1"></span>
+<span class="kd">class</span> <span class="nc">RRVModelTest</span> <span class="o">{</span>
+
+   <span class="nd">@Test</span>
+   <span class="kt">void</span> <span class="nf">testMethod</span><span class="o">(</span><span class="n">mock</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// 准备阶段，定义/执行无需Record的代码
+</span><span class="c1"></span>
+      <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Expectation代码块
+</span><span class="c1"></span>         <span class="c1">// 录制(Record)已经mock后的类型的方法调用期望(expectations)
+</span><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此录制期望(但并不推荐这样做)
+</span><span class="c1"></span>      <span class="o">}};</span>
+
+      <span class="c1">// 执行测试代码
+</span><span class="c1"></span>
+      <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Verification代码块
+</span><span class="c1"></span>         <span class="c1">// 已经mock后的类型的方法可以在此验证方法调用的期望(expectations)
+</span><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此验证(但并不推荐这样做)
+</span><span class="c1"></span>      <span class="o">}};</span>
+
+      <span class="c1">// 非Verification代码块的验证代码
+</span><span class="c1"></span>   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></article>
+		
+			
+		
+			
+		
+			<label for="menu-control" class="hidden book-menu-overlay"></label>
+			</div>
+		
+			<aside class="book-toc">
+				<div class="book-toc-content">
+					<nav id="TableOfContents">
+  <ul>
+    <li><a href="#test-doubles">Test Doubles</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#record-replay-verify模型">Record-Replay-Verify模型</a></li>
+  </ul>
+</nav> 
+				</div>
+			</aside>
+		</main>
+	</body>
+</html>
