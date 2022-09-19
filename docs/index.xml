@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Brochures overview on Lzero的小站</title>
-    <link>http://localhost:1313/docs/</link>
+    <link>fzyho/fzyho.github.io/docs/</link>
     <description>Recent content in Brochures overview on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Sun, 19 Jan 2020 15:43:38 +0900</lastBuildDate><atom:link href="http://localhost:1313/docs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Jan 2020 15:43:38 +0900</lastBuildDate><atom:link href="fzyho/fzyho.github.io/docs/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

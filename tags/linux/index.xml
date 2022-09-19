@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux on Lzero的小站</title>
-    <link>http://localhost:1313/tags/linux/</link>
+    <link>fzyho/fzyho.github.io/tags/linux/</link>
     <description>Recent content in linux on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="fzyho/fzyho.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅析零拷贝</title>
-      <link>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
+      <link>fzyho/fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
       <pubDate>Tue, 06 Sep 2022 23:38:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
       <description>在Linux/Unix体系中，一切皆为文件(everything is a file)。这在Unix最初的论文《The UNIX TimeSharing System》中便有所体现。而对于文件，最常见而又频繁的操作便是读/写操作。Linux的读写操作，也就是标准的I/O接口是基于数据拷贝的方式实现的。
 1、成因 一次文件读取的过程便是如下所示： 当程序调用系统方法read()时，程序便从用户态(User Space)切换到了内核态(Kernel Space)。read()调用转为了CPU指令，有CPU发起I/O请求。 请求经过DMA，最终落到对应的硬件设备(网卡、声卡、显卡、磁盘等)上。 数据经过各设备的缓存/缓冲区的拷贝，最终回到程序用户态，由read()方法返回。 图中的DMA，即Directlyu Mememory Access，也就是绕开CPU直接访问内存的设备。DMA分担了CPU部分功能，若没有DMA，两步缓存区数据拷贝的过程就会在CPU中进行，占用了CPU的资源。
 而一次普通的网络文件传输过程则为：

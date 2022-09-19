@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Lzero的小站</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>fzyho/fzyho.github.io/posts/</link>
     <description>Recent content in Posts on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="fzyho/fzyho.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅析零拷贝</title>
-      <link>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
+      <link>fzyho/fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
       <pubDate>Tue, 06 Sep 2022 23:38:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
       <description>在Linux/Unix体系中，一切皆为文件(everything is a file)。这在Unix最初的论文《The UNIX TimeSharing System》中便有所体现。而对于文件，最常见而又频繁的操作便是读/写操作。Linux的读写操作，也就是标准的I/O接口是基于数据拷贝的方式实现的。
 1、成因 一次文件读取的过程便是如下所示： 当程序调用系统方法read()时，程序便从用户态(User Space)切换到了内核态(Kernel Space)。read()调用转为了CPU指令，有CPU发起I/O请求。 请求经过DMA，最终落到对应的硬件设备(网卡、声卡、显卡、磁盘等)上。 数据经过各设备的缓存/缓冲区的拷贝，最终回到程序用户态，由read()方法返回。 图中的DMA，即Directlyu Mememory Access，也就是绕开CPU直接访问内存的设备。DMA分担了CPU部分功能，若没有DMA，两步缓存区数据拷贝的过程就会在CPU中进行，占用了CPU的资源。
 而一次普通的网络文件传输过程则为：
@@ -31,10 +31,10 @@ mmap存在一个问题，就是多进程同时操作统一文件时，会触发S
     
     <item>
       <title>mysql的自我使用规范</title>
-      <link>http://localhost:1313/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
+      <link>fzyho/fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
       <pubDate>Mon, 25 Apr 2022 18:01:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
+      <guid>fzyho/fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
       <description>以下笔者在多年后端工作中MySQL数据库使用经历的归纳总结。内容不长，要点不多，会尽量避免常识性的规范。以免以后自己回顾也没心情看下去。
 以下规范是基于InnoDB的前提下写的，若为其他存储引擎，请注意参考使用。
 1. 设计规范 1.1 字符集 MySQL的字符集中，utf8是3个字节长度的，因此无法真正囊括所有utf-8编码，若用其春初存储包含如：😭(哭表情)的内容时，会导致整个内容编码错乱。而utf8mb4才是最多4个字节长度，即与utf-8编码真正对应的字符集。
@@ -62,20 +62,20 @@ SELECT语句必须指定具体字段名称，禁止写成*，并且应该带上l
     
     <item>
       <title>mysql索引浅析</title>
-      <link>http://localhost:1313/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
+      <link>fzyho/fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
       <pubDate>Sat, 19 Feb 2022 23:01:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
+      <guid>fzyho/fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
       <description>什么是索引？根据mysql官方文档的阐述：
 Indexes are used to find rows with specific column values quickly. Without an index, MySQL must begin with the first row and then read through the entire table to find the relevant rows. The larger the table, the more this costs. If the table has an index for the columns in question, MySQL can quickly determine the position to seek to in the middle of the data file without having to look at all the data.</description>
     </item>
     
     <item>
       <title>从CLH锁聊聊AQS的设计</title>
-      <link>http://localhost:1313/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
+      <link>fzyho/fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
       <pubDate>Wed, 08 Sep 2021 14:16:15 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
       <description>AbstractQueuedSynchronizer，即AQS，是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础。它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(CLH Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。
 1、CLH Lock 1.1 CLH队列锁是什么 CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列\链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。
 在队列中，每个线程通过检测其前驱线程是否已完成(获得并释放锁)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。
@@ -88,10 +88,10 @@ AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线�
     
     <item>
       <title>动态规划回顾</title>
-      <link>http://localhost:1313/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</link>
+      <link>fzyho/fzyho.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</link>
       <pubDate>Sun, 29 Aug 2021 16:09:24 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</guid>
       <description>最近打算重新复习基础逻辑方面的知识，对于一些有趣或者复杂的知识点打算较为详细地记录下来，以便后面继续回顾。此文便是出于重新理解和整理动态规划的知识点而写作的。
 什么是动态规划(Dynamic Programming)？动态规划是一种思想，一种运筹决策的方法。事实上许多能用动态规划解决的问题，同样可以使用回溯(backtracking)法解决。只是回溯法的时间复杂度高，而动态规划的时间复杂度低，即效率高，但相对的空间复杂度就可能会高一些。
 简化的背包问题 一般理解动态规划，我喜欢从0-1背包问题出发：一个可承重$Wkg$的背包，现将$m$个重量不等的物品放入背包中，问在不超过背包所能装载重量的前提下，怎么放物品能让背包中物品的总重量最大。
@@ -101,10 +101,10 @@ AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线�
     
     <item>
       <title>分布式系统简述 Part 3</title>
-      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</link>
+      <link>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</link>
       <pubDate>Wed, 26 May 2021 23:04:15 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</guid>
       <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 5、Replication：弱一致性模型协议 在很长一段时间里，我们都是通过一个全局全序的方法来解决一致性问题，前面已经讨论了方法，它们都是通过非自然生成的全序顺序(以一种容错的方式)的形式来实现强一致性的。当然，强制实现有序的代价是昂贵的。特别是在大型的需要维持可用性(Avaliable)的互联网系统，这基本是行不通的。一个强制实现强一致性的系统会像一个单机系统一样运行，而不是分布式系统，这将会导致它在出现分区时可用性很糟糕。
 更进一步的说，对于每次操作，多数节点都要保持联系——而且经常不是一次而是两次(正如在2PC上的讨论一样)。尤其是对于在地理上分布以为全球用户提供高性能的系统来说，这是十分令人痛苦。因此默认想单机系统一样运行可能是不可取的(Not Desirable)。
@@ -117,10 +117,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     
     <item>
       <title>分布式系统简述 Part 2</title>
-      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</link>
+      <link>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</link>
       <pubDate>Sat, 15 May 2021 20:17:49 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</guid>
       <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 4、Replication 复制是一系列的通信问题——怎样的分配和通信方式能够达到我们想要的性能和有效性呢？在面对网络分区和同时多点故障时，我们如何保证容灾、持久以及无分歧呢？
 分配和通信模式可以分成几个阶段：
@@ -138,10 +138,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     
     <item>
       <title>分布式系统简述 Part 1</title>
-      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</link>
+      <link>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</link>
       <pubDate>Tue, 11 May 2021 21:20:31 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</guid>
       <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 2、系统模型理论 2.1 Consensus Problem 遵循以下几点，计算机/节点可以达到数据一致性：
 统一性(Agreement): Every correct process must agree on the same value. 完整性(Integrity): Every correct process decides at most one value, and if it decides some value, then it must have been proposed by some process. 终止性(Termination): All processes eventually reach a decision. 有效性(Validity): If all correct processes propose the same value V, then all correct processes decide V 一致性/共识问题是所有商业分布式系统的核心。毕竟我们希望无需处理分散的结果(如节点的数据分歧/不同意)就可以获得一个可靠且高性能的分布式系统。并且解决一致性问题的同时，也解决一些相关的、更高级的问题(如 原子广播、原子提交等)。</description>
@@ -149,10 +149,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     
     <item>
       <title>基础概率模型</title>
-      <link>http://localhost:1313/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</link>
+      <link>fzyho/fzyho.github.io/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</link>
       <pubDate>Wed, 14 Apr 2021 22:17:24 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</guid>
       <description>1、贝叶斯定理 $P(x|y)$是条件概率，表示在$y$事件发生的情况下，$x$事件发生的概率。故，有$P(y,x)=P(x|y)\times P(y)$，表示同时发生$x,y$事件的概率=发生$y$事件的概率 乘以 在$y$事件发生的情况下发生$x$事件的概率。
 当$x,y$事件相互独立时，就有贝叶斯公式如下： $$ P(x|y)\times P(y)=P(y,x)=P(x,y)=P(y|x)\times P(x) \\ \Downarrow \\ P(x|y)=\frac {P(y|x)\times P(x) }{ P(y) } $$ 其中$P(x)$称为先验概率，$P(y|x)$称为似然率(根据观测到的结果数据来预估模型的参数)，$P(y)$称为边缘概率。而最终得出的结果$P(x|y)$则称为后验概率。
 2、朴素贝叶斯 朴素贝叶斯模型是一种分类模型——给出一个事物的一些特征，推断出该事物分别属于各类类别的概率。 $$ P(c|f_1,f_2,&amp;hellip;,f_i)=P(c|f_1)\times P(c|f_2)\times &amp;hellip; \times P(c|f_i) \\ \quad \\ \Rightarrow \frac{P(f_1|c)\times P(c) }{ P(f_1) }\times \frac{P(f_2|c)\times P(c) }{ P(f_2) }\times &amp;hellip;\times \frac{P(f_i|c)\times P(c) }{ P(f_i) } $$ 在进行贝叶斯公式的乘积计算时，常常会出现结果为0——某类别没有出现过某种特征，因此当前的似然率是0。一般会采取平滑(Smoothing)的方式处理——取一个比这个数据集里最小统计概率还要小的极小值，来代替零概率.
@@ -162,10 +162,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     
     <item>
       <title>从Shuffle到Sample——谈谈基本的随机算法</title>
-      <link>http://localhost:1313/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
+      <link>fzyho/fzyho.github.io/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
       <pubDate>Thu, 04 Feb 2021 12:40:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
+      <guid>fzyho/fzyho.github.io/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
       <description>在笔者日常的工作中，常常会碰到类似这样的功能需求：从奖励池(含有$n$种奖励)中随机$m$种给用户，其中$n&amp;gt;m$。
 p.s. 笔者的工作语言是Java，因此下面的代码都是以java的方式展现的。
 1. 乱序(Shuffle) 最直接的做法可能就是，将该$n$种奖励随机打乱后，选取前$m$种给玩家，即：

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>unit test on Lzero的小站</title>
-    <link>http://localhost:1313/tags/unit-test/</link>
+    <link>fzyho/fzyho.github.io/tags/unit-test/</link>
     <description>Recent content in unit test on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Fri, 02 Apr 2021 17:57:05 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/unit-test/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Apr 2021 17:57:05 +0800</lastBuildDate><atom:link href="fzyho/fzyho.github.io/tags/unit-test/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mock相关概念</title>
-      <link>http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</guid>
       <description>在讲解JMockit的使用之前，笔者想先简单描述一些与Mock相关的概念和定义，以便后面更好的进行讲解叙述。
 Test Doubles 在自动化测试或者进行单元测试中，我们常常希望能够将某个模块隔离解耦出来，单独地进行测试。如此我们可以降低测试用例构建的难度和复杂度，并且无需担心测试的模块会受到系统其他模块的影响。为此，我们就需要构建一些行为与实际生产环境类似的简化的对象。Gerard Meszaros在其著作《xUnit Test Patterns: Refactoring Test Code》将此类对象用一个概括性的通用术语表示——Test Doubles(此术语源于stunt double，特技替身演员)：
 When we are writing a test in which we cannot (or chose not to) use a real depended-on component (DOC), we can replace it with a Test Double. The Test Double doesn&amp;rsquo;t have to behave exactly like the real DOC; it merely has to provide the same API as the real one so that the SUT thinks it is the real one!</description>
@@ -20,28 +20,28 @@ When we are writing a test in which we cannot (or chose not to) use a real depen
     
     <item>
       <title>库API使用</title>
-      <link>http://localhost:1313/docs/jmockit/usage/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/</guid>
       <description>This is a JMockit User Guide.</description>
     </item>
     
     <item>
       <title>综合运用</title>
-      <link>http://localhost:1313/docs/jmockit/application/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/application/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/application/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/application/</guid>
       <description>This is a JMockit User</description>
     </item>
     
     <item>
       <title>Expectations</title>
-      <link>http://localhost:1313/docs/jmockit/usage/expectations/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/expectations/</link>
       <pubDate>Fri, 02 Apr 2021 17:57:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/expectations/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/expectations/</guid>
       <description>前面我们提到Record-Replay-Verify模型，在JMockit中，Expectations{}则是用于录制(Record)。
 Record(录制) 录制类/对象的调用 Expectations代码块中，可以让特定方法调用(实例方法、静态方法皆可)输出指定的结果，而不用走原本方法内部的逻辑，并且可以指定只有当输入特定(范围)的参数时，才输出特定结果。需要注意的是，Expectations只能够改写非private且非static的非构造函数的方法。如果要仿造构造方法/静态方法，可以使用MockUp。
 1 2 3 4 5 6 7 8 9 10 @Test void testExample(@Mocked Example mockInstance) { new Expectations() {{ mockInstance.sayHello(1, &amp;#34;test&amp;#34;); result = &amp;#34;mocked&amp;#34;; }}; Assert.assertSame(mockInstance.sayHello(1,&amp;#34;test&amp;#34;), &amp;#34;mocked&amp;#34;); Assert.assertNotSame(mockInstance.sayHello(2,&amp;#34;test&amp;#34;), &amp;#34;mocked&amp;#34;); } 如上，在Expectations代码块中指定当sayHello方法被调用且参数为1, &amp;quot;test&amp;quot;时，直接返回结果&amp;quot;mocked&amp;quot;。而参数为其他值是，走原本的方法逻辑返回结果。
@@ -52,10 +52,10 @@ Record(录制) 录制类/对象的调用 Expectations代码块中，可以让特
     
     <item>
       <title>Verifications</title>
-      <link>http://localhost:1313/docs/jmockit/usage/verifications/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/verifications/</link>
       <pubDate>Fri, 02 Apr 2021 17:57:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/verifications/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/verifications/</guid>
       <description>Verifications Verifications{}代码块可用于验证Mock对象调用某个方法的情况是否符合预期——调用了多少次，调用该方法调用的参数是否符合预期。
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 @Test public void testExample(@Injectable VerificationExample example) { example.voidMethod(); example.voidMethod(); example.stringReturningMethod() new Verifications() {{ // 没有设定次数时，默认需要调用至少一次 example.voidMethod(); // 1 to 5 invocations are expected: example.stringReturningMethod(); minTimes = 1; maxTimes = 5; result=&amp;#34;Injectable...&amp;#34;; }}; } Verifications类只有公开的一个无参的构造函数，因此只能对@Injectable、@Mocked等Mock出来的类/对象进行验证，而不能像Expectations那样通过传参来进行指定对象方法的验证。不过在实际的程序测试中，我们对于类的某个方法有没调用，调用多少次的测试场景并不是太多；一般都可以通过Assert的方式对程序结果进行验证。
 Verifications有三个子类VerificationsInOrder，FullVerifications以及二者的结合FullVerificationsInOrder。
@@ -64,19 +64,19 @@ VerificationsInOrder和Verification是相似的，但是加上了方法调用顺
     
     <item>
       <title>方法参数匹配</title>
-      <link>http://localhost:1313/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/</link>
       <pubDate>Fri, 02 Apr 2021 17:57:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/</guid>
       <description>Verifications </description>
     </item>
     
     <item>
       <title>JMockit</title>
-      <link>http://localhost:1313/jmockit/</link>
+      <link>fzyho/fzyho.github.io/jmockit/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/jmockit/</guid>
+      <guid>fzyho/fzyho.github.io/jmockit/</guid>
       <description>开发者在实现了需求功能或者完成了某个模块后，时常需要对模块整体功能或者某些关键逻辑进行单元测试(Unit Test)以验证程序运行是否符合预期。而在运行程序时，程序不可避免的可能需要调用第三方库、连接网络、数据库等，需要依赖许多不同的外部模块。但这些可能在开发过程中未真正接入或者不可用。这时就需要将我们的测试从实际的运行环境中隔离开来(Test Isolation)。而Jmockit则是为解决这类问题而诞生的。
 Jmockit是一个对类或对象进行Mock的工具，它必须运行在JUnit或者TestNG框架中。
 This is a JMockit User Guide. Since the official guide is a bit obscure, I transalate and rearrange the content of it and hope it could be clearer and more heplful for readers.</description>
@@ -84,10 +84,10 @@ This is a JMockit User Guide. Since the official guide is a bit obscure, I trans
     
     <item>
       <title>MockUp</title>
-      <link>http://localhost:1313/docs/jmockit/usage/mockup/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/mockup/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/mockup/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/mockup/</guid>
       <description>使用方式 MockUp的使用类似于@Mocked注解以及Expectations()的结合，但是更加直接和具体。MockUp常常需要搭配@Mock注解来使用：MockUp用于表明要Mock一个类，然后@Mock类似于@Override一般覆盖原有的方法。
 MockUp可以用在类定义的时候：
 1 class MockUpExample extends MockUp&amp;lt;Example&amp;gt; {...} 也可以当做是匿名类使用:
@@ -97,10 +97,10 @@ MockUp可以用在类定义的时候：
     
     <item>
       <title>Mock注解</title>
-      <link>http://localhost:1313/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/</link>
+      <link>fzyho/fzyho.github.io/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>http://localhost:1313/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/</guid>
+      <guid>fzyho/fzyho.github.io/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/</guid>
       <description>可对类或实例实现mock的注解有三种：@Mocked、@Injectable、@Capturing。通常，@Injectable是最常用的，@Mocked比较少用，@Capturing更少。如果要Mock类静态方法或其他一些行为，之后讲到的Mock、MockUp也许会更强大一些。
 @Mocked注解 @Mocked用于修饰类，告诉Jmockit为该类生成一个Mocked对象。@Mocked注解会影响到该类的所有方法(包括静态方法)，但是仅限于该类自身，其往下的子类或者往上的父类的方法不会被Mocked。而Mocked的方法都会返回确定的默认值：
 基础类型值(int、short、long等)返回0； String类型返回null； 引用类型则返回该类型的一个Mocked对象，并对其方法和字段递归Mocked下去。 由于@Mocked会影响到整个类，因此此注解使用起来并不灵活，用处不大，但是对于一些简单的只需要用到某个方法的返回结果而进行Mock的，使用@Mocked会直接简单许多。
