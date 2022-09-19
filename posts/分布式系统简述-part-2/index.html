@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>分布式系统简述 Part 2</title>
+
+
+<meta name="generator" content="Hugo 0.102.3" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="http://localhost:1313/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="http://localhost:1313/about" title="About">
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:1313/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div><body>
+		<main class="content">
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+
+
+<div class="wrapper-toc">
+    <div class="toc">
+		
+		
+		
+			<div class="toc-content">
+			
+				
+				
+				
+				<label style="margin: auto;">-Catalogue-</label>
+				
+				
+				<ul></ul>
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#4replication" onclick="onNavClick(`#4replication-nav`)" id="4replication-nav" class="animated-visibility">
+											4、Replication
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#41-%e5%90%8c%e6%ad%a5%e5%a4%8d%e5%88%b6synchronous-replication" onclick="onNavClick(`#41-同步复制synchronous-replication-nav`)" id="41-同步复制synchronous-replication-nav" class="animated-visibility">
+											4.1 同步复制(Synchronous replication)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#42-%e5%bc%82%e6%ad%a5%e5%a4%8d%e5%88%b6asynchronous-replication" onclick="onNavClick(`#42-异步复制asynchronous-replication-nav`)" id="42-异步复制asynchronous-replication-nav" class="animated-visibility">
+											4.2 异步复制(Asynchronous replication)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#43-%e4%b8%bb%e6%b5%81%e5%a4%8d%e5%88%b6%e7%ae%97%e6%b3%95%e7%bb%bc%e8%bf%b0an-overview-of-major-replication-approaches" onclick="onNavClick(`#43-主流复制算法综述an-overview-of-major-replication-approaches-nav`)" id="43-主流复制算法综述an-overview-of-major-replication-approaches-nav" class="animated-visibility">
+											4.3 主流复制算法综述(An overview of major replication approaches)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#44-%e4%b8%bb%e5%a4%87%e4%bb%bd%e5%a4%8d%e5%88%b6primarybackup-replication" onclick="onNavClick(`#44-主备份复制primarybackup-replication-nav`)" id="44-主备份复制primarybackup-replication-nav" class="animated-visibility">
+											4.4 主/备份复制(Primary/Backup Replication)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#51-%e4%b8%a4%e9%98%b6%e6%ae%b5%e6%8f%90%e4%ba%a4two-phase-commit-2pc" onclick="onNavClick(`#51-两阶段提交two-phase-commit-2pc-nav`)" id="51-两阶段提交two-phase-commit-2pc-nav" class="animated-visibility">
+											5.1 两阶段提交(Two Phase Commit 2PC)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#61-%e5%88%86%e5%8c%ba%e5%ae%b9%e5%bf%8d%e7%9a%84%e5%85%b1%e8%af%86%e7%ae%97%e6%b3%95partition-tolerant-consensus-algorithms" onclick="onNavClick(`#61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav`)" id="61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav" class="animated-visibility">
+											6.1 分区容忍的共识算法(Partition tolerant consensus algorithms)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#1%e5%a4%9a%e6%95%b0%e5%86%b3%e5%ae%9a%e6%b3%95majority-decision" onclick="onNavClick(`#1多数决定法majority-decision-nav`)" id="1多数决定法majority-decision-nav" class="animated-visibility">
+											1、多数决定法(Majority Decision)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#2%e8%a7%92%e8%89%b2roles" onclick="onNavClick(`#2角色roles-nav`)" id="2角色roles-nav" class="animated-visibility">
+											2、角色(Roles)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#3epochs" onclick="onNavClick(`#3epochs-nav`)" id="3epochs-nav" class="animated-visibility">
+											3、Epochs
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#4%e9%80%9a%e8%bf%87%e5%af%b9%e5%86%b3%e6%94%b9%e5%8f%98leaderleader-changes-via-duels" onclick="onNavClick(`#4通过对决改变leaderleader-changes-via-duels-nav`)" id="4通过对决改变leaderleader-changes-via-duels-nav" class="animated-visibility">
+											4、通过对决改变Leader(Leader changes via duels)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#5numbered-proposals-within-an-epoch" onclick="onNavClick(`#5numbered-proposals-within-an-epoch-nav`)" id="5numbered-proposals-within-an-epoch-nav" class="animated-visibility">
+											5、Numbered proposals within an epoch
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#6%e6%99%ae%e9%80%9a%e6%93%8d%e4%bd%9cnormal-operation" onclick="onNavClick(`#6普通操作normal-operation-nav`)" id="6普通操作normal-operation-nav" class="animated-visibility">
+											6、普通操作(Normal Operation)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#47-%e7%ae%97%e6%b3%95%e5%ae%9e%e4%be%8bpaxos-raft-zab" onclick="onNavClick(`#47-算法实例paxos-raft-zab-nav`)" id="47-算法实例paxos-raft-zab-nav" class="animated-visibility">
+											4.7 算法实例：Paxos, Raft, ZAB
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#48-%e5%bc%ba%e4%b8%80%e8%87%b4%e6%80%a7%e7%9a%84%e5%a4%8d%e5%88%b6%e6%96%b9%e6%b3%95replication-methods-with-strong-consistency" onclick="onNavClick(`#48-强一致性的复制方法replication-methods-with-strong-consistency-nav`)" id="48-强一致性的复制方法replication-methods-with-strong-consistency-nav" class="animated-visibility">
+											4.8 强一致性的复制方法(Replication methods with strong consistency)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#primarybackup" onclick="onNavClick(`#primarybackup-nav`)" id="primarybackup-nav" class="animated-visibility">
+											Primary/Backup
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#2pc" onclick="onNavClick(`#2pc-nav`)" id="2pc-nav" class="animated-visibility">
+											2PC
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#paxos" onclick="onNavClick(`#paxos-nav`)" id="paxos-nav" class="animated-visibility">
+											Paxos
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#5%e5%a4%8d%e5%88%b6%e5%bc%b1%e4%b8%80%e8%87%b4%e6%80%a7%e6%a8%a1%e5%9e%8b%e5%8d%8f%e8%ae%aereplication-weak-consistency-model-protocols" onclick="onNavClick(`#5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav`)" id="5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav" class="animated-visibility">
+											5、复制：弱一致性模型协议(Replication: weak consistency model protocols)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#51-%e8%b0%83%e8%8a%82%e4%b8%8d%e5%90%8c%e7%9a%84%e6%93%8d%e4%bd%9c%e9%a1%ba%e5%ba%8freconciling-different-operation-orders" onclick="onNavClick(`#51-调节不同的操作顺序reconciling-different-operation-orders-nav`)" id="51-调节不同的操作顺序reconciling-different-operation-orders-nav" class="animated-visibility">
+											5.1 调节不同的操作顺序(Reconciling different operation orders)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#52-amazons-dynamo" onclick="onNavClick(`#52-amazons-dynamo-nav`)" id="52-amazons-dynamo-nav" class="animated-visibility">
+											5.2 Amazon’s Dynamo
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#%e4%b8%80%e8%87%b4%e6%80%a7%e5%93%88%e5%b8%8cconsistent-hashing" onclick="onNavClick(`#一致性哈希consistent-hashing-nav`)" id="一致性哈希consistent-hashing-nav" class="animated-visibility">
+											一致性哈希(Consistent Hashing)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#%e9%83%a8%e5%88%86%e4%bb%b2%e8%a3%81partial-quorums" onclick="onNavClick(`#部分仲裁partial-quorums-nav`)" id="部分仲裁partial-quorums-nav" class="animated-visibility">
+											部分仲裁(Partial quorums)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#is-r--w--n-the-same-as-strong-consistency" onclick="onNavClick(`#is-r--w--n-the-same-as-strong-consistency-nav`)" id="is-r--w--n-the-same-as-strong-consistency-nav" class="animated-visibility">
+											Is R &#43; W &gt; N the same as “strong consistency”?
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#%e5%86%b2%e7%aa%81%e6%a3%80%e6%b5%8b%e5%92%8c%e8%af%bb%e4%bf%ae%e5%a4%8dconflict-detection-and-read-repair" onclick="onNavClick(`#冲突检测和读修复conflict-detection-and-read-repair-nav`)" id="冲突检测和读修复conflict-detection-and-read-repair-nav" class="animated-visibility">
+											冲突检测和读修复(Conflict detection and read repair)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#%e5%89%af%e6%9c%ac%e5%90%8c%e6%ad%a5%e6%b5%81%e8%a8%80%e5%8d%8f%e8%ae%ae%e5%92%8c%e9%bb%98%e5%85%8b%e5%b0%94%e6%a0%91replica-synchronization-gossip-and-merkle-trees" onclick="onNavClick(`#副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav`)" id="副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav" class="animated-visibility">
+											副本同步：流言协议和默克尔树(Replica synchronization: gossip and Merkle trees)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#dynamo%e5%ae%9e%e9%99%85%e5%ba%94%e7%94%a8%e6%a6%82%e7%8e%87%e6%80%a7%e6%9c%89%e8%be%b9%e7%95%8c%e7%9a%84%e8%bf%87%e6%97%b6dynamo-in-practice-probabilistically-bounded-staleness-pbs" onclick="onNavClick(`#dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav`)" id="dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav" class="animated-visibility">
+											Dynamo实际应用：概率性有边界的过时(Dynamo in practice: probabilistically bounded staleness (PBS))
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#3%e6%97%a0%e5%ba%8f%e7%bc%96%e7%a8%8bdisorderly-programming" onclick="onNavClick(`#3无序编程disorderly-programming-nav`)" id="3无序编程disorderly-programming-nav" class="animated-visibility">
+											3、无序编程(Disorderly programming)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#4crdts-convergent-replicated-data-types" onclick="onNavClick(`#4crdts-convergent-replicated-data-types-nav`)" id="4crdts-convergent-replicated-data-types-nav" class="animated-visibility">
+											4、CRDTs: Convergent replicated data types
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#5the-calm-theorem" onclick="onNavClick(`#5the-calm-theorem-nav`)" id="5the-calm-theorem-nav" class="animated-visibility">
+											5、The CALM theorem
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#1%e5%8d%95%e8%b0%83%e6%80%a7monotony" onclick="onNavClick(`#1单调性monotony-nav`)" id="1单调性monotony-nav" class="animated-visibility">
+											1、单调性(Monotony)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#6what-is-non-mononicity-good-for" onclick="onNavClick(`#6what-is-non-mononicity-good-for-nav`)" id="6what-is-non-mononicity-good-for-nav" class="animated-visibility">
+											6、What is non-mononicity good for?
+										</a>
+									</li>
+								
+								
+							
+						
+					
+				</ul>
+			</div>
+		
+    </div>
+</div>
+
+
+<div class="post-list">
+	<div class="single-post">
+		<div class="post-head-wrapper">
+			<div class="post-title">
+				分布式系统简述 Part 2
+				
+				<div class="post-meta">
+    <time class="post-meta-date" itemprop="datePublished">
+        2021-05-15
+    </time>
+
+    <ul class="post-meta-tags">
+        #
+        
+        
+        
+            <li><a href="http://localhost:1313/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" title="分布式系统">分布式系统</a></li>
+        
+            <li><a href="http://localhost:1313/tags/%E7%AE%97%E6%B3%95/" title="算法">算法</a></li>
+        
+            <li><a href="http://localhost:1313/tags/%E5%85%B1%E8%AF%86/" title="共识">共识</a></li>
+        
+            <li><a href="http://localhost:1313/tags/%E4%B8%80%E8%87%B4%E6%80%A7/" title="一致性">一致性</a></li>
+        
+    </ul>
+</div>
+			</div>
+		</div>
+        
+		<div class="post-body-wrapper">
+			<div class="post-body" v-pre>
+				
+				
+				<p>以下是笔者阅读学习<a href="http://book.mixu.net/distsys/">Distributed systems for fun and profit</a>所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~</p>
+<h2 id="4replication">4、Replication<a hidden class="anchor" aria-hidden="true" href="#4replication">#</a></h2>
+<p>复制是一系列的通信问题——怎样的分配和通信方式能够达到我们想要的性能和有效性呢？在面对网络分区和同时多点故障时，我们如何保证容灾、持久以及无分歧呢？</p>
+<p>分配和通信模式可以分成几个阶段：</p>
+<ul>
+<li>请求(Request): 客户端发送一个请求到服务器端</li>
+<li>同步(Sync): 复制的同步部分发生</li>
+<li>响应(Respond): 返回一个响应给客户端</li>
+<li>异步(Async): 复制的异步部分发生</li>
+</ul>
+<p>上述模式切割基于<a href="http://www-users.cselabs.umn.edu/classes/Spring-2018/csci8980/Papers/ProcessReplication/Understanding-Replication-icdcs2000.pdf">这篇文章</a>。需要注意，此模式任务中各个部分的消息交换依赖于特定算法，这里并没有给出(故意略过)。</p>
+<h3 id="41-同步复制synchronous-replication">4.1 同步复制(Synchronous replication)<a hidden class="anchor" aria-hidden="true" href="#41-同步复制synchronous-replication">#</a></h3>
+<p>同步复制也被称为Active或者Eager或者Push或者Pessimistic Replication。</p>
+<p>同步复制有三个阶段：发出请求，然后调用复制的同步部分(这意味着客户端阻塞知道系统返回一个结果)。<!-- raw HTML omitted -->
+假定同步部分，我们采取一个<strong>写N-to-N的方法</strong>：在响应返回给前端之前，系统的所有服务器已然知道此响应结果。而且如此，系统则不能允许任何一个服务器端故障，若故障，则客户端的写请求将无法进行。</p>
+<h3 id="42-异步复制asynchronous-replication">4.2 异步复制(Asynchronous replication)<a hidden class="anchor" aria-hidden="true" href="#42-异步复制asynchronous-replication">#</a></h3>
+<p>异步复制也被称为Passive或者Pull或者Lazy Replication。异步复制，顾名思义，是和同步复制相反的——master服务器立刻返回响应给客户端，而不会做任何与其他服务器的同步导致客户端阻塞。而且同样，其与其他服务器交流使用的通信模式也是根据不同的算法而不同。</p>
+<p>假定采取的算法叫<strong>写1-to-N方法</strong>，从性能的角度上看，这样的系统是更快的，但是它的分配方式只能提供<strong>弱或者概率持久性的保证</strong>。如果没有出错，数据最终会被复制到所有<code>N</code>台机器上，然而如果唯一包含这个数据的服务器故障了，那么这个数据将会永远丢失。</p>
+<p>使用写1-to-N方法，只要有一个节点能工作，系统就是可用的(至少在理论上是这样，实际上只有一个节点的话负载将会过高)。需要强调的一点是，被动复制(Passive Replication)不能保证系统中所有节点始终处于同一状态，如果你接受多位置(location)写且不要求这些节点同步，那么将会面临数据分歧的风险。</p>
+<h3 id="43-主流复制算法综述an-overview-of-major-replication-approaches">4.3 主流复制算法综述(An overview of major replication approaches)<a hidden class="anchor" aria-hidden="true" href="#43-主流复制算法综述an-overview-of-major-replication-approaches">#</a></h3>
+<p>复制算法的分类方式有很多种，除了同步vs异步的区分外，还可以分为：</p>
+<ul>
+<li><strong>避免数据分歧(single copy system)</strong>: 此类算法能“behave like a single system”。特别是当出现分区失败时，系统保证只有一个拷贝是有效的(active)，即所有副本都是一直的，这也就是一致性/共识问题(consensus problem)</li>
+<li><strong>有数据分歧风险的(multi-master system)</strong></li>
+</ul>
+<p>如之前<a href="#2.1">Consensus Problem</a>所说的，要达到一致性/共识，需要满足<strong>Agreement</strong>、<strong>Integrity</strong>、<strong>Termination</strong>以及<strong>Validity</strong>。互斥(Mutual exclusion)，选举(leader election)，广播以及原子广播(atomic broadcast)都是更普遍的共识问题的例子。维护单一拷贝一致性的可复制系统需要以某种方式解决共识问题。</p>
+<p>维护单一拷贝一致性的复制算法包括：</p>
+<ul>
+<li>1n messages (asynchronous primary/backup)</li>
+<li>2n messages (synchronous primary/backup)</li>
+<li>4n messages (2-phase commit, Multi-Paxos)</li>
+<li>6n messages (3-phase commit, Paxos with repeated leader election)</li>
+</ul>
+<p>这些算法的容错性(fault tolerance)各不相同(例如 他们所容错的类型也不同)。以上是根据对应算法一次执行所需信息交换的次数区分的。下图改编自Ryan Barret at，展示了不同选择的不同方面：
+<img src="http://book.mixu.net/distsys/images/google-transact09.png" alt="image">
+上述图表中的：一致性(consistency)、延迟(lantency)、吞吐量(throughput)、数据丢失(data loss)以及故障转移(failover)等特性确实可以追溯会两种不同的复制方法：同步复制和异步复制——当同步时，将获得较差的性能但强的保障。另外当后面谈到分区容忍和延时容忍石，<strong>2PC</strong>和**仲裁系统(Quorum System)**之间吞吐量的差异将更加明显。</p>
+<p>需要注意，实现弱一致性需求的系统具有更少的通用性算法，但有更多可以选择的应用技术。由于不强制单一拷贝一致性(single-copy consistency)的系统能像多节点的分布式系统一样自由地运行，因此明显需要修复的目标就少了，而重点就能更多地放在让人们去了解该系统的特性上去。</p>
+<h3 id="44-主备份复制primarybackup-replication">4.4 主/备份复制(Primary/Backup Replication)<a hidden class="anchor" aria-hidden="true" href="#44-主备份复制primarybackup-replication">#</a></h3>
+<p>主/备份复制(也被称作 primary copy replication, master-slave
+replication or log shipping)可能是最为常用的复制方法和最基本的算法。所有更新都在<strong>primary</strong>中进行，然后操作日志经由网络传送到备份副本中去。同样此方法也有同步和异步两种方式。<!-- raw HTML omitted -->
+同步方式需要两条信息(&ldquo;更新(update)&ldquo;和&quot;确认收到(acknowledge receipt)&quot;)，而异步则只需一条信息(&ldquo;更新(update)&quot;)。</p>
+<p>同步方式的变形能确保在返回客户端前将写操作存储到其他节点中，而其代价则是等待其他节点响应所需的时间。而且需要注意的是，纵然是同步方式的变形也只能提供弱保证。思考以下的情形：<em>==Primary接收到写操作并将其发送到备份节点，备份节点将其持久化然后返回主节点，然后主节点在返回客户端响应前发生故障了。此时客户端会认为提交失败了，然而备份却将其提交(执行)了。如果备份节点升级成为了主节点，那么数据将会出现错误。此时可能就需要人为地将主、备份节点修改为一致。==</em></p>
+<p>基于日志传送(log shipping)或者主/备份(primary/backup)方案只能提供“best-effort”的保证(例如节点在不适当的时机失败容易造成更新丢失或者错误更新)。主/备份方案还容易受“脑裂(split-brain)”的影响——由于临时网络而将备份节点升级为主节点的故障转移可能会导致同时激活了主和备份(Primary and Backup)</p>
+<h3 id="51-两阶段提交two-phase-commit-2pc">5.1 两阶段提交(Two Phase Commit 2PC)<a hidden class="anchor" aria-hidden="true" href="#51-两阶段提交two-phase-commit-2pc">#</a></h3>
+<p><a href="https://en.wikipedia.org/wiki/Two-phase_commit_protocol">二阶段提交</a>是一个常用于许多典型的关系型数据库的协议。以下图表阐述了消息传送的过程：</p>
+<pre tabindex="0"><code>[ Coordinator ] -&gt; OK to commit? [ Peers ]
+                &lt;- Yes / No
+        
+[ Coordinator ] -&gt; Commit / Rollback [ Peers ]
+                &lt;- ACK
+</code></pre><ul>
+<li>在第一阶段(投票阶段-voting)，协调者(coordinator)发送更新消息给所有参与者(participants)。所有参与者处理这个更新消息并投票抉择提交这个更新还是中止。当选择提交更新时，参与者会将更新存放在一个临时区域(the write-ahead log)，在第二阶段完成前，这个提交会被认为是暂时的。</li>
+<li>第二阶段(决定阶段-decision)，协调者决定结果并告知所有参与者。如果所有参与者都同意提交，则从临时区域取出更新并执行提交，使得更新变为永久的。第二阶段的作用则在于<strong>它允许系统在某一结点失败后能够回滚提交的更新</strong>。而相反，主/备份(1PC)则没有能够进行回滚的步骤。</li>
+</ul>
+<p>由于任意节点的故障(无论是协调者还是参与者)都会阻塞整个提交的进行直至该节点恢复了，因此2PC是十分容易阻塞的。也因此可知，2PC算法假定了：<strong>在每个节点稳定存储的数据都不会丢失的，而且没有任意节点会永久地崩溃</strong>。</p>
+<p>2PC是CA的-即它不是分区可容忍的。因此当因为分区而导致节点故障时，只能等待网络分区恢复正常。另外当一个协调者(coordinator)故障时，需要人工干预来生成新的协调者。而且由于2PC是N-to-N的写方法(当最慢的节点响应后才能进行写操作)，因此它对延迟相当的敏感。</p>
+<p>2PC在性能和容错性上做了相当不错的权衡。然而新型的系统更多的会采用分区容忍的一致性/共识算法(Partition Tolerant Consensus Problem)。</p>
+<h3 id="61-分区容忍的共识算法partition-tolerant-consensus-algorithms">6.1 分区容忍的共识算法(Partition tolerant consensus algorithms)<a hidden class="anchor" aria-hidden="true" href="#61-分区容忍的共识算法partition-tolerant-consensus-algorithms">#</a></h3>
+<h4 id="1多数决定法majority-decision">1、多数决定法(Majority Decision)<a hidden class="anchor" aria-hidden="true" href="#1多数决定法majority-decision">#</a></h4>
+<p>分区容忍的共识算法依赖于多数票决的方式(majority vote)，要求大多数的节点——而不是所有节点(像2PC那样)——能同意进行更新操作，而少部分节点可以是宕机的、延迟的或者是因为网络分区而不可达的。只要$\frac{N}{2}+1(N\text{为节点数})$个节点是可使用的，那么系统就会继续工作。</p>
+<p>多数可活(Majorities)是有效的，因为它们能够容忍不一致：如果出现数据扰乱或者失败，节点可能会投不同的票。然而因为只能有一个大多数形式的决定，短暂的不一致最多只能阻塞协议的进行(放弃活性)，而不会破坏单副本一致性准则(single-copy consistency criterion)，即安全性。</p>
+<h4 id="2角色roles">2、角色(Roles)<a hidden class="anchor" aria-hidden="true" href="#2角色roles">#</a></h4>
+<p>构建一个系统有两种方式:所有节点可能具有相同的职责，或者节点可能具有独立的、不同的角色。用于复制的共识算法一般选择采用不同节点不同角色的方式。拥有一个固定的leader或者master服务器是一种优化，能够让系统更有效率，因为我们都知道所有更新操作都要经过该服务器。而不是leader的服务器则只需要将他们的节点转发给leader。</p>
+<h4 id="3epochs">3、Epochs<a hidden class="anchor" aria-hidden="true" href="#3epochs">#</a></h4>
+<p>Raft或者Paxos的每个操作期间都称为一个“Epoch”(在Raft中则称为“term”)。在每个epoch期间，仅有一个节点能够成为leader。在选举成功后，同一个leader会协调系统直到一个Epoch结束。如下图所示(来自Raft的论文)，某些选举可能会失败，导致所在的epoch立刻结束。</p>
+<p><img src="http://book.mixu.net/distsys/images/epoch.png" alt="image"></p>
+<p>Epochs充当一个逻辑时钟，能够让其他节点识别Outdated的节点何时开始通信——被分区或者已停止运行的节点将会有一个比当前值小的Epoch值，并且它们的命令将会被忽略。</p>
+<h4 id="4通过对决改变leaderleader-changes-via-duels">4、通过对决改变Leader(Leader changes via duels)<a hidden class="anchor" aria-hidden="true" href="#4通过对决改变leaderleader-changes-via-duels">#</a></h4>
+<p>在普通操作期间，分区容忍的共识算法是相当简单的——倘若我们不考虑容错性，我们只需要使用2PC即可。大部分的复杂性都在于要确保<strong>一旦达成共识/一致决定，它就不会丢失；并且协议可以处理由于网络或节点故障导致的leader更变</strong>。</p>
+<p>一开始所有的节点都是作为follower而启动，然后其中一个节点会被选举成为leader。在普通操作期间，leader会维护一个心跳来让followers可以检测到leader是否故障或者分区。当一个节点检测到leader变得无法响应时(或在初始时，没有leader)，它就会转变为中间状态(intermediate state, 在Raft中则称为候选人-&ldquo;candidate&rdquo;)，并将epoch/term值增加1，初始化一个leader的选举并竞争成为新的leader。</p>
+<p>要成为一个新的leader，节点必须获得多数的选票。一个分配选票的方法就是先到先得(first-come-first-served)。在两次尝试当选的时间段内增加随机的等待时间可以减少同时尝试当选的节点的数量(Adding a random amount of waiting time between attempts at getting
+elected will reduce the number of nodes that are simultaneously attempting to get elected)。</p>
+<h4 id="5numbered-proposals-within-an-epoch">5、Numbered proposals within an epoch<a hidden class="anchor" aria-hidden="true" href="#5numbered-proposals-within-an-epoch">#</a></h4>
+<blockquote>
+<p>During each epoch, the leader proposes one value at a time to be voted upon. Within each epoch, each proposal is numbered with a unique strictly increasing number. The followers (voters / acceptors) accept the first proposal they receive for a particular proposal number.</p>
+</blockquote>
+<h4 id="6普通操作normal-operation">6、普通操作(Normal Operation)<a hidden class="anchor" aria-hidden="true" href="#6普通操作normal-operation">#</a></h4>
+<p>==以下内容为<strong>Basic Paxos</strong>原理的引用，若阅读途中有疑惑，可从<a href="http://oserror.com/distributed/paxos-principle-first/"><strong>此文章</strong></a>中尝试理解。==</p>
+<p>在普通操作期间，所有提议(Proposal)都要经过leader节点。当某个客户端提交了一个proposal(例如一个更新操作)时，leader将会联系<strong>仲裁中的所有节点(all nodes in the quorum)</strong>。如果没有竞争性的proposal存在(根据followers的返回)，leader将会提交这个值。如果多数的followers都对这个值达成一致，则这个值会被认为可以接受。</p>
+<blockquote>
+<p>If no competing proposals exist (based on the responses from the followers), the leader proposes the value. If a majority of the followers accept the value, then the value is considered to be accepted.</p>
+</blockquote>
+<p>由于另一个节点可能正在尝试成为leader，我们需要确保<strong>一旦一项proposal被提交，它的值就不会再改变</strong>。否则一项已经被接受的proposal可能会被一个正在竞争成为leader的节点重置。$\text{Lamport}$将其描述为：</p>
+<blockquote>
+<p>P2: If a proposal with value v is chosen, then every higher-numbered proposal that is chosen has value v</p>
+<blockquote>
+<p>**NOTE：**每个proposal都有自己的唯一Id，Id一般自增(即前一个chosen的proposalId必定小于后一个)。此外proposal还会携带一个value $v$，此value即为</p>
+</blockquote>
+</blockquote>
+<p>要确保此属性成立，需要所有的followers和proposers(提议者，感觉应该就是leader？)都要受到算法的约束——不能改变多数节点接受的值。需要注意，<strong>“值永远不会改变(the value can never change)”指的是协议中单个执行(或者是运行/实例/决策)的值</strong>。一个典型的复制算法(replication algorithm)会多次运行此算法(即 Partition tolerant consensus algorithms)，但为求简单，绝大多数关于此算法的讨论都是集中在单次运行上。我们希望防止改变或者覆盖决策历史(We want to prevent the decision history from being altered or overwritten)。</p>
+<p>为了强制实现此属性，proposers必须首先向followers询问它们已接受的编号最高的提议(proposal)和值。如果proposers发现提议已经存在，则其必须简单地完成这个协议的执行，而不是提出自己的提议(<em>If the proposer finds out that a proposal already exists, then it must simply complete this execution of the protocol, rather than making its own proposal，没理解</em>)。正如$\text{Lamport}$所说：</p>
+<blockquote>
+<p>P2b. If a proposal with value v is chosen, then every higher-numbered proposal issued by any proposer has value v.</p>
+<blockquote>
+<p>P2b. 如果一个proposal($id_{1}$, $v_{1}$)被选择，那么任意一个$id$大于$id_{1}$的proposal的value等于$v_{1}$</p>
+</blockquote>
+</blockquote>
+<p>更具体地说：</p>
+<blockquote>
+<p>P2c. For any <code>v</code> and <code>n</code> , if a proposal with value <code>v</code> and number <code>n</code> is issued [by a leader], then there is a set <code>S</code> consisting of a majority of acceptors [followers] such that either (a) no acceptor in S has accepted any proposal numbered less than n , or (b) v is the value of the highest-numbered proposal among all proposals numbered less than n accepted by the followers in S .</p>
+<blockquote>
+<p>P2c. 存在多数派的acceptor集合$S$，对于任意的$proposal(n,v)$，需要满足以下条件之一：<!-- raw HTML omitted -->
+       a. $S$中的任意一个acceptor都没有接受过id小于n的proposal <!-- raw HTML omitted -->
+       b. $S$中的acceptor接受了$id$处于$[0,n-1]$的proposal，其中，$v$是当中$id$最大的proposal的value</p>
+</blockquote>
+</blockquote>
+<p>以上是Paxos算法及其派生算法的核心。被提议的value直到协议的第二阶段才会被选择(接受/批准)。<strong>Proposers有时必须简单地重传先前做出的决定来确保安全性(即 $P2c$中的$b$情况)，直到他们都知道自己可以自由地提出自己的提议为止($P2c$中的$a$情况)。</strong></p>
+<p>如果有多个旧提议(previous proposals)存在，则最高编号的proposal的值将会被提出。Proposers只有在没有竞争性/冲突的提议时才会尝试实施自己的value。为了确保proposer在询问每个acceptors最新值的时候不会出现竞争性/冲突的提议，proposer会要求follers不要接受比当前proposalId更低的proposal。</p>
+<p>将这所有的零散逻辑合在一起从而在Paxos中得到一致决定，需要两轮的通信：</p>
+<pre tabindex="0"><code>[ Proposer ] -&gt; Prepare(n) [ Followers ]
+             &lt;- Promise(n; previous proposal id and previous value if accepted a proposal in the past)
+[ Proposer ] -&gt; AcceptRequest(n, own value or the value [ Followers ]
+             associated with the highest proposal id reported by the followers)
+             &lt;- Accepted(n, value)
+</code></pre><p>准备阶段允许properser了解任何一个冲突或是旧方案。第二节点是提出新的值或是之前被接受的值。在某些情况下——例如两个proposers同时活跃(active);或者出现信息丢失;或者多数节点故障——那么不会有提议被多数(majority)接受。但是这是可接受的(acceptable)，因为提议什么值的决策规则收敛于某个单一值(即前一次尝试中的提议值最高的那个)。</p>
+<p>根据FLP不可能性结果，这确实是我们所能做到最好的：解决共识问题(Consensus Problem)的算法在对于信息传递的边界不能保证时，必须要么放弃安全性，要么放弃活性。而Paxos则放弃了活性——<strong>它可能不得不无限延迟决策知道没有竞争的leader并且多数的节点都接受提议(it may have to delay decisions indefinitely until a point in time where there are no competing leaders, and a majority of nodes accept a proposal)</strong>。这毕竟比违反安全性保证要好。</p>
+<p>当然，实现这个算法比听起来的难多了。例如：</p>
+<ul>
+<li>有用的优化：
+<ul>
+<li>通过leadership leases(而不是心跳)来避免重复的leader选举；</li>
+<li>在leader不变的稳定状态下，避免重复的提议信息</li>
+</ul>
+</li>
+<li>确保followers和proposers不会在稳定的存储中(如硬盘存储)丢失数据，或者数据遭受损坏；</li>
+<li>保证能够以安全的方式更改集群成员(例如 基础Paxos依赖于一个事实(fact)：majorities always intersect in one node, which does not hold if the membership can change arbitrarily)</li>
+<li>在崩溃、磁盘丢失或者启动了新节点后，能够以安全有效的方式将新副本更新到最新。</li>
+<li>数据快照和垃圾回收的过程需要保证安全性，例如平衡存储需求和故障容灾需求。</li>
+</ul>
+<h3 id="47-算法实例paxos-raft-zab">4.7 算法实例：Paxos, Raft, ZAB<a hidden class="anchor" aria-hidden="true" href="#47-算法实例paxos-raft-zab">#</a></h3>
+<ul>
+<li><em><strong>Paxos</strong></em><!-- raw HTML omitted -->
+Paxos是编写强一致性分区容忍的复制系统时最重要的算法之一。它应用在了许多Google的系统中，包括<a href="http://research.google.com/pubs/pub36971.html">BigTable/Megastore</a>用到的<a href="http://research.google.com/archive/chubby.html">Chubby lock manager</a>，google文件系统以及<a href="http://research.google.com/archive/spanner.html">Spanner</a>。<!-- raw HTML omitted -->
+Paxos常被认为是难以实现的。这个问题主要涉及一个事实就是：Paxos是采用单轮的共识决策来描述的，而实际的实现中通常希望能够高效地运行多轮共识决策。这就导致了许多基于Paxos核心协议的<a href="https://en.wikipedia.org/wiki/Paxos_algorithm">扩展开发</a>出现了，而这些扩展则是所有想要建立一个基于Paxos的系统的人都需要去理解和消化的。此外，Paxos的实现还存在着一些实际的挑战，比如如何促进集群成员的更改。<!-- raw HTML omitted -->
+此处时Lamport关于Paxos的论文：<a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/pubs.html#lamport-paxos">最初论文</a>和<a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/pubs.html#paxos-simple">Paxos made simple</a>。<!-- raw HTML omitted --></li>
+<li><em><strong>ZAB</strong></em><!-- raw HTML omitted -->
+ZAB-Zookeeper Atomic Broadcast，是用于Zookeeper的协议。Zookeeper则是为分布式系统提供协调原语的一个系统，并且被广泛应用于协调以Hadoop为中心的分布式系统(例如 HBase, Storm, Kafka)。从技术的角度来说，原子广播并不是一个纯粹的共识问题，但它仍然属于强一致性的分区容忍算法的范畴。</li>
+<li><em><strong>Raft</strong></em><!-- raw HTML omitted -->
+Raft是一个最近(2013年)才添加到这个算法家族中的。它设计得比Paxos简单但能提供相同的保证。其算法不同部分能够更加清晰的分离，并且描述了集群成员关系的变化机制。</li>
+</ul>
+<h3 id="48-强一致性的复制方法replication-methods-with-strong-consistency">4.8 强一致性的复制方法(Replication methods with strong consistency)<a hidden class="anchor" aria-hidden="true" href="#48-强一致性的复制方法replication-methods-with-strong-consistency">#</a></h3>
+<h4 id="primarybackup">Primary/Backup<a hidden class="anchor" aria-hidden="true" href="#primarybackup">#</a></h4>
+<ul>
+<li>Single、static master</li>
+<li>复制日志(Replicated log)，从服务器不会再执行操作中被调用</li>
+<li>在复制延迟中没有界限</li>
+<li>没有分区容忍</li>
+<li>需要人工/专门的故障转移，没有故障容灾，没有热备份</li>
+</ul>
+<h4 id="2pc">2PC<a hidden class="anchor" aria-hidden="true" href="#2pc">#</a></h4>
+<ul>
+<li>全体一致(Unanimous)的票决：提交还是中止</li>
+<li>static master(永久身份，没有身份转换)</li>
+<li>在一个提交期间，协调器和节点同时发生故障，2PC将无法存活</li>
+<li>没有分区容忍，票决延迟的木桶效应</li>
+</ul>
+<h4 id="paxos">Paxos<a hidden class="anchor" aria-hidden="true" href="#paxos">#</a></h4>
+<ul>
+<li>多数票决</li>
+<li>动态主服务器(master)</li>
+<li>Robust to n/2-1 simultaneous failures as part of protocol</li>
+<li>对tail latency不敏感</li>
+</ul>
+<h2 id="5复制弱一致性模型协议replication-weak-consistency-model-protocols">5、复制：弱一致性模型协议(Replication: weak consistency model protocols)<a hidden class="anchor" aria-hidden="true" href="#5复制弱一致性模型协议replication-weak-consistency-model-protocols">#</a></h2>
+<p>在很长一段时间里，我们都是通过一个全局全序的方法来解决一致性问题，前面已经讨论了方法，它们都是通过非自然生成的全序顺序(以一种容错的方式)的形式来实现强一致性的。当然，强制实现有序的代价是昂贵的。特别是在大型的需要维持可用性(Avaliable)的互联网系统，这基本是行不通的。一个强制实现强一致性的系统会像一个单机系统一样运行，而不是分布式系统，这将会导致它在出现分区时可用性很糟糕。</p>
+<p>更进一步的说，对于每次操作，多数节点都要保持联系——而且经常不是一次而是两次(正如在2PC上的讨论一样)。尤其是对于在地理上分布以为全球用户提供高性能的系统来说，这是十分令人痛苦。因此默认想单机系统一样运行可能是不可取的(Not Desirable)。</p>
+<p>可能我们想要的系统是一个不需要编写复杂的用于协调的代码，然后也能返回一个“<strong>有用的</strong>”值。<strong>我们允许不同的副本相互之间有分歧——但可以保证执行效率和分区容灾——然后尝试找到一种方法来解决分歧。</strong></p>
+<p><strong>最终一致性-Eventual Consistency</strong>就表达上述的想法：节点偶尔可以相互之间存在分歧，但是它们最终能够达到一致。最终一致性可分为以下两种形式：</p>
+<ul>
+<li><strong>Eventual consistency with probabilistic guarantees</strong><!-- raw HTML omitted -->
+在一段时间后(at some later point)，能够检测到写冲突，但是不能保证结果与正确的顺序执行的结果一致。也就是说，冲突更新有时会用旧值覆盖新值，导致一些异常情况的发生。</li>
+<li><strong>Eventual consistency with strong guarantees</strong><!-- raw HTML omitted -->
+此类型的系统能保证最终结果与正确顺序执行的结果一致(即不会产生异常结果)。如此，在没有任何协调操作的情况下，你可以创建副本，而这些副本可以以任意的形式通信、以任意的顺序接受更新命令，并且最终它们会达成一致的结果——只要他们接受到的信息是一样的。
+<ul>
+<li>CRDT&rsquo;s (convergent replicated data types)<!-- raw HTML omitted -->
+这是一种数据类型，在网络延迟、分区和信息重排序的情况下也能够得到相同结果。它们具有可证明的收敛性(Convergent)，但是可以实现为CRDT类型的数据类型是有限的。</li>
+<li>CALM (consistency as logical monotonicity)猜想<!-- raw HTML omitted -->
+此猜想(conjecture)是同一原理的不同表达：它把逻辑单调性(Logical Monotonicity)等同于收敛性(Convergent)。如果我们能推断得出某个系统是逻辑单调的，那么它可以无需协调即可安全运行。</li>
+</ul>
+</li>
+</ul>
+<h3 id="51-调节不同的操作顺序reconciling-different-operation-orders">5.1 调节不同的操作顺序(Reconciling different operation orders)<a hidden class="anchor" aria-hidden="true" href="#51-调节不同的操作顺序reconciling-different-operation-orders">#</a></h3>
+<p>假设系统各节点因为某些原因无法通信，每个副本在分区时仍维持可用性，从一些客户端中接受读/写操作。而一段时间后，分区问题解决了，副本服务器相互交换信息。它们从不同的客户端接受不同的更新操作，并且相互之间存在分歧。因此需要进行调解——我们希望副本最终能达至一致的结果。</p>
+<pre tabindex="0"><code>[Clients] - &gt; [A]
+--- Partition ---
+[Clients] - &gt; [B]
+--- Partition ---
+[Clients] - &gt; [C]
+</code></pre><p>$\qquad\qquad\Downarrow$</p>
+<pre tabindex="0"><code>[A] \\
+     --&gt; [merge]
+[B] //      |
+            |
+[C] ----[merge]---&gt; result
+</code></pre><h3 id="52-amazons-dynamo">5.2 Amazon&rsquo;s Dynamo<a hidden class="anchor" aria-hidden="true" href="#52-amazons-dynamo">#</a></h3>
+<p>Dynamo可能是最有名的提供弱一致性和高可用的系统了。它也是其他许多系统的基础(如 Linkedln的 Voldemort，Facebook的Cassandra和Basho的Riak)。Dynamo是最终一致性和高可用的键值存储，Dynamo将可用性置于一致性之上，故它并不保证单副本一致性(single-copy consistency)。<strong>在进行写操作时，副本相互之间可能存在分歧；而当进行读操作时，在将数据值返回给客户端前将会进行读调节来尝试协调副本之间的差异</strong>。对于亚马逊的许多功能，避免运行中断是比确保数据是绝对一致要更重要——运行中断可能会导致生意和信誉的丢失。如果数据不是特别重要的，那么相比于传统的关系型数据库系统(RDBMS)，一个弱一致性系统能以更低的成本来提供更好的性能和更高的可用性。</p>
+<p>Dynamo是一个完整的系统，因此除了核心的复制任务以外，还有许多不同的部分值得研究。以下阐释了一些任务，特别是一个写操作是如何由路由传到一个节点上并且写入多个副本中。</p>
+<pre tabindex="0"><code>[ Client ]
+    |
+( Mapping keys to nodes )
+    |
+    V
+[ Node A ]
+    | \
+( Synchronous replication task: minimum durability )
+    | \
+[ Node B] [ Node C ]
+    A
+    |
+( Conflict detection; asynchronous replication task:
+ensuring that partitioned / recovered nodes recover )
+    |
+    V
+[ Node D]
+</code></pre><p>在研究了写操作最初是如何被接受之后，我们将研究冲突是如何被检测的以及异步副本的同步任务。副本同步任务确保了节点在一次是失败/故障后，仍然能快速地赶上(与其他节点的数据达成一致)。</p>
+<h4 id="一致性哈希consistent-hashing">一致性哈希(Consistent Hashing)<a hidden class="anchor" aria-hidden="true" href="#一致性哈希consistent-hashing">#</a></h4>
+<p>无论我们是读还是写，首要的事情就是要定位数据应该存储在哪个节点上。这就需要一种key-to-node的映射关系。</p>
+<p>在Dynamo，键值都是通过<a href="https://github.com/mixu/vnodehash">一致性哈希</a>映射到节点上去的。其中心思想就是：通过在客户端的简单计算，一个键值可以映射到一组的节点上。这就意味着客户端可以定位键值而无需通过服务器获取每个键值的位置。这大大节省了服务器的资源，因为哈希通常比一个远程调用要快。</p>
+<h4 id="部分仲裁partial-quorums">部分仲裁(Partial quorums)<a hidden class="anchor" aria-hidden="true" href="#部分仲裁partial-quorums">#</a></h4>
+<p>一旦我们知道要存储一个key，我们需要做一些工作来持久化这个值。这是一个同步任务。为什么我们要立刻将数据写入多个节点中就是为了提供更高等级的耐用性(Durability)——例如避免某个节点的立刻失败/故障。</p>
+<p>就像Paxos或者Raft那样，Dynamo使用法定人数(Quorum)来进行复制。然而Dynamo的qourums是sloppy (partial) qourums而不是strict (majority) quorums。通俗地讲，<strong>一个严谨的qourum系统有这这样一个特性：qourum系统中任意两个qourum(集)是有重叠部分</strong>。在进行更新操作之前要求多数人进行票决，保证只有一个历史记录——因为每个多数人仲裁(majority qourum)都必须在至少一个节点上有重叠(交集)。而这也是Paxos所依赖的。</p>
+<p>部分qourum则不具备上述特性。也就是说多数票决是不是做要求的，且qourum中的不同子集对于同一数据有着不同版本的值。</p>
+<ul>
+<li>用户可以选择W个节点进行操作，在一次写操作成功后</li>
+<li>用户可以指定在读操作是能够进行联接的节点数(R-of-N)</li>
+</ul>
+<p>$W$和$R$表示写和读操作所涉及的节点数。写更多的节点会让写操作更慢一些但是增加了数据值不会丢失的概率。而从更多的节点中读取数据则提高了数据值是最新的的可能性。通常建议$R+W&gt;N$，因为这意味着读和写操作将会在至少一个节点上重叠——降低了返回旧值的可能性。一个典型的配置就是$N=3$(即每个值有三个副本)。这意味用户可以选择：</p>
+<ul>
+<li>R = 1, W = 3;</li>
+<li>R = 2, W = 2;</li>
+<li>R = 3, W = 1;</li>
+</ul>
+<p>以上三者其中之一。更概括地讲，再次假设$R+W&gt;N$：</p>
+<ul>
+<li>R = 1 , W = N : fast reads, slow writes</li>
+<li>R = N , W = 1 : fast writes, slow reads</li>
+<li>R = N/2 , W = N/2 + 1 : favorable to both</li>
+</ul>
+<p>$N$很少会大于3，因为在大量数据中维持多份副本是十分昂贵的。Dynamo所启发的许多相似的系统，它们的$N$也不会大于3：</p>
+<ul>
+<li>Basho&rsquo;s Riak：N = 3, R = 2, W = 2 default</li>
+<li>Apache&rsquo;s Cassandra：N = 3, R = 1, W = 1 default</li>
+</ul>
+<p>还有一点小细节就是，当发送一个读/写操作时，是否节点都要返回响应(<strong>Riak</strong>)，还是说只需要满足最小值的数量的节点(<strong>R or W; Voldemort</strong>)。“send-to-all”方法更快且对延迟敏感度更低——因为它只需等待N个节点中最快的R/W个——但也效率更低。而“send-to-minimum”方法则对延迟更敏感(因为一个节点的延迟通信会延迟这整一个操作)，但是效率却更高(整体上更少的通信/连接)。</p>
+<h4 id="is-r--w--n-the-same-as-strong-consistency">Is R + W &gt; N the same as &ldquo;strong consistency&rdquo;?<a hidden class="anchor" aria-hidden="true" href="#is-r--w--n-the-same-as-strong-consistency">#</a></h4>
+<p>==<strong>No，并不是</strong>==</p>
+<p>但这不完全是错了：由于任一read qourum和write qourum共享(至少)一个成员，故使用$R+W&gt;N$的系统能够检测读写冲突：</p>
+<pre tabindex="0"><code>  1      2     N/2+1   N/2+2    N
+[...]   [R]   [R + W]   [W]   [...]
+</code></pre><p>这保证了前一个写必定能够被随后的一个read所看见(读读或写写之间不一定可见)。但是这仅对节点始终是<strong>N</strong>不变时才成立。因此，Dynamo不符合条件，因为在Dynamo中，若节点失败则集群成员关系将会更改。</p>
+<p>Dynamo被设计为时钟都是可写的。它拥有一种处理节点失败的机制，该机制在原生服务器失败/故障时会添加一个不同的无相关的服务器到负责特定键值的节点群中。这意味着qourum不在保证始终时可重叠的。甚至即使是$R=W=N$时也不符合条件，因为当qourum的数量为N时，在此qourum中的这些节点也可能在一次失败/故障中改变。举个例子，当网络分区时，当有足够多的节点无法到达，Dynamo将会添加一些无相关但是可访问的节点到qourum中去。</p>
+<p>进一步说，Dynamo并不能像强一致性模型系统那样处理分区问题——分区两边都允许写操作意味着至少在一段时间内系统不能像单副本(a single copy)那样运行。</p>
+<h4 id="冲突检测和读修复conflict-detection-and-read-repair">冲突检测和读修复(Conflict detection and read repair)<a hidden class="anchor" aria-hidden="true" href="#冲突检测和读修复conflict-detection-and-read-repair">#</a></h4>
+<p>允许副本有分歧的系统必须要有一种方法来最终调解两个不同的值。正如在partial qourum方法中简要提到的那样，其中一种方法就是：<strong>在读操作的时候检测冲突，然后使用一些冲突解决方案</strong>。一般来说，这是通过使用元数据(metadata)来最终数据块的因果历史(causal history)来实现的。<strong>客户端在从服务器中读取数据时必须持有元数据信息，并且必须在写数据时将信息返回给服务器(数据库)。</strong></p>
+<p>我们之前已经遇到过一个解决这个问题的方法了：<strong>Vector Clock</strong>。而它也确实是Dynamo设计用来进行冲突检测的。但是Vector Clocks并不是唯一的选择，如果你研究过许多实际的系统设计，通过研究它们追踪的元数据，你可以推断出它们是如何工作的。</p>
+<p><em><strong>No metadata</strong></em>：当系统没有追踪元数据，并且返回一个值时，它并不能对并发写做任何特殊的处理(即没有冲突检测和解决的方法)。一个普遍的规则就是后写覆盖先写。</p>
+<p><em><strong>Timestamp</strong></em>：名义上讲，时间戳值更大的数据值是最新的。然而如果时间并没有很好地同步，一些奇怪的事情就会发生——因系统故障/错误或者时钟过快而导致旧数据覆盖新数据。Facebook的Cassandra就是一个使用timestamp代替vector lock的Dynamo的变种。</p>
+<p><em><strong>Version Number</strong></em>：版本数可以避免一些因使用时间戳而导致的问题。不过值得一提的是当存在多个历史记录时，能够精确地追踪因果关系的最小机制是Vector Clock而不是Version Number</p>
+<p><em><strong>Vector Clocks</strong></em>：使用向量时钟可以检测出并发以及过期更新。因此进行读修复变得可行，尽管在一些情况下(并发修改)我们需要要求客户端选择一个值。这是因为如果修改是并发的而我们对数据情况一无所知(就像一个简单的键值存储那样)，那么询问总比随意撤销/抛弃要好。</p>
+<p>当读取数据时，服务器端连接$\frac{R}{N}$的节点并要求它们返回某个key对应的值。它获取了所有的响应返回后，丢弃那些肯定是旧的数据(使用vector clock的值去判断)。如果只有唯一一个<code>vector clock + value</code>的数据对，那么返回这个。如果有多对<code>vector clock + value</code>的数据对，则返回这些值。<strong>显然如此一来就可能返回多个值，这就意味着客户端/应用开发者需要处理这些情况</strong>——根据特定场景的使用标准选择某一个值。</p>
+<p>另外，向量时钟系统的一个关键要点是<strong>这些时钟不可能(也不允许)永远的增长下去</strong>，因此需要一个程序来进行<strong>间或的垃圾回收，以平衡容错和存储要求</strong>。</p>
+<h4 id="副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees">副本同步：流言协议和默克尔树(Replica synchronization: gossip and Merkle trees)<a hidden class="anchor" aria-hidden="true" href="#副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees">#</a></h4>
+<p>考虑到Dynamo系统的设计是允许节点故障和网络分区的，因此需要去处理节点在分区/故障恢复后，或者故障节点被替换后，重新加入集群中的情况。副本同步用于让节点在发生故障后恢复数据到最新状态，以及周期性的副本同步。</p>
+<p>Gossip是一种用于同步副本的概率型技术。它通信的模式(哪个节点与哪个节点联系)是事先不确定的。每个节点都有一定的概率$\rho$去尝试与其他节点同步。每隔<code>t</code>秒，各节点会选择一个要通信的节点。这在同步任务之外提供了一种额外的机制(例如 partial qourum write)去使得副本保持最新。Gossip是scalable的，并且没有单节点故障的问题，但是只能提供概率性的保证。</p>
+<p>为了让副本同步时的信息交换更高效，Dynamo使用了一种叫做Merkle trees的技术(此处不详细介绍)，其关键思想在于将数据存储在不同粒度()级别进行哈希(hash)——表示完整内容的散列、一般的键值、四分之一的键值。通过维护这种相当细粒度的哈希，节点之间可以更有效地对比他们的数据内容。一旦节点识别出哪个键的数据存在分歧，则会交换必要的信息来将使副本保持最新。</p>
+<h4 id="dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs">Dynamo实际应用：概率性有边界的过时(Dynamo in practice: probabilistically bounded staleness (PBS))<a hidden class="anchor" aria-hidden="true" href="#dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs">#</a></h4>
+<blockquote>
+<ol>
+<li>consistent hashing to determine key placement</li>
+<li>partial quorums for reading and writing</li>
+<li>conflict detection and read repair via vector clocks and</li>
+<li>gossip for replica synchronization</li>
+</ol>
+</blockquote>
+<p>以上四点几乎涵盖了Dynamo系统的设计原理。我们该如何描述这样一个系统的行为——最近的一篇论文(Bailiset al. 2012年)将这类方法统称为<a href="http://pbs.cs.berkeley.edu/">PBS</a>(probabilistically bounded staleness)。该文章采用从现实世界的系统收集而来的数据以及模拟的方式来描述该系统的预期行为。</p>
+<p>PBS通过使用反熵(Gossip)率、网络延迟和本地处理延迟等相关信息来估算出读操作的一致性，从而预估出不一致的程度(the degree of inconsistency)。它已经在Cassandra中实现了，其中时间信息和其他信息是相关联的，并且在蒙特卡洛(Monte Carlo)仿真模拟中根据这些信息样本计算出预估值。(<strong>完全看不懂什么意思~~~T^T</strong>)</p>
+<p>根据此论文，在普通操作期间，最终一致性数据的存储经常是很快速的而且读一个一致性状态的数据可以在10~100ms内完成。下表显示了在给定的不同的$R$和$W$数值下，从Linkedln和Yammer中99%是一致性读取的情况所需的耗时情况：
+<img src="http://book.mixu.net/distsys/images/pbs.png" alt="image">
+例如，在Yammer的系统中从$R=1,W=1$的配置到$R=2,W=1$，解决不一致性耗时从1364ms降到202ms；且保持读操作延迟(32.6ms)低于最快的严格qourum($R=3,W=1$, 219.27ms)。需了解更多详细内容，可参考<a href="http://pbs.cs.berkeley.edu/">PBS 网站</a>及相关论文。</p>
+<h3 id="3无序编程disorderly-programming">3、无序编程(Disorderly programming)<a hidden class="anchor" aria-hidden="true" href="#3无序编程disorderly-programming">#</a></h3>
+<p>让我们看回本章我们想要解决的问题的具体事例。第一个场景是三个服务器各自网络分区，在分区恢复后我们希望所有服务器收敛/得出一个共同的值。Dynamo通过读N个节点中的R个并进行读调解来解决这个问题。在第二个例子中，我们考虑一个更加特定化的操作——字符串拼接。实际上，目前并没有一种已知的技术可以在不给操作强加顺序(例如，不加耗成本的协调)的情况下能够解决字符串拼接一致性问题。然而，有些操作是可以在任意顺序中安全地被应用的，而这则是寄存器所无法做到的。正如<em>Pat Helland</em>写道：</p>
+<blockquote>
+<p>&hellip; operation-centric work can be made commutative (with the right operations and the right semantics) where a simple READ/WRITE semantic does not lend itself to commutativity.</p>
+</blockquote>
+<p>举个例子，一个以两种不同方式实现一个简单会计系统，其中包括了借方和贷方的操作：</p>
+<ul>
+<li>使用一个可进行读写操作的寄存器</li>
+<li>使用一个进行基本的借方和贷方操作的整型数据
+后一种操作更清楚数据类型的内部实现，所以它可以在操作重排序的情况下仍然保留着操作的意图。借方和贷方可以以任意的顺序进行，而最后的结果都是一致的：</li>
+</ul>
+<pre tabindex="0"><code class="language-math" data-lang="math">100 + credit(10) + credit(20) = 130
+
+100 + credit(20) + credit(10) = 130
+</code></pre><p>然而，写一个固定的值则不能以任意的顺序进行，如果写操作重排序了，那么后一个写就会覆盖前一个写：</p>
+<pre tabindex="0"><code class="language-math" data-lang="math">100 + write(110) + write(130) = 130
+
+100 + write(130) + write(110) = 110
+</code></pre><p>以本章开头的例子为例，但使用另一种操作。在此场景下，客户端发送消息给两个节点，该两节点看到的操作的顺序是不一致的：</p>
+<pre tabindex="0"><code>[Clients] --&gt; [A] 1, 2, 3
+[Clients] --&gt; [B] 2, 3, 1
+</code></pre><p>假设现在我们希望找到整数集里面最大的值(而不是字符串拼接)，消息1、2、3内容分别是：</p>
+<pre tabindex="0"><code>1: { operation: max(previous, 3) }
+2: { operation: max(previous, 5) }
+3: { operation: max(previous, 7) }
+</code></pre><p>那么在没有协调者的情况下，A、B两节点都会得到相同的值$\rightarrow7$。在上述例子中，两个副本看到的更新操作的顺序是不一致的，但我们可以无视顺序而得到一致的最终结果，这关键就在于我们使用的让结果收敛于一个一致的值的操作——合并(merge proceduce)<code>MAX()</code>。但要给所有的数据类型都编写一个合并过程或许是不可能的。在Dynamo中，值类型都是二进制的数据块(binary blob)，因此最好的方式就是暴露它并要求应用去处理每个冲突。不过，假如我们知道数据更具体的的类型，那么处理这些数据的冲突将会变得可能。CRDT&rsquo;s 是一个设计用来**提供总是可以收敛的数据类型(只要能看到同样的操作集合)**的数据结构。</p>
+<h3 id="4crdts-convergent-replicated-data-types">4、CRDTs: Convergent replicated data types<a hidden class="anchor" aria-hidden="true" href="#4crdts-convergent-replicated-data-types">#</a></h3>
+<p>CRDTs (convergent replicated datatypes)使用特定数据类型的特定操作的可交换性和关联性的特定。为了让副本仅偶尔相互通信这样的环境下，一组操作能够收敛于一个相同的结果，这些操作必须是要顺序无关且对消息重复/重传不敏感的。因此这样的操作必须满足以下特点：</p>
+<ul>
+<li><strong>关联性(Associative)</strong>：$a+(b+c)=(a+b)+c$，因此任意组合都是可以的</li>
+<li><strong>可交换性(Commutative)</strong>：$a+b=b+a$，因此先后顺序是无所谓的</li>
+<li><strong>幂等性(Idempotent)</strong>：$a+a=a$，因此重复操作是可允许的</li>
+</ul>
+<p>事实上，这些结构在数学中已经为人所知——它们被称为连接(join)或满足(meet)<a href="http://en.wikipedia.org/wiki/Semilattice">半格(semilattices)</a>。<a href="https://en.wikipedia.org/wiki/Lattice_%28order%29">晶格(lattice)</a>是一个具有确定顶部(最小上界)和确定底部(最大下界)的部分有序集合，而半格则和晶格类似，不过只有确定的顶部或者底部。join semilattice有确定顶部(最小上界)，而meet semilattice则有着确定底部(最大下界)。</p>
+<p><strong>任何可以表示为半格的数据类型都可以实现成保证收敛的数据结构</strong>。例如，只要一组数值最终能够被接收到，无论数值是以何种顺序接收的，计算一组数值的<code>max()</code>总是会返回一个相同的结果。这是因为<code>max()</code>操作是具有关联性、可交换性以及幂等性的。</p>
+<p>例如，以下是两个lattice：一个是以组合表示，其merge操作是<code>union(items)</code>；另一个是以严格增加的整型数值表示，其merge操作是<code>max(values)</code>：</p>
+<pre tabindex="0"><code>    { a,  b, c }       7
+      /   |   \       / \
+  {a,b} {b,c} {a,c}  5   7
+    |  \ / | / /     |    \
+   {a} {b} {c}      3 5    7
+</code></pre><p>只要数据类型可以表示为semilattice，你可以让副本以任何模式进行通信并且以任意的顺序接受更新操作，而它们最终会得到一个一致的值(只要它们能看到相同的信息)。只要先决条件(prerequisites)能够成立，这将是一个十分强大的特性。</p>
+<p>然而，将数据类型表示成为semilattice通常需要某种程度的解释(some level of interpretation)。许多数据类型的操作实际上都不是顺序无关的。增加东西到一个集合里面是可关联、可交换且幂等的，但是若我们要从集合里面移除某个东西，我们需要解决像<code>add(A)</code>和<code>remove(A)</code>之间的冲突。假如本地副本没有添加<strong>A</strong>，移除<strong>A</strong>意味着什么呢？此解决方案必须是一个顺序无关的方式，并且不同的选择有着不同的权衡。</p>
+<p>这意味着一些常用/熟悉(familiar)的数据类型有着更特定化的实现，因为CRDT需要做一些不同的权衡去以顺序无关的方式解决冲突。不像键值存储那样可以简单地通过寄存器(例如，从系统的角度看，数值都是不透明的数据块)解决，使用CRDT时必须使用正确的数据类型以避免异常。</p>
+<p>以下是可作为CRDT的数据类型的例子：</p>
+<ul>
+<li>计数器(Counters)
+<ul>
+<li>只增加的计数器(Grow-only Counter)，merge=max(values)；payload=single integer</li>
+<li>正负计数器——由两个计数器组成，一个用于增加，另一个用于减少</li>
+</ul>
+</li>
+<li>注册器/寄存器(Registers)
+<ul>
+<li>Last Write Wins-register，使用时间戳或者版本号，merge=max(ts)；payload=blob</li>
+<li>Multi-valued -register，如向量时钟(vector clock)，merge=take both</li>
+</ul>
+</li>
+<li>集合(Sets)
+<ul>
+<li>只增不减集合(Grow-only Set)，merge = union(items); payload = set; 没有移除操作</li>
+<li>二阶段集合(Two-Phase Set)——由两个集合组成，一个用于增加，另一个用于减少。<strong>每个元素只能加入一次、移除一次</strong></li>
+<li>唯一集合(Unique Set)，Two-Phase Set的优化版本</li>
+<li>Last write wins set，merge = max(ts); payload = set</li>
+<li>正负集合(Positive-negative set)——每一项由一个正负计数器组成</li>
+<li>Observed-remove set</li>
+</ul>
+</li>
+<li>Graphs and text sequences (see the paper)</li>
+</ul>
+<p>为确保操作无异常(anomaly-free operation)，对于特定的应用，我们需要找到正确的数据类型——例如，若知道只需要移除一个元素一次，那么可以使用tow-phase set；若只需要增加元素而不会减少，那么则使用grow-only set。</p>
+<p>并不是所有的数据类型都可以以CRDT的形式实现，不过<a href="http://hal.inria.fr/docs/00/55/55/88/PDF/techreport.pdf">Shapiro et al的研究论文</a>实现了boolean、counter、sets、registers以及graphs等数据结构。有趣的是，register实现与键值存储使用的实现直接对应——last-write-wins register使用时间戳或者其他等价的可收敛于最大的数值。多值register则对应Dynamo的retaining策略，暴露和调解并发修改。更多详细的内容，建议深入地了解一下上述论文。</p>
+<h3 id="5the-calm-theorem">5、The CALM theorem<a hidden class="anchor" aria-hidden="true" href="#5the-calm-theorem">#</a></h3>
+<p>CRDT数据结构是基于可表示为半格(semilattice)的数据结构是收敛的的认知而建立的。但是程序不仅仅只是关于状态更新(evolving state)，除非只是实现一个数据存储。
+顺序无关性是所有可收敛的运算的一个重要特性——如果接受数据的顺序会影响运算结果，那么就没办法在不保证运算的情况下执行运算。</p>
+<p>然而，在许多编程模型中，语句的顺序并没有很重要的作用。例如在<a href="http://en.wikipedia.org/wiki/MapReduce">MapReduce</a>中，Map和Reduce任务都只是需要在数据集中运算的无状态的处理任务。对于如何以及以何种顺序将数据传送到任务中是没有具体的决策的，而是由批处理作业调度程序(batch job scheduler)负责调度要在集群中运行的任务。类似的，在SQL中指定查询，但没有指定如何执行查询。查询只是任务的一个简单的声明性描述，真正找出一种高效的方法去执行查询(跨多主机、数据库和表)则是查询优化器的工作。当然，这些编程模型并不像通用的编程语言那么易用——MapReduce的任务需要在无循环的数据流程序中以无状态的形式运行；SQL语句则能执行相当复杂的运算，但是有着很多东西难以用其来表达。</p>
+<p>然而从上述两个例子中可以清楚地得出——许多数据处理任务可以用声明性的语句来表达，且这些语句中并没有显式地执行执行顺序。能够表示出所需的结果，同时将确切的执行顺序交由优化器(optimizer)去决定，这样的编程模型通常有着顺序无关的语义。这就意味着这些程序或许可以<strong>无需协调者即可安全运行</strong>，因为他们依赖它们接收到的输入但输入的接受顺序并不重要。然而在没有一个明确的规则指出<strong>什么是无协调者安全执行的，什么不是</strong>之前，我们不能实现一个可以确切保证结果正确的程序。</p>
+<p>而这也就是<strong>CALM理论</strong>。CALM理论是基于对逻辑单调性和最终一致性的有用形式(如 汇合/收敛-confluence/convergence)之间的关联的认知。它表明了逻辑单调性的程序是能够保证最终一致性的。因此，如果我们知道一些运算是逻辑单调的，那么我们就知道它是可以无需协调者安全执行的。为了更好地理解这个，我们需要对比单调逻辑(monotonic logic/computation)和<a href="http://plato.stanford.edu/entries/logic-nonmonotonic/">非单调逻辑(non-monotonic logic/computation)</a>。</p>
+<h4 id="1单调性monotony">1、单调性(Monotony)<a hidden class="anchor" aria-hidden="true" href="#1单调性monotony">#</a></h4>
+<p><strong>if sentence $\varphi$ is a consequence of a set of premises $\gamma$ , then it can also be inferred from any set $\delta$ of premises extending $\gamma$</strong></p>
+<p><strong>大部分标准的逻辑框架都是单调的：框架(如一阶逻辑 first-order logic)内任何推断一旦推演成立，就不会被新的信息所否定。而非单调逻辑系统则不具备此特性，即某些结论可以通过学习新知识而否定掉。</strong></p>
+<p>在人工智能领域，非单调逻辑与<a href="http://plato.stanford.edu/entries/reasoning-defeasible/">可失败推理(defeasible reasoning)</a>有关，在推理中，利用部分信息做出的判断可以被新的信息所否定。例如，如果我们认为Tweety是一只鸟，那么我们会推断出她会飞，后来我们知道Tweety其实是一只企鹅，那么我们就会修正我们的推论。</p>
+<p>单调性(Monotonicity)关注的是前提(或者说 事实)与结论(或者说 推断)的关系。在一个单调逻辑中，我们知道我们的结果是无法回退的(retraction-free)：<a href="https://en.wikipedia.org/wiki/Monotonicity_of_entailment">单调(Monotone)</a>计算无需重新计算或者协调，且随着时间推移，结果会愈加准确。一旦我们知道Tweety是一只鸟(然后我们使用单调性逻辑来推断)，我们会安全地得出Tweety会飞的结论并且我们后面学到的任何东西都无法推翻它。</p>
+<p>虽然所有能产生人性化(human-facing)结果的计算都可以解释成为一个关于这个世界/事实的断言，，但是很难确定基于冯·诺依曼(von Neumann)机器的编程模型就是单调的。因为对于事实与推断的关系是什么以及这些关系是否是单调的还不明确</p>
+<p>然而，有许多编程模型的单调性是确定的。特别是<a href="http://en.wikipedia.org/wiki/Relational_algebra">关系型代数(relational algebra)</a>(例如 SQL的理论基础)以及<a href="http://en.wikipedia.org/wiki/Datalog">数据日志(Datalog)</a>这种提供良好理解的高度表达性语言。具体而言，使用一组基本运算符表示的计算是单调的——(selection、projection、natural join、cross product、union、recursive以及非负Datalog)；而是用更高级的运算符的则会引入非单调性——negation、set difference、division、universal quantification以及aggregation。</p>
+<p>这也就意味着在这些系统中使用大量运算符表示的计算(如 map、filter、join、union以及intersection)都是逻辑单调的。任何使用这些运算符的计算都是单调的，故能够无协调运行。而使用否定(negation)或者聚合(aggregation)的计算则是非逻辑单调的。</p>
+<p>在分布式系统中，实现非单调性与代价昂贵的操作之间的联系是非常重要的。具体地说，分布式聚合和协调协议(distributed aggregation and coordination protocols)都可以看作是否定的一种形式。正如Joe Hellerstein<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-90.pdf">所说的</a>：</p>
+<blockquote>
+<p>To establish the veracity of a negated predicate in a distributed setting, an evaluation strategy has to start &ldquo;counting to 0&rdquo; to determine emptiness, and wait until the distributed counting process has definitely terminated. Aggregation is the generalization of this idea.</p>
+</blockquote>
+<blockquote>
+<p>This idea can be seen from the other direction as well. Coordination protocols are themselves aggregations, since they entail voting: Two-Phase Commit requires unanimous votes, Paxos consensus requires majority votes, and Byzantine protocols require a 2/3 majority. Waiting requires counting.</p>
+</blockquote>
+<p>If, then we can express our computation in a manner in which it is possible to test for monotonicity, then we can perform a whole-program static analysis that detects which parts of the program are eventually consistent and safe to run without coordination (the monotonic parts) - and which parts are not (the non-monotonic ones).</p>
+<p>需要注意，这些推论对于以顺序、选择、迭代为核心的传统编程语言来说，是很难做到的，因此我们需要设计一种新的语言——<strong>Bloom语言</strong></p>
+<h3 id="6what-is-non-mononicity-good-for">6、What is non-mononicity good for?<a hidden class="anchor" aria-hidden="true" href="#6what-is-non-mononicity-good-for">#</a></h3>
+<p>单调性和非单调性之间的差异是十分有趣的。例如，添加两个数字是单调的，而计算两个包含数字的节点的聚合则不是。这两者有什么差异——一个是计算(增加两个数字)，而另一个则是推断(计算一个聚合)。计算和推断有何不同？看看这样一个询问：“披萨是蔬菜吗？”，要回答这个，我们需要明白一个要点就是：什么时候可以推断出某些东西是(或不是)对的？</p>
+<p>可以有多个可接受的答案，每个答案都对应不同的假设，此假设是关于我们所拥有的信息以及我们应该采取的行为的——因此在不同的情景/上下文中，我们会有着不同的答案。</p>
+
+			</div>
+			<div class="post-copyright">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+	<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+</a>
+<br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+进行许可。
+<br />
+转载时请附上原文链接以注明出处，图片在使用时请保留全部内容(可适当缩放)并附上图片所属的文章链接。若进行商业性使用，请先联系笔者获取许可。
+			</div>
+		</div>
+		<div class="post-footer-wrapper">
+			<hr class="hr-fade"/>
+			<div class="post-comment-wrapper"><div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+<script>
+  var gitalk = new Gitalk({
+    id: '2021-05-15 20:17:49 \u002b0800 CST',
+    title: '分布式系统简述 Part 2',
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    body: decodeURI(location.href)
+  });
+  gitalk.render('gitalk-container');
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript></div> 
+		</div>
+	</div>
+</div>
+
+</main>
+	</body>
+</html>

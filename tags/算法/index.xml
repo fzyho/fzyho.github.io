@@ -37,6 +37,38 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     </item>
     
     <item>
+      <title>分布式系统简述 Part 2</title>
+      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</link>
+      <pubDate>Sat, 15 May 2021 20:17:49 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</guid>
+      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+4、Replication 复制是一系列的通信问题——怎样的分配和通信方式能够达到我们想要的性能和有效性呢？在面对网络分区和同时多点故障时，我们如何保证容灾、持久以及无分歧呢？
+分配和通信模式可以分成几个阶段：
+请求(Request): 客户端发送一个请求到服务器端 同步(Sync): 复制的同步部分发生 响应(Respond): 返回一个响应给客户端 异步(Async): 复制的异步部分发生 上述模式切割基于这篇文章。需要注意，此模式任务中各个部分的消息交换依赖于特定算法，这里并没有给出(故意略过)。
+4.1 同步复制(Synchronous replication) 同步复制也被称为Active或者Eager或者Push或者Pessimistic Replication。
+同步复制有三个阶段：发出请求，然后调用复制的同步部分(这意味着客户端阻塞知道系统返回一个结果)。 假定同步部分，我们采取一个写N-to-N的方法：在响应返回给前端之前，系统的所有服务器已然知道此响应结果。而且如此，系统则不能允许任何一个服务器端故障，若故障，则客户端的写请求将无法进行。
+4.2 异步复制(Asynchronous replication) 异步复制也被称为Passive或者Pull或者Lazy Replication。异步复制，顾名思义，是和同步复制相反的——master服务器立刻返回响应给客户端，而不会做任何与其他服务器的同步导致客户端阻塞。而且同样，其与其他服务器交流使用的通信模式也是根据不同的算法而不同。
+假定采取的算法叫写1-to-N方法，从性能的角度上看，这样的系统是更快的，但是它的分配方式只能提供弱或者概率持久性的保证。如果没有出错，数据最终会被复制到所有N台机器上，然而如果唯一包含这个数据的服务器故障了，那么这个数据将会永远丢失。
+使用写1-to-N方法，只要有一个节点能工作，系统就是可用的(至少在理论上是这样，实际上只有一个节点的话负载将会过高)。需要强调的一点是，被动复制(Passive Replication)不能保证系统中所有节点始终处于同一状态，如果你接受多位置(location)写且不要求这些节点同步，那么将会面临数据分歧的风险。
+4.3 主流复制算法综述(An overview of major replication approaches) 复制算法的分类方式有很多种，除了同步vs异步的区分外，还可以分为：
+避免数据分歧(single copy system): 此类算法能“behave like a single system”。特别是当出现分区失败时，系统保证只有一个拷贝是有效的(active)，即所有副本都是一直的，这也就是一致性/共识问题(consensus problem) 有数据分歧风险的(multi-master system) 如之前Consensus Problem所说的，要达到一致性/共识，需要满足Agreement、Integrity、Termination以及Validity。互斥(Mutual exclusion)，选举(leader election)，广播以及原子广播(atomic broadcast)都是更普遍的共识问题的例子。维护单一拷贝一致性的可复制系统需要以某种方式解决共识问题。
+维护单一拷贝一致性的复制算法包括：
+1n messages (asynchronous primary/backup) 2n messages (synchronous primary/backup) 4n messages (2-phase commit, Multi-Paxos) 6n messages (3-phase commit, Paxos with repeated leader election) 这些算法的容错性(fault tolerance)各不相同(例如 他们所容错的类型也不同)。以上是根据对应算法一次执行所需信息交换的次数区分的。下图改编自Ryan Barret at，展示了不同选择的不同方面： 上述图表中的：一致性(consistency)、延迟(lantency)、吞吐量(throughput)、数据丢失(data loss)以及故障转移(failover)等特性确实可以追溯会两种不同的复制方法：同步复制和异步复制——当同步时，将获得较差的性能但强的保障。另外当后面谈到分区容忍和延时容忍石，2PC和**仲裁系统(Quorum System)**之间吞吐量的差异将更加明显。</description>
+    </item>
+    
+    <item>
+      <title>分布式系统简述 Part 1</title>
+      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</link>
+      <pubDate>Tue, 11 May 2021 21:20:31 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</guid>
+      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+2、系统模型理论 2.1 Consensus Problem 遵循以下几点，计算机/节点可以达到数据一致性：
+统一性(Agreement): Every correct process must agree on the same value. 完整性(Integrity): Every correct process decides at most one value, and if it decides some value, then it must have been proposed by some process. 终止性(Termination): All processes eventually reach a decision. 有效性(Validity): If all correct processes propose the same value V, then all correct processes decide V 一致性/共识问题是所有商业分布式系统的核心。毕竟我们希望无需处理分散的结果(如节点的数据分歧/不同意)就可以获得一个可靠且高性能的分布式系统。并且解决一致性问题的同时，也解决一些相关的、更高级的问题(如 原子广播、原子提交等)。</description>
+    </item>
+    
+    <item>
       <title>从Shuffle到Sample——谈谈基本的随机算法</title>
       <link>http://localhost:1313/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
       <pubDate>Thu, 04 Feb 2021 12:40:47 +0800</pubDate>

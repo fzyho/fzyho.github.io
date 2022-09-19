@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on Lzero的小站</title>
+    <link>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on Lzero的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅析零拷贝</title>
+      <link>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
+      <pubDate>Tue, 06 Sep 2022 23:38:47 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
+      <description>在Linux/Unix体系中，一切皆为文件(everything is a file)。这在Unix最初的论文《The UNIX TimeSharing System》中便有所体现。而对于文件，最常见而又频繁的操作便是读/写操作。Linux的读写操作，也就是标准的I/O接口是基于数据拷贝的方式实现的。
+1、成因 一次文件读取的过程便是如下所示： 当程序调用系统方法read()时，程序便从用户态(User Space)切换到了内核态(Kernel Space)。read()调用转为了CPU指令，有CPU发起I/O请求。 请求经过DMA，最终落到对应的硬件设备(网卡、声卡、显卡、磁盘等)上。 数据经过各设备的缓存/缓冲区的拷贝，最终回到程序用户态，由read()方法返回。 图中的DMA，即Directlyu Mememory Access，也就是绕开CPU直接访问内存的设备。DMA分担了CPU部分功能，若没有DMA，两步缓存区数据拷贝的过程就会在CPU中进行，占用了CPU的资源。
+而一次普通的网络文件传输过程则为：
+从磁盘到程序的读过程即是前面所述的一次文件读取过程，而从程序到网卡则为一次文件写入过程，两个过程经历的I/O和状态变换基本是一致的，都是经历了2次状态切换、1次DMA拷贝、1次CPU拷贝
+由此可以看出，Linux/Unix的标准I/O在通过中间缓存来减少磁盘I/O操作的同时，也导致了多次数据拷贝以及状态切换。这也会消耗过多的CPU资源从而影响机器/传输性能。因此，为了提高I/O性能，缓解CPU压力，零拷贝的思想由此产生。零拷贝其实并不是真的做到“0”拷贝，而是一种思想——希望尽可能的减少数据拷贝操作以减轻CPU的压力。
+2、零拷贝的方式 由上面的描述可以看出，需要做的就是减少数据拷贝和状态切换次数，降低CPU负担。
+2.1 mmap(内存映射文件) mmap是Linux提供的内存映射文件机制。它能内核中读缓冲区的地址和用户态下的缓冲区地址进行映射，从而实现内核缓冲区和用户缓冲区共享。如此，使用mmap代替read()方法便可以减少一次用户态到内核态之间的CPU拷贝。
+mmap存在一个问题，就是多进程同时操作统一文件时，会触发SIGBUS信号，SIGBUS会杀死进程并产生coredump。这可能就会导致重要的服务经常被异常终止。因此通常我们会在使用文件前，先对文件申请锁，其他进程操作文件时，内核会发出中断信号，使得操作可以及时返回，避免进程被杀死。
+2.2 sendfile mmap的方式减少了一次拷贝，但是状态切换次数并没有减少。而Linux内核2.1开始引用的sendfile系统调用方法，则可以减少两次状态切换。sendfile建立了两个文件之间的通道，数据可以不经过用户态缓冲区，直接在内核缓冲区与套接字文件描述符(socket)之间传输。 不过也因为没有经过用户态，应用程序无法对传输的文件数据进行修改，因此sendfile只适用于不需要用户态处理的传输逻辑。
+此后，Linux内核2.4版本还对sendfile进行优化，内核缓冲区拷贝到socket缓存的不是文件数据而是文件描述符(fd)，DMA再根据socket缓存的文件描述符信息将内核缓冲区的数据拷贝至网卡。
+至此，sendfile便可以省去2次状态切换和CPU拷贝，只需2次状态切换和2次DMA拷贝便可以完成整个传输过程。
+但其也具有一定局限性：用户态不参与数据处理，需要DMA支持以及只能拷贝到socket套接字。
+3、Java I/O的实现 Java的FileChannel类定义了TransferTo()方法，FileChannelImpl对该方法进行了实现
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 public long transferTo(long position, long count, WritableByteChannel target) throws IOException { // do something before... // Attempt a direct transfer, if the kernel supports it if ((n = transferToDirectly(position, icount, target)) &amp;gt;= 0) return n; // Attempt a mapped transfer, but only to trusted channel types if ((n = transferToTrustedChannel(position, icount, target)) &amp;gt;= 0) return n; // Slow path for untrusted targets return transferToArbitraryChannel(position, icount, target); } 在实现逻辑中，先调用transferToDirectly()方法进行文件传输，若失败(系统/内核不支持)，则选择调用transferToTrustedChannel，再失败则使用transferToArbitraryChannel()。</description>
+    </item>
+    
+  </channel>
+</rss>

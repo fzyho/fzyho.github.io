@@ -6,7 +6,29 @@
     <description>Recent content in Posts on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Mon, 25 Apr 2022 18:01:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Sep 2022 23:38:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅析零拷贝</title>
+      <link>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
+      <pubDate>Tue, 06 Sep 2022 23:38:47 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
+      <description>在Linux/Unix体系中，一切皆为文件(everything is a file)。这在Unix最初的论文《The UNIX TimeSharing System》中便有所体现。而对于文件，最常见而又频繁的操作便是读/写操作。Linux的读写操作，也就是标准的I/O接口是基于数据拷贝的方式实现的。
+1、成因 一次文件读取的过程便是如下所示： 当程序调用系统方法read()时，程序便从用户态(User Space)切换到了内核态(Kernel Space)。read()调用转为了CPU指令，有CPU发起I/O请求。 请求经过DMA，最终落到对应的硬件设备(网卡、声卡、显卡、磁盘等)上。 数据经过各设备的缓存/缓冲区的拷贝，最终回到程序用户态，由read()方法返回。 图中的DMA，即Directlyu Mememory Access，也就是绕开CPU直接访问内存的设备。DMA分担了CPU部分功能，若没有DMA，两步缓存区数据拷贝的过程就会在CPU中进行，占用了CPU的资源。
+而一次普通的网络文件传输过程则为：
+从磁盘到程序的读过程即是前面所述的一次文件读取过程，而从程序到网卡则为一次文件写入过程，两个过程经历的I/O和状态变换基本是一致的，都是经历了2次状态切换、1次DMA拷贝、1次CPU拷贝
+由此可以看出，Linux/Unix的标准I/O在通过中间缓存来减少磁盘I/O操作的同时，也导致了多次数据拷贝以及状态切换。这也会消耗过多的CPU资源从而影响机器/传输性能。因此，为了提高I/O性能，缓解CPU压力，零拷贝的思想由此产生。零拷贝其实并不是真的做到“0”拷贝，而是一种思想——希望尽可能的减少数据拷贝操作以减轻CPU的压力。
+2、零拷贝的方式 由上面的描述可以看出，需要做的就是减少数据拷贝和状态切换次数，降低CPU负担。
+2.1 mmap(内存映射文件) mmap是Linux提供的内存映射文件机制。它能内核中读缓冲区的地址和用户态下的缓冲区地址进行映射，从而实现内核缓冲区和用户缓冲区共享。如此，使用mmap代替read()方法便可以减少一次用户态到内核态之间的CPU拷贝。
+mmap存在一个问题，就是多进程同时操作统一文件时，会触发SIGBUS信号，SIGBUS会杀死进程并产生coredump。这可能就会导致重要的服务经常被异常终止。因此通常我们会在使用文件前，先对文件申请锁，其他进程操作文件时，内核会发出中断信号，使得操作可以及时返回，避免进程被杀死。
+2.2 sendfile mmap的方式减少了一次拷贝，但是状态切换次数并没有减少。而Linux内核2.1开始引用的sendfile系统调用方法，则可以减少两次状态切换。sendfile建立了两个文件之间的通道，数据可以不经过用户态缓冲区，直接在内核缓冲区与套接字文件描述符(socket)之间传输。 不过也因为没有经过用户态，应用程序无法对传输的文件数据进行修改，因此sendfile只适用于不需要用户态处理的传输逻辑。
+此后，Linux内核2.4版本还对sendfile进行优化，内核缓冲区拷贝到socket缓存的不是文件数据而是文件描述符(fd)，DMA再根据socket缓存的文件描述符信息将内核缓冲区的数据拷贝至网卡。
+至此，sendfile便可以省去2次状态切换和CPU拷贝，只需2次状态切换和2次DMA拷贝便可以完成整个传输过程。
+但其也具有一定局限性：用户态不参与数据处理，需要DMA支持以及只能拷贝到socket套接字。
+3、Java I/O的实现 Java的FileChannel类定义了TransferTo()方法，FileChannelImpl对该方法进行了实现
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 public long transferTo(long position, long count, WritableByteChannel target) throws IOException { // do something before... // Attempt a direct transfer, if the kernel supports it if ((n = transferToDirectly(position, icount, target)) &amp;gt;= 0) return n; // Attempt a mapped transfer, but only to trusted channel types if ((n = transferToTrustedChannel(position, icount, target)) &amp;gt;= 0) return n; // Slow path for untrusted targets return transferToArbitraryChannel(position, icount, target); } 在实现逻辑中，先调用transferToDirectly()方法进行文件传输，若失败(系统/内核不支持)，则选择调用transferToTrustedChannel，再失败则使用transferToArbitraryChannel()。</description>
+    </item>
+    
     <item>
       <title>mysql的自我使用规范</title>
       <link>http://localhost:1313/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
@@ -91,6 +113,38 @@ AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线�
 Eventual consistency with probabilistic guarantees 在一段时间后(at some later point)，能够检测到写冲突，但是不能保证结果与正确的顺序执行的结果一致。也就是说，冲突更新有时会用旧值覆盖新值，导致一些异常情况的发生。 Eventual consistency with strong guarantees 此类型的系统能保证最终结果与正确顺序执行的结果一致(即不会产生异常结果)。如此，在没有任何协调操作的情况下，你可以创建副本，而这些副本可以以任意的形式通信、以任意的顺序接受更新命令，并且最终它们会达成一致的结果——只要他们接受到的信息是一样的。 CRDT&amp;rsquo;s (convergent replicated data types) 这是一种数据类型，在网络延迟、分区和信息重排序的情况下也能够得到相同结果。它们具有可证明的收敛性(Convergent)，但是可以实现为CRDT类型的数据类型是有限的。 CALM (consistency as logical monotonicity)猜想 此猜想(conjecture)是同一原理的不同表达：它把逻辑单调性(Logical Monotonicity)等同于收敛性(Convergent)。如果我们能推断得出某个系统是逻辑单调的，那么它可以无需协调即可安全运行。 5.1 Reconciling different operation orders 假设系统各节点因为某些原因无法通信，每个副本在分区时仍维持可用性，从一些客户端中接受读/写操作。而一段时间后，分区问题解决了，副本服务器相互交换信息。它们从不同的客户端接受不同的更新操作，并且相互之间存在分歧。因此需要进行调解——我们希望副本最终能达至一致的结果。
 [Clients] - &amp;gt; [A] --- Partition --- [Clients] - &amp;gt; [B] --- Partition --- [Clients] - &amp;gt; [C] $\qquad\qquad\Downarrow$
 [A] \\ --&amp;gt; [merge] [B] // | | [C] ----[merge]---&amp;gt; result 5.</description>
+    </item>
+    
+    <item>
+      <title>分布式系统简述 Part 2</title>
+      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</link>
+      <pubDate>Sat, 15 May 2021 20:17:49 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</guid>
+      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+4、Replication 复制是一系列的通信问题——怎样的分配和通信方式能够达到我们想要的性能和有效性呢？在面对网络分区和同时多点故障时，我们如何保证容灾、持久以及无分歧呢？
+分配和通信模式可以分成几个阶段：
+请求(Request): 客户端发送一个请求到服务器端 同步(Sync): 复制的同步部分发生 响应(Respond): 返回一个响应给客户端 异步(Async): 复制的异步部分发生 上述模式切割基于这篇文章。需要注意，此模式任务中各个部分的消息交换依赖于特定算法，这里并没有给出(故意略过)。
+4.1 同步复制(Synchronous replication) 同步复制也被称为Active或者Eager或者Push或者Pessimistic Replication。
+同步复制有三个阶段：发出请求，然后调用复制的同步部分(这意味着客户端阻塞知道系统返回一个结果)。 假定同步部分，我们采取一个写N-to-N的方法：在响应返回给前端之前，系统的所有服务器已然知道此响应结果。而且如此，系统则不能允许任何一个服务器端故障，若故障，则客户端的写请求将无法进行。
+4.2 异步复制(Asynchronous replication) 异步复制也被称为Passive或者Pull或者Lazy Replication。异步复制，顾名思义，是和同步复制相反的——master服务器立刻返回响应给客户端，而不会做任何与其他服务器的同步导致客户端阻塞。而且同样，其与其他服务器交流使用的通信模式也是根据不同的算法而不同。
+假定采取的算法叫写1-to-N方法，从性能的角度上看，这样的系统是更快的，但是它的分配方式只能提供弱或者概率持久性的保证。如果没有出错，数据最终会被复制到所有N台机器上，然而如果唯一包含这个数据的服务器故障了，那么这个数据将会永远丢失。
+使用写1-to-N方法，只要有一个节点能工作，系统就是可用的(至少在理论上是这样，实际上只有一个节点的话负载将会过高)。需要强调的一点是，被动复制(Passive Replication)不能保证系统中所有节点始终处于同一状态，如果你接受多位置(location)写且不要求这些节点同步，那么将会面临数据分歧的风险。
+4.3 主流复制算法综述(An overview of major replication approaches) 复制算法的分类方式有很多种，除了同步vs异步的区分外，还可以分为：
+避免数据分歧(single copy system): 此类算法能“behave like a single system”。特别是当出现分区失败时，系统保证只有一个拷贝是有效的(active)，即所有副本都是一直的，这也就是一致性/共识问题(consensus problem) 有数据分歧风险的(multi-master system) 如之前Consensus Problem所说的，要达到一致性/共识，需要满足Agreement、Integrity、Termination以及Validity。互斥(Mutual exclusion)，选举(leader election)，广播以及原子广播(atomic broadcast)都是更普遍的共识问题的例子。维护单一拷贝一致性的可复制系统需要以某种方式解决共识问题。
+维护单一拷贝一致性的复制算法包括：
+1n messages (asynchronous primary/backup) 2n messages (synchronous primary/backup) 4n messages (2-phase commit, Multi-Paxos) 6n messages (3-phase commit, Paxos with repeated leader election) 这些算法的容错性(fault tolerance)各不相同(例如 他们所容错的类型也不同)。以上是根据对应算法一次执行所需信息交换的次数区分的。下图改编自Ryan Barret at，展示了不同选择的不同方面： 上述图表中的：一致性(consistency)、延迟(lantency)、吞吐量(throughput)、数据丢失(data loss)以及故障转移(failover)等特性确实可以追溯会两种不同的复制方法：同步复制和异步复制——当同步时，将获得较差的性能但强的保障。另外当后面谈到分区容忍和延时容忍石，2PC和**仲裁系统(Quorum System)**之间吞吐量的差异将更加明显。</description>
+    </item>
+    
+    <item>
+      <title>分布式系统简述 Part 1</title>
+      <link>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</link>
+      <pubDate>Tue, 11 May 2021 21:20:31 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</guid>
+      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+2、系统模型理论 2.1 Consensus Problem 遵循以下几点，计算机/节点可以达到数据一致性：
+统一性(Agreement): Every correct process must agree on the same value. 完整性(Integrity): Every correct process decides at most one value, and if it decides some value, then it must have been proposed by some process. 终止性(Termination): All processes eventually reach a decision. 有效性(Validity): If all correct processes propose the same value V, then all correct processes decide V 一致性/共识问题是所有商业分布式系统的核心。毕竟我们希望无需处理分散的结果(如节点的数据分歧/不同意)就可以获得一个可靠且高性能的分布式系统。并且解决一致性问题的同时，也解决一些相关的、更高级的问题(如 原子广播、原子提交等)。</description>
     </item>
     
     <item>
