@@ -13,7 +13,7 @@
 <title>Mock相关概念</title>
 
 
-<meta name="generator" content="Hugo 0.76.4" />
+<meta name="generator" content="Hugo 0.102.3" />
 
 
 
@@ -238,7 +238,7 @@
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -264,31 +264,31 @@
 </span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">mockit.*</span><span class="o">;</span>
-<span class="c1">// ... other imports ...
-</span><span class="c1"></span>
-<span class="kd">class</span> <span class="nc">RRVModelTest</span> <span class="o">{</span>
-
-   <span class="nd">@Test</span>
-   <span class="kt">void</span> <span class="nf">testMethod</span><span class="o">(</span><span class="n">mock</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
-      <span class="c1">// 准备阶段，定义/执行无需Record的代码
-</span><span class="c1"></span>
-      <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Expectation代码块
-</span><span class="c1"></span>         <span class="c1">// 录制(Record)已经mock后的类型的方法调用期望(expectations)
-</span><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此录制期望(但并不推荐这样做)
-</span><span class="c1"></span>      <span class="o">}};</span>
-
-      <span class="c1">// 执行测试代码
-</span><span class="c1"></span>
-      <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Verification代码块
-</span><span class="c1"></span>         <span class="c1">// 已经mock后的类型的方法可以在此验证方法调用的期望(expectations)
-</span><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此验证(但并不推荐这样做)
-</span><span class="c1"></span>      <span class="o">}};</span>
-
-      <span class="c1">// 非Verification代码块的验证代码
-</span><span class="c1"></span>   <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">mockit.*</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// ... other imports ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">RRVModelTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">void</span> <span class="nf">testMethod</span><span class="o">(</span><span class="n">mock</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 准备阶段，定义/执行无需Record的代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">      <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Expectation代码块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// 录制(Record)已经mock后的类型的方法调用期望(expectations)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此录制期望(但并不推荐这样做)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 执行测试代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">      <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Verification代码块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// 已经mock后的类型的方法可以在此验证方法调用的期望(expectations)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此验证(但并不推荐这样做)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 非Verification代码块的验证代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></article>
 		

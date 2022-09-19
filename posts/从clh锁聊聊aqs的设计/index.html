@@ -11,7 +11,7 @@
 <title>从CLH锁聊聊AQS的设计</title>
 
 
-<meta name="generator" content="Hugo 0.76.4" />
+<meta name="generator" content="Hugo 0.102.3" />
 
 
 
@@ -119,8 +119,30 @@
 								
 								
 									<li>
-										<a href="#clh-lock" onclick="onNavClick(`#clh-lock-nav`)" id="clh-lock-nav" class="animated-visibility">
-											CLH Lock
+										<a href="#1clh-lock" onclick="onNavClick(`#1clh-lock-nav`)" id="1clh-lock-nav" class="animated-visibility">
+											1、CLH Lock
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#11-clh%e9%98%9f%e5%88%97%e9%94%81%e6%98%af%e4%bb%80%e4%b9%88" onclick="onNavClick(`#11-clh队列锁是什么-nav`)" id="11-clh队列锁是什么-nav" class="animated-visibility">
+											1.1 CLH队列锁是什么
 										</a>
 									</li>
 								
@@ -137,8 +159,70 @@
 								
 								
 									<li>
-										<a href="#aqs" onclick="onNavClick(`#aqs-nav`)" id="aqs-nav" class="animated-visibility">
-											AQS
+										<a href="#12-clh%e9%98%9f%e5%88%97%e9%94%81%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86" onclick="onNavClick(`#12-clh队列锁工作原理-nav`)" id="12-clh队列锁工作原理-nav" class="animated-visibility">
+											1.2 CLH队列锁工作原理
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#2%e9%98%9f%e5%88%97%e5%90%8c%e6%ad%a5%e5%99%a8aqs" onclick="onNavClick(`#2队列同步器aqs-nav`)" id="2队列同步器aqs-nav" class="animated-visibility">
+											2、队列同步器(AQS)
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#21-aqs%e7%ae%80%e8%bf%b0" onclick="onNavClick(`#21-aqs简述-nav`)" id="21-aqs简述-nav" class="animated-visibility">
+											2.1 AQS简述
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#22-aqs%e4%bc%98%e5%8c%96" onclick="onNavClick(`#22-aqs优化-nav`)" id="22-aqs优化-nav" class="animated-visibility">
+											2.2 AQS优化
 										</a>
 									</li>
 								
@@ -186,11 +270,74 @@
 			<div class="post-body" v-pre>
 				
 				
-				<p>AbstractQueuedSynchronizer(简称AQS)是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础，它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。</p>
-<h2 id="clh-lock">CLH Lock<a hidden class="anchor" aria-hidden="true" href="#clh-lock">#</a></h2>
-<p>CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列/链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。在队列中，每个线程通过检测其<strong>前驱线程</strong>是否已完成(<strong>获得并释放锁</strong>)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。</p>
-<p>一开始，CLHLock的队列只有一个尾部节点。然后线程A和B同时竞争上锁，两线程会调用<strong>原子的</strong>GetAndSet()的方式，获取尾部节点，并将此节点设置为自己的前驱节点作为，然后将自己线程转成节点插入队列的尾部。完成这些操作后，便进入自旋状态，直到前驱节点释放锁，即字段<code>locked</code>为<code>false</code>。</p>
-<h2 id="aqs">AQS<a hidden class="anchor" aria-hidden="true" href="#aqs">#</a></h2>
+				<p>AbstractQueuedSynchronizer，即AQS，是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础。它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(CLH Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。</p>
+<h2 id="1clh-lock">1、CLH Lock<a hidden class="anchor" aria-hidden="true" href="#1clh-lock">#</a></h2>
+<h3 id="11-clh队列锁是什么">1.1 CLH队列锁是什么<a hidden class="anchor" aria-hidden="true" href="#11-clh队列锁是什么">#</a></h3>
+<p>CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列\链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。</p>
+<p>在队列中，每个线程通过检测其<strong>前驱线程</strong>是否已完成(<strong>获得并释放锁</strong>)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。</p>
+<h3 id="12-clh队列锁工作原理">1.2 CLH队列锁工作原理<a hidden class="anchor" aria-hidden="true" href="#12-clh队列锁工作原理">#</a></h3>
+<p>一开始，CLHLock的队列只有一个尾部节点。然后多线程同时竞争上锁，两线程会调用<strong>原子的GetAndSet</strong>方法，获取尾部节点，并将此节点设置为自己的前驱节点作为，然后将自己线程转成节点插入队列的尾部。完成这些操作后，便进入自旋状态，直到前驱节点释放锁，即字段<code>locked</code>为<code>false</code>。</p>
+<p>如下图，可以看作线程A、B同时竞争获取锁。线程A先插入到队尾并获得锁，线程B在线程A后面，即A是B的前驱节点。线程B会不断自旋，直到前驱结点，即线程A，的状态从<code>locked</code>变为<code>unlock</code>；而后线程B获得锁，线程A从队列中移除。</p>
+<p><img src="/posts/CLH-AQS/CLHLock.png" alt="CLHLock工作原理"></p>
+<h2 id="2队列同步器aqs">2、队列同步器(AQS)<a hidden class="anchor" aria-hidden="true" href="#2队列同步器aqs">#</a></h2>
+<h3 id="21-aqs简述">2.1 AQS简述<a hidden class="anchor" aria-hidden="true" href="#21-aqs简述">#</a></h3>
+<p>AQS是基于CLHLock的一个拓展实现。其核心思想是：若被请求的资源空闲，则将当前请求资源的线程设为有限线程，并且将资源状态设为锁定。若被请求的资源被占用，则将暂时获得不到锁的线程加入队列中，并将线程挂起(阻塞)等待以及被唤醒时所分配。</p>
+<p>AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线程封装成一个CLHLock队列的节点(Node)来实现所分配，并使用字段<code>waitStatus</code>来表示资源获得的状态。<code>Node</code>的类定义如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 表示线程取消等待，不竞争资源的获取
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CANCELLED</span> <span class="o">=</span>  <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 表示获得资源锁了，对应线程无需挂起，需要唤醒
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">SIGNAL</span>    <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用于表示线程节点在做条件等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CONDITION</span> <span class="o">=</span> <span class="o">-</span><span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 表示后续线程/节点在调用acquireShare()方法时可以无条件获得锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">PROPAGATE</span> <span class="o">=</span> <span class="o">-</span><span class="n">3</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化为0，而后或为上述4中状态值。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">volatile</span> <span class="kt">int</span> <span class="n">waitStatus</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 前驱节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">volatile</span> <span class="n">Node</span> <span class="n">prev</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 后继节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">volatile</span> <span class="n">Node</span> <span class="n">next</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 节点所代表的线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">volatile</span> <span class="n">Thread</span> <span class="n">thread</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 条件队列所用，表示同一条件等待队列中的下一个等待节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Node</span> <span class="n">nextWaiter</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="22-aqs优化">2.2 AQS优化<a hidden class="anchor" aria-hidden="true" href="#22-aqs优化">#</a></h3>
+<p>除了区别于原始的CLHlock是一个单向队列，AQS实现了双向队列以外，AQS还做了许多性能上和功能上的优化。</p>
+<p>AQS利用了CLH的FIFO特点：每个节点(线程)都是通过前驱结点(线程)唤醒的。在前驱节点没有释放锁/资源全部占用的情况下，队列后面的所有线程全部挂起，任何线程都等前驱节点线程唤醒，避免了同时唤醒导致的竞争以及CPU上下文切换所导致的性能消耗。</p>
+<p>AQS是拥有两个队列的：sync queue以及wait queue。其中sync queue就是CLH队列锁，而wait queue则是用于Condition对象的线程排队使用，只是一个简单的单向链表。当waite queue的节点被唤醒(即状态被设置为SIGNAL)
+后，才会入队到sync queue，去竞争获取资源(锁)。</p>
 
 			</div>
 			<div class="post-copyright">

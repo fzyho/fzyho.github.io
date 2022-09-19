@@ -11,7 +11,7 @@
 <title>动态规划回顾</title>
 
 
-<meta name="generator" content="Hugo 0.76.4" />
+<meta name="generator" content="Hugo 0.102.3" />
 
 
 
@@ -296,7 +296,7 @@
 <p>对于上述背包问题，背包的重量只是一个限制条件，我们需要进行操作的是物品。每个物品都有放入和不放入两种选择。回溯算法的方式就是通过<strong>穷举所有放入不超重的情况，记录当中最接近极限承重</strong>$Wkg$<strong>的结果</strong>。用代码表示逻辑如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -325,34 +325,34 @@
 </span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">=</span> <span class="n">100</span><span class="o">;</span> <span class="c1">// 背包的最大承重(kg)
-</span><span class="c1"></span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">calc</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">calc</span><span class="o">(</span><span class="kt">int</span> <span class="n">itemIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 达到承重极限 或者 已经对所有物品做出选择后，返回当前背包重量
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">bagCurWeight</span> <span class="o">==</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">||</span> <span class="n">itemIndex</span> <span class="o">==</span> <span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">bagCurWeight</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 选择不装入下一个
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">notPutWeight</span> <span class="o">=</span> <span class="n">calc</span><span class="o">(</span><span class="n">itemIndex</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
-
-    <span class="c1">// 未超过超过背包承重极限时，选择装入下一个
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">putWeight</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
-    <span class="kt">int</span> <span class="n">nextPutBagWeight</span> <span class="o">=</span> <span class="n">bagCurWeight</span> <span class="o">+</span> <span class="n">itemsWeight</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">];</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">nextPutBagWeight</span> <span class="o">&lt;=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">putWeight</span> <span class="o">=</span> <span class="n">calc</span><span class="o">(</span><span class="n">itemIndex</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">nextPutBagWeight</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
-    <span class="o">}</span>
-    <span class="c1">// 返回二者间的最大值
-</span><span class="c1"></span>    <span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">notPutWeight</span><span class="o">,</span> <span class="n">putWeight</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">=</span> <span class="n">100</span><span class="o">;</span> <span class="c1">// 背包的最大承重(kg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">calc</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">calc</span><span class="o">(</span><span class="kt">int</span> <span class="n">itemIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 达到承重极限 或者 已经对所有物品做出选择后，返回当前背包重量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">bagCurWeight</span> <span class="o">==</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">||</span> <span class="n">itemIndex</span> <span class="o">==</span> <span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">bagCurWeight</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 选择不装入下一个
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">notPutWeight</span> <span class="o">=</span> <span class="n">calc</span><span class="o">(</span><span class="n">itemIndex</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 未超过超过背包承重极限时，选择装入下一个
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">putWeight</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nextPutBagWeight</span> <span class="o">=</span> <span class="n">bagCurWeight</span> <span class="o">+</span> <span class="n">itemsWeight</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">nextPutBagWeight</span> <span class="o">&lt;=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">putWeight</span> <span class="o">=</span> <span class="n">calc</span><span class="o">(</span><span class="n">itemIndex</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">nextPutBagWeight</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 返回二者间的最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">notPutWeight</span><span class="o">,</span> <span class="n">putWeight</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如上是回溯法的思路下实现的代码逻辑，可以看出，其实回溯就是使用递归的方式，穷举搜索所有可能的装法，然后找出满足条件的最大值。并且回溯算法的时间复杂度是指数级的，假若物品的数量有个几十上百个，普通的计算机就无法短时间完成计算了。</p>
 <h3 id="剪枝">剪枝<a hidden class="anchor" aria-hidden="true" href="#剪枝">#</a></h3>
@@ -361,7 +361,7 @@
 <p>可以看出，图中有两个相同的分支(2,5)，因此我们可以尝试通过记录分支状态——每次进行决策前判断当前状态是否重复出现过——来将其中重复的分支去掉，即<strong>剪枝</strong>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -382,26 +382,26 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="kt">int</span><span class="o">[][]</span> <span class="n">stateMarker</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">][</span><span class="n">BAG_LOAD_BEARING</span><span class="o">];</span>
-    <span class="k">return</span> <span class="n">calc</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">calc</span><span class="o">(</span><span class="kt">int</span> <span class="n">itemIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">bagCurWeight</span> <span class="o">==</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">||</span> <span class="n">itemIndex</span> <span class="o">==</span> <span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">bagCurWeight</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">stateMarker</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">][</span><span class="n">bagCurWeight</span><span class="o">]){</span>
-        <span class="k">return</span><span class="o">;</span> <span class="c1">// 重复状态
-</span><span class="c1"></span>    <span class="o">}</span> 
-    <span class="n">stateMarker</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">][</span><span class="n">bagCurWeight</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// 记录状态
-</span><span class="c1"></span>
-   <span class="c1">// 后续代码如 上述回溯法所示一致
-</span><span class="c1"></span><span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span><span class="o">[][]</span> <span class="n">stateMarker</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">][</span><span class="n">BAG_LOAD_BEARING</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">calc</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">itemsWeight</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">calc</span><span class="o">(</span><span class="kt">int</span> <span class="n">itemIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bagCurWeight</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">itemsWeight</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">bagCurWeight</span> <span class="o">==</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">||</span> <span class="n">itemIndex</span> <span class="o">==</span> <span class="n">itemsWeight</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">bagCurWeight</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">stateMarker</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">][</span><span class="n">bagCurWeight</span><span class="o">]){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="o">;</span> <span class="c1">// 重复状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">stateMarker</span><span class="o">[</span><span class="n">itemIndex</span><span class="o">][</span><span class="n">bagCurWeight</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// 记录状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">   <span class="c1">// 后续代码如 上述回溯法所示一致
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如上，通过记录状态来去掉重复分支逻辑，从而提高计算效率，这样的方式本质上也是一种空间换时间的做法。</p>
 <h2 id="动态规划">动态规划<a hidden class="anchor" aria-hidden="true" href="#动态规划">#</a></h2>
@@ -414,7 +414,7 @@
 <p>不过实际上，上述逻辑还可以进一步进行优化——我们关注的重点只有背包的重量，如上图表格中，<code>非1</code>的格子其实是无用。关注的只有重量，因此我们应该可以只用一个一维数组来记录重量状态：当<code>state</code>为<code>true</code>时，就表示此状态在前面的决策中已出现过，我们可以复用此状态。动态规划具有无后效性，即不理会状态是如何出现的，我们只需对状态进行决策。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -443,34 +443,34 @@
 </span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemWeights</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kt">boolean</span><span class="o">[]</span> <span class="n">weightMarkStates</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">BAG_LOAD_BEARING</span> <span class="o">+</span> <span class="n">1</span><span class="o">];</span>
-    <span class="c1">// 初始流程，先对第一个物品做决策
-</span><span class="c1"></span>    <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">itemWeights</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">itemWeights</span><span class="o">[</span><span class="n">0</span><span class="o">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 循环中进行状态转移
-</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">itemWeights</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="c1">// bagWeight要从大到小进行处理，从小到大会出现错误覆盖问题
-</span><span class="c1"></span>       <span class="kt">int</span> <span class="n">bagWeight</span> <span class="o">=</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">-</span> <span class="n">itemWeights</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-        <span class="k">for</span> <span class="o">(;</span> <span class="n">bagWeight</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">bagWeight</span><span class="o">--)</span> <span class="o">{</span>
-            <span class="c1">// 输入状态有记录，转移(即将物品放入背包)
-</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">weightMarkStates</span><span class="o">[</span><span class="n">bagWeight</span><span class="o">])</span> <span class="o">{</span>
-                <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">bagWeight</span> <span class="o">+</span> <span class="n">itemWeights</span><span class="o">[</span><span class="n">i</span><span class="o">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-    <span class="c1">// 从大到小，输出记录到的最大承重
-</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">;</span> <span class="n">weight</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">weight</span><span class="o">--)</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">weightMarkStates</span><span class="o">[</span><span class="n">weight</span><span class="o">])</span> <span class="o">{</span>
-            <span class="k">return</span> <span class="n">weight</span><span class="o">;</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">int</span> <span class="nf">getFloorWeight</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">itemWeights</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span><span class="o">[]</span> <span class="n">weightMarkStates</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">BAG_LOAD_BEARING</span> <span class="o">+</span> <span class="n">1</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始流程，先对第一个物品做决策
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">itemWeights</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">itemWeights</span><span class="o">[</span><span class="n">0</span><span class="o">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 循环中进行状态转移
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">itemWeights</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// bagWeight要从大到小进行处理，从小到大会出现错误覆盖问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>       <span class="kt">int</span> <span class="n">bagWeight</span> <span class="o">=</span> <span class="n">BAG_LOAD_BEARING</span> <span class="o">-</span> <span class="n">itemWeights</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(;</span> <span class="n">bagWeight</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">bagWeight</span><span class="o">--)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 输入状态有记录，转移(即将物品放入背包)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">weightMarkStates</span><span class="o">[</span><span class="n">bagWeight</span><span class="o">])</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">weightMarkStates</span><span class="o">[</span><span class="n">bagWeight</span> <span class="o">+</span> <span class="n">itemWeights</span><span class="o">[</span><span class="n">i</span><span class="o">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 从大到小，输出记录到的最大承重
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">BAG_LOAD_BEARING</span><span class="o">;</span> <span class="n">weight</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">weight</span><span class="o">--)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">weightMarkStates</span><span class="o">[</span><span class="n">weight</span><span class="o">])</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">weight</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>大家可能注意到，代码中在枚举背包容量<code>bagWeight</code>时，采用的是逆序的方式(从大到小)来进行，这是因为同一个循环的<code>bagWeight</code>的枚举应该是互不影响的。若使用正序，则同一循环中会出现<code>bagWeight + itemWeights[i]</code>设置为<code>true</code>导致后面<code>bagWeight</code>判断为<code>true</code>而错误提前设置的问题。</p>
 <h3 id="状态转移方程">状态转移方程<a hidden class="anchor" aria-hidden="true" href="#状态转移方程">#</a></h3>

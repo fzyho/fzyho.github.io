@@ -13,7 +13,7 @@
 <title>Verifications</title>
 
 
-<meta name="generator" content="Hugo 0.76.4" />
+<meta name="generator" content="Hugo 0.102.3" />
 
 
 
@@ -70,32 +70,6 @@
 
 
   
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="http://localhost:1313/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="">Mock相关概念</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="http://localhost:1313/docs/jmockit/usage/" class="">库API使用</a>
-  
-
-          
   <ul>
     
       
@@ -165,29 +139,6 @@
     
   </ul>
 
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="http://localhost:1313/docs/jmockit/application/" class="">综合运用</a>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
 
 
 
@@ -217,7 +168,7 @@
 <p>Verifications{}代码块可用于验证Mock对象调用某个方法的情况是否符合预期——调用了多少次，调用该方法调用的参数是否符合预期。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -237,25 +188,25 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">()</span>
-
-    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
-
-        <span class="c1">// 没有设定次数时，默认需要调用至少一次
-</span><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-
-        <span class="c1">// 1 to 5 invocations are expected:
-</span><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
-        <span class="n">minTimes</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
-        <span class="n">maxTimes</span> <span class="o">=</span> <span class="n">5</span><span class="o">;</span>
-        <span class="n">result</span><span class="o">=</span><span class="s">&#34;Injectable...&#34;</span><span class="o">;</span>
-    <span class="o">}};</span>
-	<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 没有设定次数时，默认需要调用至少一次
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1 to 5 invocations are expected:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">minTimes</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">maxTimes</span> <span class="o">=</span> <span class="n">5</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="o">=</span><span class="s">&#34;Injectable...&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>Verifications</code>类只有公开的一个无参的构造函数，因此只能对<code>@Injectable</code>、<code>@Mocked</code>等Mock出来的类/对象进行验证，而不能像<code>Expectations</code>那样通过传参来进行指定对象方法的验证。不过在实际的程序测试中，我们对于类的某个方法有没调用，调用多少次的测试场景并不是太多；一般都可以通过Assert的方式对程序结果进行验证。</p>
 <p>Verifications有三个子类<code>VerificationsInOrder</code>，<code>FullVerifications</code>以及二者的结合<code>FullVerificationsInOrder</code>。</p>
@@ -265,7 +216,7 @@
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -283,23 +234,23 @@
 </span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
-
-    <span class="k">new</span> <span class="n">VerificationsInOrder</span><span class="o">()</span> <span class="o">{{</span>
-        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
-    <span class="o">}};</span>
-
-    <span class="k">new</span> <span class="n">FullVerifications</span><span class="o">()</span> <span class="o">{{</span>
-        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
-        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
-    <span class="o">}};</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Injectable</span> <span class="n">VerificationExample</span> <span class="n">example</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">VerificationsInOrder</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">FullVerifications</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">example</span><span class="o">.</span><span class="na">voidMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">example</span><span class="o">.</span><span class="na">stringReturningMethod</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}};</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="withcapture">withCapture</h2>
 <p>在Verifications代码块中，Jmockit提供<code>withCapture(...)</code>语法用于获取测试过程中仿造的类生成过的对象或者仿造对象的方法调用传入过的参数。</p>
@@ -312,7 +263,7 @@
 <p>如果测试过程中，方法多次被调用，最后一次调用的参数会被capture。<code>withCapture()</code>只能下Verifications中使用。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -327,26 +278,26 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCapture</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
-
-    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
-        <span class="kt">double</span> <span class="n">d</span><span class="o">;</span>
-        <span class="n">String</span> <span class="n">s</span><span class="o">;</span>
-        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">d</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">());</span>
-
-        <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1d</span><span class="o">,</span> <span class="n">d</span><span class="o">,</span> <span class="n">0</span><span class="o">.</span><span class="na">0</span><span class="o">);</span>
-        <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
-    <span class="o">}};</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCapture</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">d</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">s</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">d</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1d</span><span class="o">,</span> <span class="n">d</span><span class="o">,</span> <span class="n">0</span><span class="o">.</span><span class="na">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}};</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="方法所有调用使用到的参数">方法所有调用使用到的参数</h3>
 <p>与<code>withCapture()</code>不同，<code>withCapture(List)</code>可以用在Verifications，也可以用在Expectations。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -362,27 +313,27 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCaptures</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
-    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">2</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test2&#34;</span><span class="o">);</span>
-
-    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
-        <span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">doubles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">doubles</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">withCapture</span><span class="o">(</span><span class="n">strings</span><span class="o">));</span>
-
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">doubles</span><span class="o">);</span> <span class="c1">// [0.1, 0.2]
-</span><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">strings</span><span class="o">);</span> <span class="c1">// [test, test2]
-</span><span class="c1"></span>    <span class="o">}};</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCaptures</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">VerificationExample</span> <span class="n">mock</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">1</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">VerificationExample</span><span class="o">().</span><span class="na">doSomething</span><span class="o">(</span><span class="n">0</span><span class="o">.</span><span class="na">2</span><span class="o">,</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">2</span><span class="o">],</span> <span class="s">&#34;test2&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">doubles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mock</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">doubles</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="n">withCapture</span><span class="o">(</span><span class="n">strings</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">doubles</span><span class="o">);</span> <span class="c1">// [0.1, 0.2]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">strings</span><span class="o">);</span> <span class="c1">// [test, test2]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}};</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="获取新创建的mocked类对象">获取新创建的Mocked类对象</h3>
 <p><code>withCapture</code>还可以用来获取指定Mocked的类的所有创建对象。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -402,25 +353,25 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kt">void</span> <span class="nf">capturingNewInstances</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">Person</span> <span class="n">mockedPerson</span><span class="o">)</span> <span class="o">{</span>
-   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Paul&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">));</span>
-   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Mary&#34;</span><span class="o">,</span> <span class="n">15</span><span class="o">));</span>
-   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Joe&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">));</span>
-
-   <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
-       <span class="c1">// 获取到目前为止所有Mocked的Person对象
-</span><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsInstantiated</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="n">anyString</span><span class="o">,</span> <span class="n">anyInt</span><span class="o">));</span>
-
-      <span class="c1">// 使用withCapture获取create()方法的参数对象
-</span><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsCreated</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-      <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">personsCreated</span><span class="o">));</span>
-
-      <span class="c1">// 可以得出，personsInstantiated和personsCreated列表中所有元素都是相同的
-</span><span class="c1"></span>      <span class="n">assertEquals</span><span class="o">(</span><span class="n">personsInstantiated</span><span class="o">,</span> <span class="n">personsCreated</span><span class="o">);</span>
-   <span class="o">}};</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">capturingNewInstances</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">Person</span> <span class="n">mockedPerson</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Paul&#34;</span><span class="o">,</span> <span class="n">10</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Mary&#34;</span><span class="o">,</span> <span class="n">15</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">   <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">&#34;Joe&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span>
+</span></span><span class="line"><span class="cl">       <span class="c1">// 获取到目前为止所有Mocked的Person对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsInstantiated</span> <span class="o">=</span> <span class="n">withCapture</span><span class="o">(</span><span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="n">anyString</span><span class="o">,</span> <span class="n">anyInt</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 使用withCapture获取create()方法的参数对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">List</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">personsCreated</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">      <span class="n">dao</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">withCapture</span><span class="o">(</span><span class="n">personsCreated</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 可以得出，personsInstantiated和personsCreated列表中所有元素都是相同的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">assertEquals</span><span class="o">(</span><span class="n">personsInstantiated</span><span class="o">,</span> <span class="n">personsCreated</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">   <span class="o">}};</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></article>
 		

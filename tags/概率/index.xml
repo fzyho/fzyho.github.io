@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>概率 on Lzero的小站</title>
+    <link>http://localhost:1313/tags/%E6%A6%82%E7%8E%87/</link>
+    <description>Recent content in 概率 on Lzero的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Wed, 14 Apr 2021 22:17:24 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%A6%82%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基础概率模型</title>
+      <link>http://localhost:1313/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</link>
+      <pubDate>Wed, 14 Apr 2021 22:17:24 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B/</guid>
+      <description>1、贝叶斯定理 $P(x|y)$是条件概率，表示在$y$事件发生的情况下，$x$事件发生的概率。故，有$P(y,x)=P(x|y)\times P(y)$，表示同时发生$x,y$事件的概率=发生$y$事件的概率 乘以 在$y$事件发生的情况下发生$x$事件的概率。
+当$x,y$事件相互独立时，就有贝叶斯公式如下： $$ P(x|y)\times P(y)=P(y,x)=P(x,y)=P(y|x)\times P(x) \\ \Downarrow \\ P(x|y)=\frac {P(y|x)\times P(x) }{ P(y) } $$ 其中$P(x)$称为先验概率，$P(y|x)$称为似然率(根据观测到的结果数据来预估模型的参数)，$P(y)$称为边缘概率。而最终得出的结果$P(x|y)$则称为后验概率。
+2、朴素贝叶斯 朴素贝叶斯模型是一种分类模型——给出一个事物的一些特征，推断出该事物分别属于各类类别的概率。 $$ P(c|f_1,f_2,&amp;hellip;,f_i)=P(c|f_1)\times P(c|f_2)\times &amp;hellip; \times P(c|f_i) \\ \quad \\ \Rightarrow \frac{P(f_1|c)\times P(c) }{ P(f_1) }\times \frac{P(f_2|c)\times P(c) }{ P(f_2) }\times &amp;hellip;\times \frac{P(f_i|c)\times P(c) }{ P(f_i) } $$ 在进行贝叶斯公式的乘积计算时，常常会出现结果为0——某类别没有出现过某种特征，因此当前的似然率是0。一般会采取平滑(Smoothing)的方式处理——取一个比这个数据集里最小统计概率还要小的极小值，来代替零概率.
+另外，在进行概率乘积计算的过程中，当特征很多时，乘积结果可能就小到计算机无法处理的地步，因此会采用一些数学方法进行转换(比如取log，将小数转化为绝对值大于1的负数)。
+2.1 朴素贝叶斯分类过程： 准备数据：收集各类别事物的实例，归纳各类别事物的特征，并将其转化为计算机所能理解的数据。这种数据也被称为训练样本。 建立模型：用计算机统计类别事物、事物特征出现的先验概率，以及在某个分类下某种特征出现的条件概率。这个过程也被称为基于样本的训练。 分类新数据：对于一个新实例的特征数据，计算机根据已经建立的模型进行推导计算，得到该实例属于每个分类的概率，实现了分类的目的。这个过程也被称为预测。 2.2 与其他分类算法的比较 和KNN 最近邻相比，朴素贝叶斯需要更多的时间进行模型的训练，但是它在对新的数据进行分类预测的时候，通常效果更好、用时更短。 和决策树相比，朴素贝叶斯并不能提供一套易于人类理解的规则，但是它可以提供决策树通常无法支持的模糊分类（一个对象可以属于多个分类）。 和SVM 支持向量机相比，朴素贝叶斯无法直接支持连续值的输入。所以，在前面的案例中，我将连续值转化成了离散值，便于朴素贝叶斯进行处理。 3、马尔可夫(Markov)假设 3.1 链式法则 链式法则是概率论中一个常用法则。它使用一系列条件概念率和边缘概率，来推导联合概率。 $$ P(x_1,x_2,&amp;hellip;,x_n)=P(x_1)\times P(x_2|x_1)\times P(x_3|x_2,x_1)\times &amp;hellip;\times P(x_n|x_1,x_2,&amp;hellip;,x_{n-1}) $$</description>
+    </item>
+    
+  </channel>
+</rss>

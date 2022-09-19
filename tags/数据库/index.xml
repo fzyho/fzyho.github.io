@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据库 on Lzero的小站</title>
+    <link>http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on Lzero的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Mon, 25 Apr 2022 18:01:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql的自我使用规范</title>
+      <link>http://localhost:1313/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Mon, 25 Apr 2022 18:01:47 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
+      <description>以下笔者在多年后端工作中MySQL数据库使用经历的归纳总结。内容不长，要点不多，会尽量避免常识性的规范。以免以后自己回顾也没心情看下去。
+以下规范是基于InnoDB的前提下写的，若为其他存储引擎，请注意参考使用。
+1. 设计规范 1.1 字符集 MySQL的字符集中，utf8是3个字节长度的，因此无法真正囊括所有utf-8编码，若用其春初存储包含如：😭(哭表情)的内容时，会导致整个内容编码错乱。而utf8mb4才是最多4个字节长度，即与utf-8编码真正对应的字符集。
+因此建议统一使用utf8mb4字符集存储字符串。 需要知道的是，VARCHAR(N)类型的字段，N指的是字符串长度。字节长度是编码$\times N$，对于utf8mb4来说，即$4\times N$。
+1.2 主键 主键使用自增主键有个好处就是可以提高数据页的利用率，减少页空洞和分裂。
+InnoDB使用的是B+树来进行数据组织，叶子结点存储的是数据页(主键索引的B+树中)。每个叶子结点都有个双向指针连接着前后叶子，构成一个双向链表。
+因为数据页大小是固定的(默认为16KB)，当数据按主键递增的形式插入时，索引是紧凑的，数据页也会有序增加，页中不会出现空洞；而若数据是随机插入，则会导致数据页空洞，比如id为[4,6]的数据可以构成一个数据页，结果只插入了4、6，id=5的数据没有插入。
+此处可以配置图片 此外，主键不递增还会导致页分裂，原本[10,20]的数据只有id=10,15,20三行，存放于一个数据页中，后面随机插入了剩余的id数据，导致一个数据页不足以存储，需要分裂为多个数据页(即增加数据页)。此时实际上是索引的B+树也在重新建立索引。
+1.3 简化使用 禁止使用存储过程、视图、触发器、Event等工具，禁止使用外键。 MySQL擅长做存储和索引相关的工作，其他工作交由其他擅长的工具应付，比如ES、HBase，Redis等。对于高并发的大数据量业务，将计算逻辑放在数据库层，容易拖垮数据库。
+1.4 分库(分)表 笔者工作至今遇到有两种分库表的形式，一种是按照userId进行分库分表，一种是按照日期(每月、每天、每时)进行分表。(p.s. 按照时间进行日志表归档某种程度上不算是分库表)。
+一般认为设计实现分库表，是为了提升性能——将一张大表拆分成多张小表，这样MySQL的性能能有显著的提升。这样的认知笔者认为是不完全正确的。B+树在层数为4时，即可存放几十亿的数据，因此一般最多4次I/O的时间即可查询到相应的数据。分库表可能就把层数降低一层，性能不会有太大提升。当然，在在扫描数据量极大的范围查询中，分库表确实可以提高性能和效率。
+分库表的设计更多是为了方便管理，以及数据量过大，超过一般单数据库服务器(通常为500GB)所能容纳的。
+像按userId进行分库表，一般是为了方便后续数据量过大时可拓展；而按日期分表，则是为了方便管理，后续移除/清空无用数据时简单方便。
+1.5 字段设计 IP相关的字段可以使用INT UNSIGNED类型存储。使用inet_aton(&amp;lsquo;255.255.255.255&amp;rsquo;)和select inet_ntoa(4294967295)进行转化。 把字段定义为NOT NULL并且提供默认值，比如0。null的列使索引/索引统计/值比较都更加复杂，对MySQL来说更难优化 1.6 索引设计 单表的索引不能过多，目前自我限制为7个，同时单个索引的字段数量不能多余3个。
+设计索引时，多考虑建立联合索引，并把区分度最高的字段放在最前面。以便利用上最左匹配原则。另外还应避免出现冗余索引的情况，比如已建立了缩影key(a,b)，若再建立索引key(a)，则为索引冗余了。
+WHERE中过滤条件的字段顺序无需和索引一致，但若有排序、分组则必须一致。而且排序的代价往往更高，因此若explain中有 Using filesort，应优先创建排序索引。
+2. 编写规范 1.1 代码层编写规范 笔者工作至今常用的第三方SQL工具是mybatis，然后就是公司自研工具。以mybatis为例，一般常用mybatis-generator工具生成对应的DO、Mapper和xml配置。但自动生成的sql常常比较复杂，建议对于sql进行手动拼写。
+SELECT语句必须指定具体字段名称，禁止写成*，并且应该带上limit，以防获取数量过多对性能造成影响。select *会将不该读取的数据也从MySQL里读出来，一方面会造成性能多余损耗，而且表字段一旦更新，但model层没有对应及时更新的话，系统会报错。
+业务逻辑并发操作同一个表，可能会产生行锁甚至表锁，导致并发性能下降；因此建议更新操作的sql能统一都基于主键去更新。此外，更新操作所基于的主键/索引应该保证统一的顺序，以防死锁。
+对于单表读写比大于10:1的数据行或单个列，可考虑将热点数据放在缓存中(如redis)，以加快访问速度，同时降低MySQL压力。
+1.2 SQL编写规范 大表不应使用子查询(select中嵌套select)，应转为使用性能稳定的join查询。而在多表join的SQL里，保证被驱动表的连接列上有索引，这样join执行效率最高。而join表也不应过多，笔者自我要求是3个以内。
+应当注意避免隐式数据类型转换，在索引字段中使用函数或逻辑运算。这些情况是会导致索引失效的。如：
+1 2 3 4 5 # phone是varchar，userId是bigint，二者均为索引字段 # 但以下皆为索引失效 SELECT uid FROM t_user WHERE phone=18800000000 SELECT uid FROM t_user WHERE length(phone)=11 SELECT uid FROM t_user WHERE userId+1=2 分页查询时，当limit起点较高，可先用过滤条件进行过滤。如select a,b,c from t1 limit 1000,5优化为: select a,b,c from t1 where id&amp;gt;1000 limit 5。id为递增的主键Id。</description>
+    </item>
+    
+    <item>
+      <title>mysql索引浅析</title>
+      <link>http://localhost:1313/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
+      <pubDate>Sat, 19 Feb 2022 23:01:47 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
+      <description>什么是索引？根据mysql官方文档的阐述：
+Indexes are used to find rows with specific column values quickly. Without an index, MySQL must begin with the first row and then read through the entire table to find the relevant rows. The larger the table, the more this costs. If the table has an index for the columns in question, MySQL can quickly determine the position to seek to in the middle of the data file without having to look at all the data.</description>
+    </item>
+    
+  </channel>
+</rss>
