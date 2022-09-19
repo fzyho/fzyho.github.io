@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>数据库 on Lzero的小站</title>
-    <link>fzyho/fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <link>https://fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
     <description>Recent content in 数据库 on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Mon, 25 Apr 2022 18:01:47 +0800</lastBuildDate><atom:link href="fzyho/fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Apr 2022 18:01:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mysql的自我使用规范</title>
-      <link>fzyho/fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
+      <link>https://fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
       <pubDate>Mon, 25 Apr 2022 18:01:47 +0800</pubDate>
       
-      <guid>fzyho/fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
+      <guid>https://fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
       <description>以下笔者在多年后端工作中MySQL数据库使用经历的归纳总结。内容不长，要点不多，会尽量避免常识性的规范。以免以后自己回顾也没心情看下去。
 以下规范是基于InnoDB的前提下写的，若为其他存储引擎，请注意参考使用。
 1. 设计规范 1.1 字符集 MySQL的字符集中，utf8是3个字节长度的，因此无法真正囊括所有utf-8编码，若用其春初存储包含如：😭(哭表情)的内容时，会导致整个内容编码错乱。而utf8mb4才是最多4个字节长度，即与utf-8编码真正对应的字符集。
@@ -40,10 +40,10 @@ SELECT语句必须指定具体字段名称，禁止写成*，并且应该带上l
     
     <item>
       <title>mysql索引浅析</title>
-      <link>fzyho/fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
+      <link>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
       <pubDate>Sat, 19 Feb 2022 23:01:47 +0800</pubDate>
       
-      <guid>fzyho/fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
+      <guid>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
       <description>什么是索引？根据mysql官方文档的阐述：
 Indexes are used to find rows with specific column values quickly. Without an index, MySQL must begin with the first row and then read through the entire table to find the relevant rows. The larger the table, the more this costs. If the table has an index for the columns in question, MySQL can quickly determine the position to seek to in the middle of the data file without having to look at all the data.</description>
     </item>
