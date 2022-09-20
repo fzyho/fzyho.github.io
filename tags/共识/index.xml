@@ -6,14 +6,14 @@
     <description>Recent content in 共识 on Lzero的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Wed, 26 May 2021 23:04:15 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E5%85%B1%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Jun 2022 23:04:15 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E5%85%B1%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>分布式系统简述 Part 3</title>
       <link>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</link>
-      <pubDate>Wed, 26 May 2021 23:04:15 +0800</pubDate>
+      <pubDate>Thu, 02 Jun 2022 23:04:15 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-3/</guid>
-      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+      <description>以下是笔者阅读学习Distributed Systems: for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 5、Replication：弱一致性模型协议 在很长一段时间里，我们都是通过一个全局全序的方法来解决一致性问题，前面已经讨论了方法，它们都是通过非自然生成的全序顺序(以一种容错的方式)的形式来实现强一致性的。当然，强制实现有序的代价是昂贵的。特别是在大型的需要维持可用性(Avaliable)的互联网系统，这基本是行不通的。一个强制实现强一致性的系统会像一个单机系统一样运行，而不是分布式系统，这将会导致它在出现分区时可用性很糟糕。
 更进一步的说，对于每次操作，多数节点都要保持联系——而且经常不是一次而是两次(正如在2PC上的讨论一样)。尤其是对于在地理上分布以为全球用户提供高性能的系统来说，这是十分令人痛苦。因此默认想单机系统一样运行可能是不可取的(Not Desirable)。
 可能我们想要的系统是一个不需要编写复杂的用于协调的代码，然后也能返回一个“有用的”值。我们允许不同的副本相互之间有分歧——但可以保证执行效率和分区容灾——然后尝试找到一种方法来解决分歧。
@@ -26,10 +26,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     <item>
       <title>分布式系统简述 Part 2</title>
       <link>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</link>
-      <pubDate>Sat, 15 May 2021 20:17:49 +0800</pubDate>
+      <pubDate>Tue, 17 May 2022 20:17:49 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-2/</guid>
-      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+      <description>以下是笔者阅读学习Distributed Systems: for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 4、Replication 复制是一系列的通信问题——怎样的分配和通信方式能够达到我们想要的性能和有效性呢？在面对网络分区和同时多点故障时，我们如何保证容灾、持久以及无分歧呢？
 分配和通信模式可以分成几个阶段：
 请求(Request): 客户端发送一个请求到服务器端 同步(Sync): 复制的同步部分发生 响应(Respond): 返回一个响应给客户端 异步(Async): 复制的异步部分发生 上述模式切割基于这篇文章。需要注意，此模式任务中各个部分的消息交换依赖于特定算法，这里并没有给出(故意略过)。
@@ -47,10 +47,10 @@ Eventual consistency with probabilistic guarantees 在一段时间后(at some la
     <item>
       <title>分布式系统简述 Part 1</title>
       <link>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</link>
-      <pubDate>Tue, 11 May 2021 21:20:31 +0800</pubDate>
+      <pubDate>Wed, 11 May 2022 21:20:31 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E8%BF%B0-part-1/</guid>
-      <description>以下是笔者阅读学习Distributed systems for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
+      <description>以下是笔者阅读学习Distributed Systems: for fun and profit所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~
 2、系统模型理论 2.1 Consensus Problem 遵循以下几点，计算机/节点可以达到数据一致性：
 统一性(Agreement): Every correct process must agree on the same value. 完整性(Integrity): Every correct process decides at most one value, and if it decides some value, then it must have been proposed by some process. 终止性(Termination): All processes eventually reach a decision. 有效性(Validity): If all correct processes propose the same value V, then all correct processes decide V 一致性/共识问题是所有商业分布式系统的核心。毕竟我们希望无需处理分散的结果(如节点的数据分歧/不同意)就可以获得一个可靠且高性能的分布式系统。并且解决一致性问题的同时，也解决一些相关的、更高级的问题(如 原子广播、原子提交等)。</description>
     </item>

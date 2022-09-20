@@ -26,11 +26,6 @@
                 </div>
                 <ul class="menu" id="menu" onscroll="menu_on_scroll()">
                     <li>
-                        <a href="https://fzyho.github.io/about" title="About">
-                            <span>About</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="https://fzyho.github.io/archives" title="Archive">
                             <span>Archive</span>
                         </a>
@@ -411,7 +406,7 @@
 				
 				<div class="post-meta">
     <time class="post-meta-date" itemprop="datePublished">
-        2021-05-11
+        2022-05-11
     </time>
 
     <ul class="post-meta-tags">
@@ -436,7 +431,7 @@
 			<div class="post-body" v-pre>
 				
 				
-				<p>以下是笔者阅读学习<a href="http://book.mixu.net/distsys/">Distributed systems for fun and profit</a>所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~</p>
+				<p>以下是笔者阅读学习<a href="http://book.mixu.net/distsys/">Distributed Systems: for fun and profit</a>所做的记录，大体算是笔者对书中内容的翻译。感兴趣的可以阅读原文~</p>
 <h2 id="2系统模型理论">2、系统模型理论<a hidden class="anchor" aria-hidden="true" href="#2系统模型理论">#</a></h2>
 <h3 id="21-consensus-problem">2.1 Consensus Problem<a hidden class="anchor" aria-hidden="true" href="#21-consensus-problem">#</a></h3>
 <p>遵循以下几点，计算机/节点可以达到数据一致性：</p>
@@ -628,6 +623,11 @@ Chandra et al.认为即使是一个非常弱的失败检测——最终弱失败
 例如，Cassandra使用的<a href="https://zhuanlan.zhihu.com/p/33819239">accrual failure detector</a>就是通过输出一个故障怀疑率/等级，而不是简单的非正即负的方式，来让上层应用更好地在精确检测和早期检测之间做出自己的权衡决定。</p>
 <h3 id="34-time-order-and-performance">3.4 Time, order and performance<a hidden class="anchor" aria-hidden="true" href="#34-time-order-and-performance">#</a></h3>
 <p>保证顺序是要付出代价的</p>
+<hr>
+<p><strong>参考资料：</strong></p>
+<ol>
+<li><a href="http://book.mixu.net/distsys/">Distributed Systems: for fun and profit</a></li>
+</ol>
 
 			</div>
 			<div class="post-copyright">
@@ -643,23 +643,7 @@ Chandra et al.认为即使是一个非常弱的失败检测——最终弱失败
 		</div>
 		<div class="post-footer-wrapper">
 			<hr class="hr-fade"/>
-			<div class="post-comment-wrapper"><div id="gitalk-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
-<script>
-  var gitalk = new Gitalk({
-    id: '2021-05-11 21:20:31 \u002b0800 CST',
-    title: '分布式系统简述 Part 1',
-    clientID: '',
-    clientSecret: '',
-    repo: '',
-    owner: '',
-    admin: [''],
-    body: decodeURI(location.href)
-  });
-  gitalk.render('gitalk-container');
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript></div> 
+			<div class="post-comment-wrapper"></div> 
 		</div>
 	</div>
 </div>
