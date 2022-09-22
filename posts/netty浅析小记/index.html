@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>Netty浅析小记</title>
+
+
+<meta name="generator" content="Hugo 0.102.3" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <a href="https://fzyho.github.io/" title="Lzero的小站">Lzero的小站</a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="https://fzyho.github.io/archives" title="Archive">
+                            <span>Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fzyho.github.io/brochures" title="Brochure">
+                            <span>Brochure</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div><body>
+		<main class="content">
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+
+
+<div class="wrapper-toc">
+    <div class="toc">
+		
+		
+		
+			<div class="toc-content">
+			
+				
+				
+				
+				<label style="margin: auto;">-Catalogue-</label>
+				
+				
+				<ul></ul>
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#1%e5%a4%84%e7%90%86%e6%a8%a1%e5%9e%8b" onclick="onNavClick(`#1处理模型-nav`)" id="1处理模型-nav" class="animated-visibility">
+											1、处理模型
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#2%e5%86%85%e5%ad%98%e4%bc%98%e5%8c%96" onclick="onNavClick(`#2内存优化-nav`)" id="2内存优化-nav" class="animated-visibility">
+											2、内存优化
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#21-%e5%8d%95%e4%be%8b%e4%b8%8esharable" onclick="onNavClick(`#21-单例与sharable-nav`)" id="21-单例与sharable-nav" class="animated-visibility">
+											2.1 单例与@Sharable
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#22-%e5%af%b9%e8%b1%a1%e6%b1%a0" onclick="onNavClick(`#22-对象池-nav`)" id="22-对象池-nav" class="animated-visibility">
+											2.2 对象池
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+									
+										</ul>
+									
+								
+								
+								
+									<li>
+										<a href="#3%e8%bf%9e%e6%8e%a5%e7%8a%b6%e6%80%81%e6%a3%80%e6%b5%8b" onclick="onNavClick(`#3连接状态检测-nav`)" id="3连接状态检测-nav" class="animated-visibility">
+											3、连接状态检测
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+									
+										<ul>
+									
+								
+								
+									<li>
+										<a href="#31-tcp-keepalive" onclick="onNavClick(`#31-tcp-keepalive-nav`)" id="31-tcp-keepalive-nav" class="animated-visibility">
+											3.1 TCP keepalive
+										</a>
+									</li>
+								
+								
+							
+						
+					
+						
+						
+							
+								
+								
+								
+								
+								
+									<li>
+										<a href="#32-%e5%bf%83%e8%b7%b3%e6%9c%ba%e5%88%b6" onclick="onNavClick(`#32-心跳机制-nav`)" id="32-心跳机制-nav" class="animated-visibility">
+											3.2 心跳机制
+										</a>
+									</li>
+								
+								
+							
+						
+					
+				</ul>
+			</div>
+		
+    </div>
+</div>
+
+
+<div class="post-list">
+	<div class="single-post">
+		<div class="post-head-wrapper">
+			<div class="post-title">
+				Netty浅析小记
+				
+				<div class="post-meta">
+    <time class="post-meta-date" itemprop="datePublished">
+        2021-10-18
+    </time>
+
+    <ul class="post-meta-tags">
+        #
+        
+        
+        
+            <li><a href="https://fzyho.github.io/tags/java/" title="java">java</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/netty/" title="netty">netty</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/%E7%BD%91%E7%BB%9C/" title="网络">网络</a></li>
+        
+    </ul>
+</div>
+			</div>
+		</div>
+        
+		<div class="post-body-wrapper">
+			<div class="post-body" v-pre>
+				
+				
+				<p>Netty是使用Java编写的一个网络编程框架。直至目前，可以说Netty是Java网络编程的主流选择，其在各种业务场景，如直播、社交、游戏、电商等领域都有广泛应用。笔者在工作中也不可避免的经常与其打交道。以下便是笔者对Netty的一些特点的小记。这些特点并不是Netty独有的，只是笔者个人觉得它们或者是重要的地基，或者是有趣的设计，故而在此进行分析记录。</p>
+<h2 id="1处理模型">1、处理模型<a hidden class="anchor" aria-hidden="true" href="#1处理模型">#</a></h2>
+<p>Netty使用的是主从Reactor模型。bossGroup负责处理Accept事件，workerGroup负责处理Read/Write事件。ChannelPipeline是一个双向的链表，里面存放着各种ChannelHandler。</p>
+<p><img src="/posts/Netty/Netty%E6%A8%A1%E5%9E%8B.png" alt="netty模型"></p>
+<p>当收到事件，触发pipeline时，pipeline会按顺序根据事件调用ChannelHandler的相关方法。一次pipeline的所有ChannelHandler调用都是在一个eventGroup的同一个evenLoop线程中执行。由于单线程处理，不存在线程上下文切换，也无需对ChannelHandler的处理加锁，</p>
+<p>因此纵使在海量请求处理的情况下也能保证高效的性能。但是也是由于单线程，一旦某个ChannelHandler的执行出现阻塞，所在的evenLoop线程的所有pipeline事件处理都会被卡住。因此，在实际的使用场景中，eventLoop应该只做事件消息相关操作(比如编/解码，加/解密等)，业务相关的逻辑在额外的业务线程池中进行处理。这也就是许多高性能的分布式框架(比如Dubbo Kafka等)都会使用的三层处理模型。</p>
+<h2 id="2内存优化">2、内存优化<a hidden class="anchor" aria-hidden="true" href="#2内存优化">#</a></h2>
+<p>Netty作为一款高性能的网络编程框架，能承受千万甚至上亿的流量挑战，也体现出了其内部的优秀的内存管理和优化设计。</p>
+<h3 id="21-单例与sharable">2.1 单例与@Sharable<a hidden class="anchor" aria-hidden="true" href="#21-单例与sharable">#</a></h3>
+<p>当客户端与服务器建立起一个连接，便会在Netty中生成一个包含连接信息的Channel对象。每个Channel都有自己的ChannelPipeline，而每个ChannelPipeline也都有持有着一系列的ChannelHandler。</p>
+<p>因此当有大量连接建立时，服务端便会持有大量的ChannelHandler；当连接频繁建立、断开时，JVM的新生代也可能会因内存不足而频繁GC。因此对于ChannelHandler应该要尽量做到复用。对于一些无状态的ChannelHandler，Netty提供了<code>@Sharable</code>注解，以表示此ChannelHandler可以被所有ChannelPipeline共享。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl"><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">initChannel</span><span class="o">(</span><span class="n">Channel</span> <span class="n">ch</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;encoder&#34;</span><span class="o">,</span> <span class="n">ServerMessageEncoder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;decoder&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">ServerMessageDecoder</span><span class="o">(...));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;handler&#34;</span><span class="o">,</span> <span class="n">ServerMessageHandler</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@Sharable</span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">ServerMessageEncoder</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ServerMessageEncoder</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerMessageEncoder</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// some code ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@Sharable</span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">ServerMessageHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ServerMessageHandler</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerMessageHandler</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// some code ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>p.s. <code>@Sharable</code>并不能是对应的ChannelHandler单例化，只是用于告诉Netty，此类的实例是线程安全的，可以复用。</p>
+</blockquote>
+<p>另外需要注意，并不是所有ChannelHandler都可以添加<code>@Sharable</code>注解的。因为粘包拆包的缘故，decoder实例需要保存一些消息中间态的信息，因此无法被多个channel共享。所以Netty明确禁止在对Decoder添加<code>@Sharable</code>注解。若添加了，也会抛出抛出<code>ChannelHandler xxxx is not allowed to be shared</code>的异常。</p>
+<h3 id="22-对象池">2.2 对象池<a hidden class="anchor" aria-hidden="true" href="#22-对象池">#</a></h3>
+<p><strong>池化</strong>是把一些能够复用的东西放到池中，提前保存充足的资源，避免频繁创建/销毁，对性能造成影响。在使用量大的时候能有效提高性能。常见的比如数据库连接池、线程池、对象池等其实就是使用池化的思想。</p>
+<p>Netty中有许多地方都使用对象池，主要是ByteBuf内存分配相关的。其统一通过封装成一个PooledByteBuf实例来进行管理使用，使用引用技术的方式进行内存的管理和回收。具体可参见<code>PooledHeapByteBuf</code>的使用和管理方式。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">PooledHeapByteBuf</span> <span class="kd">extends</span> <span class="n">PooledByteBuf</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Recycler</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;</span> <span class="n">RECYCLER</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Recycler</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">protected</span> <span class="n">PooledHeapByteBuf</span> <span class="nf">newObject</span><span class="o">(</span><span class="n">Recycler</span><span class="o">.</span><span class="na">Handle</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;</span> <span class="n">handle</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="k">new</span> <span class="n">PooledHeapByteBuf</span><span class="o">(</span><span class="n">handle</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="n">PooledHeapByteBuf</span> <span class="nf">newInstance</span><span class="o">(</span><span class="kt">int</span> <span class="n">maxCapacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PooledHeapByteBuf</span> <span class="n">buf</span> <span class="o">=</span> <span class="o">(</span><span class="n">PooledHeapByteBuf</span><span class="o">)</span><span class="n">RECYCLER</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="o">.</span><span class="na">reuse</span><span class="o">(</span><span class="n">maxCapacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">buf</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PooledHeapByteBuf</span><span class="o">(</span><span class="n">Recycler</span><span class="o">.</span><span class="na">Handle</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">PooledHeapByteBuf</span><span class="o">&gt;</span> <span class="n">recyclerHandle</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxCapacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">super</span><span class="o">(</span><span class="n">recyclerHandle</span><span class="o">,</span> <span class="n">maxCapacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// some code ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3连接状态检测">3、连接状态检测<a hidden class="anchor" aria-hidden="true" href="#3连接状态检测">#</a></h2>
+<p>在TCP连接中，如何判断一个连接是否正常，是一个比较复杂的问题。连接的双方在空闲时，若某一方出现问题(宕机、网线断开或路由故障)，很多时候另一方无法得知TCP连接已经失效(除非在此连接发送数据得到错误返回)。</p>
+<p>一般的，我们会希望服务器端和客户端都能够及时有效地检测到连接失效，然后优雅地完成一些清理或者重连的工作。那么如何及时有效地检测到一方的非正常断开？一般有两种方法：</p>
+<ol>
+<li>由TCP协议层实现的Keepalive</li>
+<li>由应用层自己实现的心跳包</li>
+</ol>
+<h3 id="31-tcp-keepalive">3.1 TCP keepalive<a hidden class="anchor" aria-hidden="true" href="#31-tcp-keepalive">#</a></h3>
+<p>TCP默认是不开启keepalive的，一方面有增加额外宽带和流量的担忧，另一方面，keepalive的设置不合理可能会使得健康的TCP连接因为短暂的网络波动而断开。
+keepalive默认的超时是7200秒(2小时)，探测次数为5次。这对于实际应用场景来说，空闲时间太长了，因此会进行参数调节。</p>
+<p>Netty上会可以通过设置<code>ChannelOption</code>选项来进行设置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">bootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerBootstrap</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">bossGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="s">&#34;bossLoopGroup&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">workerGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="n">32</span><span class="o">,</span> <span class="s">&#34;workerLoopGroup&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">bootstrap</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">channel</span><span class="o">(...)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_BACKLOG</span><span class="o">,</span> <span class="n">2048</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_REUSEADDR</span><span class="o">,</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">TCP_NODELAY</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_KEEPALIVE</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">ALLOCATOR</span><span class="o">,</span> <span class="n">PooledByteBufferAllocator</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">WRITE_BUFF_WATER_MARK</span><span class="o">,</span> <span class="k">new</span> <span class="n">WriteBufferWaterMark</span><span class="o">(...));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childHandler</span><span class="o">(...);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>TCP keepalive操作和使用起来方便，但是实际场景并不会直接使用，而是业务心跳+TCP keepalive一起使用，</p>
+<ul>
+<li>KeepAlive的开关是在应用层开启的，但是具体参数(如重试测试，重试间隔时间)的设置却是操作系统级别的，位于操作系统的<code>/etc/sysctl.conf</code>配置中。这对于应用来说不够灵活。</li>
+<li>KeepAlive的保活机制只在链路空闲的情况下才会起到作用。若数据发送时，物理链路已不通，操作系统这边的链路状态还是<code>ESTABLISHED</code>，这时会走TCP重传机制，而默认的TCP超时重传使用的是<strong>指数退避算法</strong>，这也是一个相当长的过程。</li>
+<li>KeepAlive本身是面向网络的，并不是面向于应用的。当连接不可用时，可能是由于应用本身GC问题，系统高负载等情况，但网络仍然是通的。此时，应用已经失去了活性，所以连接自然应该认为是不可用的。</li>
+</ul>
+<h3 id="32-心跳机制">3.2 心跳机制<a hidden class="anchor" aria-hidden="true" href="#32-心跳机制">#</a></h3>
+<p>应用层的心跳机制，其实就是客户端/服务端会开启一个定时任务，定时对已经建立连接的对端节点发送心跳请求，简单的可以是ping/pong这样的请求。如果心跳持续多次没有收到响应，便可以认为连接不可用，主动断开连接。</p>
+<p>此外，还需注意心跳请求应该与一般的业务请求区分开，以免对业务造成压力或者导致干扰限流等问题。</p>
+<p>Netty对空闲连接的检测有提供支持——<strong>IdleStateHandler</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">bootstrap</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">channel</span><span class="o">(...)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(...)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(...)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childHandler</span><span class="o">((</span><span class="n">ch</span><span class="o">)-&gt;{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;encoder&#34;</span><span class="o">,</span> <span class="n">ServerMessageEncoder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;decoder&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">ServerMessageDecoder</span><span class="o">(...))</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;idle-handler&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">IdleStateHandler</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">idleTimeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECOND</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;msg-handler&#34;</span><span class="o">,</span> <span class="n">ServerMessageHandler</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@Sharable</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServerMessageHandler</span> <span class="kd">extends</span> <span class="n">ChannelDuplexHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ServerMessageEncoder</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerMessageEncoder</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">userEventTriggered</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">evt</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">evt</span> <span class="k">instanceof</span> <span class="n">IdleStateEvent</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">IdleStateEvent</span> <span class="n">e</span> <span class="o">=</span> <span class="o">(</span><span class="n">IdleStateEvent</span><span class="o">)</span> <span class="n">evt</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">state</span><span class="o">()</span> <span class="o">==</span> <span class="n">IdleState</span><span class="o">.</span><span class="na">READER_IDLE</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ctx</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">state</span><span class="o">()</span> <span class="o">==</span> <span class="n">IdleState</span><span class="o">.</span><span class="na">WRITER_IDLE</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ctx</span><span class="o">.</span><span class="na">writeAndFlush</span><span class="o">(</span><span class="k">new</span> <span class="n">PingMessage</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当连接建立并激活时，即netty中的r<code>egister&amp;&amp;active</code>，channel所在的eventLoop便会定时检测连接是否空闲(没有收到心跳包)，若空闲时间过长，则触发空闲事件<code>IdleStateEvent</code>，并在ChannelPipeline中依次调用handler的<code>userEventTriggered()</code>方法。</p>
+<blockquote>
+<p>p.s. IdleStateHandler是有状态的，所以不是@Sharable的。在大量连接频繁创建的场景下可能会导致性能问题。在这样的场景，可以转换方法，使用单例handler统一管理所有channel的空闲时间，然后使用一个定时任务遍历所有channel，清理空闲时间长的channel。当然这种做法也有个问题，就是可能遍历时间久一点导致空闲检测的精确度下降，未能更加及时的清理无效连接。</p>
+</blockquote>
+
+			</div>
+			<div class="post-copyright">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+	<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+</a>
+<br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+进行许可。
+<br />
+转载时请附上原文链接以注明出处，图片在使用时请保留全部内容(可适当缩放)并附上图片所属的文章链接。若进行商业性使用，请先联系笔者获取许可。
+			</div>
+		</div>
+		<div class="post-footer-wrapper">
+			<hr class="hr-fade"/>
+			<div class="post-comment-wrapper"></div> 
+		</div>
+	</div>
+</div>
+
+</main>
+	</body>
+</html>

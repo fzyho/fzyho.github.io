@@ -133,9 +133,25 @@ mmap存在一个问题，就是多进程同时操作统一文件时，会触发S
     </item>
     
     <item>
+      <title>Netty浅析小记</title>
+      <link>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</link>
+      <pubDate>Mon, 18 Oct 2021 12:41:22 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</guid>
+      <description>Netty是使用Java编写的一个网络编程框架。直至目前，可以说Netty是Java网络编程的主流选择，其在各种业务场景，如直播、社交、游戏、电商等领域都有广泛应用。笔者在工作中也不可避免的经常与其打交道。以下便是笔者对Netty的一些特点的小记。这些特点并不是Netty独有的，只是笔者个人觉得它们或者是重要的地基，或者是有趣的设计，故而在此进行分析记录。
+1、处理模型 Netty使用的是主从Reactor模型。bossGroup负责处理Accept事件，workerGroup负责处理Read/Write事件。ChannelPipeline是一个双向的链表，里面存放着各种ChannelHandler。
+当收到事件，触发pipeline时，pipeline会按顺序根据事件调用ChannelHandler的相关方法。一次pipeline的所有ChannelHandler调用都是在一个eventGroup的同一个evenLoop线程中执行。由于单线程处理，不存在线程上下文切换，也无需对ChannelHandler的处理加锁，
+因此纵使在海量请求处理的情况下也能保证高效的性能。但是也是由于单线程，一旦某个ChannelHandler的执行出现阻塞，所在的evenLoop线程的所有pipeline事件处理都会被卡住。因此，在实际的使用场景中，eventLoop应该只做事件消息相关操作(比如编/解码，加/解密等)，业务相关的逻辑在额外的业务线程池中进行处理。这也就是许多高性能的分布式框架(比如Dubbo Kafka等)都会使用的三层处理模型。
+2、内存优化 Netty作为一款高性能的网络编程框架，能承受千万甚至上亿的流量挑战，也体现出了其内部的优秀的内存管理和优化设计。
+2.1 单例与@Sharable 当客户端与服务器建立起一个连接，便会在Netty中生成一个包含连接信息的Channel对象。每个Channel都有自己的ChannelPipeline，而每个ChannelPipeline也都有持有着一系列的ChannelHandler。
+因此当有大量连接建立时，服务端便会持有大量的ChannelHandler；当连接频繁建立、断开时，JVM的新生代也可能会因内存不足而频繁GC。因此对于ChannelHandler应该要尽量做到复用。对于一些无状态的ChannelHandler，Netty提供了@Sharable注解，以表示此ChannelHandler可以被所有ChannelPipeline共享。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 @Override protected void initChannel(Channel ch) throws Exception { ch.pipeline().addLast(&amp;#34;encoder&amp;#34;, ServerMessageEncoder.INSTANCE); ch.pipeline().addLast(&amp;#34;decoder&amp;#34;, new ServerMessageDecoder(...)); ch.pipeline().addLast(&amp;#34;handler&amp;#34;, ServerMessageHandler.INSTANCE); } @Sharable class ServerMessageEncoder { public static final ServerMessageEncoder INSTANCE = new ServerMessageEncoder(); // some code ... } @Sharable class ServerMessageHandler { public static final ServerMessageHandler INSTANCE = new ServerMessageHandler(); // some code .</description>
+    </item>
+    
+    <item>
       <title>mysql索引浅析</title>
       <link>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
-      <pubDate>Tue, 19 Oct 2021 23:01:47 +0800</pubDate>
+      <pubDate>Tue, 07 Sep 2021 23:01:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
       <description>什么是索引？根据mysql官方文档的阐述：
@@ -145,7 +161,7 @@ Indexes are used to find rows with specific column values quickly. Without an in
     <item>
       <title>动态规划回顾</title>
       <link>https://fzyho.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</link>
-      <pubDate>Sun, 29 Aug 2021 16:09:24 +0800</pubDate>
+      <pubDate>Tue, 29 Jun 2021 16:09:24 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%9B%9E%E9%A1%BE/</guid>
       <description>最近打算重新复习基础逻辑方面的知识，对于一些有趣或者复杂的知识点打算较为详细地记录下来，以便后面继续回顾。此文便是出于重新理解和整理动态规划的知识点而写作的。
@@ -153,22 +169,6 @@ Indexes are used to find rows with specific column values quickly. Without an in
 简化的背包问题 一般理解动态规划，我喜欢从0-1背包问题出发：一个可承重$Wkg$的背包，现将$m$个重量不等的物品放入背包中，问在不超过背包所能装载重量的前提下，怎么放物品能让背包中物品的总重量最大。
 回溯法 对于上述背包问题，背包的重量只是一个限制条件，我们需要进行操作的是物品。每个物品都有放入和不放入两种选择。回溯算法的方式就是通过穷举所有放入不超重的情况，记录当中最接近极限承重$Wkg$的结果。用代码表示逻辑如下：
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 public static final int BAG_LOAD_BEARING = 100; // 背包的最大承重(kg) public static int getFloorWeight(int[] itemsWeight) { if (itemsWeight.length == 0) { return 0; } return calc(0, 0, itemsWeight); } private static int calc(int itemIndex, int bagCurWeight, int[] itemsWeight) { // 达到承重极限 或者 已经对所有物品做出选择后，返回当前背包重量 if (bagCurWeight == BAG_LOAD_BEARING || itemIndex == itemsWeight.</description>
-    </item>
-    
-    <item>
-      <title>从CLH锁聊聊AQS的设计</title>
-      <link>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
-      <pubDate>Sun, 08 Aug 2021 14:16:15 +0800</pubDate>
-      
-      <guid>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
-      <description>AbstractQueuedSynchronizer，即AQS，是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础。它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(CLH Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。
-1、CLH Lock 1.1 CLH队列锁是什么 CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列\链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。
-在队列中，每个线程通过检测其前驱线程是否已完成(获得并释放锁)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。
-1.2 CLH队列锁工作原理 一开始，CLHLock的队列只有一个尾部节点。然后多线程同时竞争上锁，两线程会调用原子的GetAndSet方法，获取尾部节点，并将此节点设置为自己的前驱节点作为，然后将自己线程转成节点插入队列的尾部。完成这些操作后，便进入自旋状态，直到前驱节点释放锁，即字段locked为false。
-如下图，可以看作线程A、B同时竞争获取锁。线程A先插入到队尾并获得锁，线程B在线程A后面，即A是B的前驱节点。线程B会不断自旋，直到前驱结点，即线程A，的状态从locked变为unlock；而后线程B获得锁，线程A从队列中移除。
-2、队列同步器(AQS) 2.1 AQS简述 AQS是基于CLHLock的一个拓展实现。其核心思想是：若被请求的资源空闲，则将当前请求资源的线程设为有限线程，并且将资源状态设为锁定。若被请求的资源被占用，则将暂时获得不到锁的线程加入队列中，并将线程挂起(阻塞)等待以及被唤醒时所分配。
-AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线程封装成一个CLHLock队列的节点(Node)来实现所分配，并使用字段waitStatus来表示资源获得的状态。Node的类定义如下
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 static final class Node { // 表示线程取消等待，不竞争资源的获取 static final int CANCELLED = 1; // 表示获得资源锁了，对应线程无需挂起，需要唤醒 static final int SIGNAL = -1; // 用于表示线程节点在做条件等待 static final int CONDITION = -2; // 表示后续线程/节点在调用acquireShare()方法时可以无条件获得锁 static final int PROPAGATE = -3; // 初始化为0，而后或为上述4中状态值。 volatile int waitStatus; // 前驱节点 volatile Node prev; // 后继节点 volatile Node next; // 节点所代表的线程 volatile Thread thread; // 条件队列所用，表示同一条件等待队列中的下一个等待节点 Node nextWaiter; } 2.</description>
     </item>
     
     <item>
@@ -207,9 +207,25 @@ VerificationsInOrder和Verification是相似的，但是加上了方法调用顺
     </item>
     
     <item>
+      <title>从CLH锁聊聊AQS的设计</title>
+      <link>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Mon, 08 Feb 2021 14:16:15 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
+      <description>AbstractQueuedSynchronizer，即AQS，是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础。它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(CLH Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。
+1、CLH Lock 1.1 CLH队列锁是什么 CLH队列锁是一种自旋锁。正如名字所描述的，是一种基于队列\链表，通过将线程组织成一个队列的形式来一次进行上锁-处理-释放的同步方式。
+在队列中，每个线程通过检测其前驱线程是否已完成(获得并释放锁)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。
+1.2 CLH队列锁工作原理 一开始，CLHLock的队列只有一个尾部节点。然后多线程同时竞争上锁，两线程会调用原子的GetAndSet方法，获取尾部节点，并将此节点设置为自己的前驱节点作为，然后将自己线程转成节点插入队列的尾部。完成这些操作后，便进入自旋状态，直到前驱节点释放锁，即字段locked为false。
+如下图，可以看作线程A、B同时竞争获取锁。线程A先插入到队尾并获得锁，线程B在线程A后面，即A是B的前驱节点。线程B会不断自旋，直到前驱结点，即线程A，的状态从locked变为unlock；而后线程B获得锁，线程A从队列中移除。
+2、队列同步器(AQS) 2.1 AQS简述 AQS是基于CLHLock的一个拓展实现。其核心思想是：若被请求的资源空闲，则将当前请求资源的线程设为有限线程，并且将资源状态设为锁定。若被请求的资源被占用，则将暂时获得不到锁的线程加入队列中，并将线程挂起(阻塞)等待以及被唤醒时所分配。
+AQS实现的CLHLock是一个双向队列。AQS将每条请求共享资源的线程封装成一个CLHLock队列的节点(Node)来实现所分配，并使用字段waitStatus来表示资源获得的状态。Node的类定义如下
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 static final class Node { // 表示线程取消等待，不竞争资源的获取 static final int CANCELLED = 1; // 表示获得资源锁了，对应线程无需挂起，需要唤醒 static final int SIGNAL = -1; // 用于表示线程节点在做条件等待 static final int CONDITION = -2; // 表示后续线程/节点在调用acquireShare()方法时可以无条件获得锁 static final int PROPAGATE = -3; // 初始化为0，而后或为上述4中状态值。 volatile int waitStatus; // 前驱节点 volatile Node prev; // 后继节点 volatile Node next; // 节点所代表的线程 volatile Thread thread; // 条件队列所用，表示同一条件等待队列中的下一个等待节点 Node nextWaiter; } 2.</description>
+    </item>
+    
+    <item>
       <title>从Shuffle到Sample——谈谈基本的随机算法</title>
       <link>https://fzyho.github.io/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
-      <pubDate>Thu, 04 Feb 2021 12:40:47 +0800</pubDate>
+      <pubDate>Sun, 04 Oct 2020 12:40:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E4%BB%8Eshuffle%E5%88%B0sample%E8%B0%88%E8%B0%88%E5%9F%BA%E6%9C%AC%E7%9A%84%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
       <description>在笔者日常的工作中，常常会碰到类似这样的功能需求：从奖励池(含有$n$种奖励)中随机$m$种给用户，其中$n&amp;gt;m$。

@@ -41,7 +41,7 @@ SELECT语句必须指定具体字段名称，禁止写成*，并且应该带上l
     <item>
       <title>mysql索引浅析</title>
       <link>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
-      <pubDate>Tue, 19 Oct 2021 23:01:47 +0800</pubDate>
+      <pubDate>Tue, 07 Sep 2021 23:01:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
       <description>什么是索引？根据mysql官方文档的阐述：

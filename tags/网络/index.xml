@@ -29,5 +29,21 @@ mmap存在一个问题，就是多进程同时操作统一文件时，会触发S
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 public long transferTo(long position, long count, WritableByteChannel target) throws IOException { // do something before... // Attempt a direct transfer, if the kernel supports it if ((n = transferToDirectly(position, icount, target)) &amp;gt;= 0) return n; // Attempt a mapped transfer, but only to trusted channel types if ((n = transferToTrustedChannel(position, icount, target)) &amp;gt;= 0) return n; // Slow path for untrusted targets return transferToArbitraryChannel(position, icount, target); } 在实现逻辑中，先调用transferToDirectly()方法进行文件传输，若失败(系统/内核不支持)，则选择调用transferToTrustedChannel，再失败则使用transferToArbitraryChannel()。</description>
     </item>
     
+    <item>
+      <title>Netty浅析小记</title>
+      <link>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</link>
+      <pubDate>Mon, 18 Oct 2021 12:41:22 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</guid>
+      <description>Netty是使用Java编写的一个网络编程框架。直至目前，可以说Netty是Java网络编程的主流选择，其在各种业务场景，如直播、社交、游戏、电商等领域都有广泛应用。笔者在工作中也不可避免的经常与其打交道。以下便是笔者对Netty的一些特点的小记。这些特点并不是Netty独有的，只是笔者个人觉得它们或者是重要的地基，或者是有趣的设计，故而在此进行分析记录。
+1、处理模型 Netty使用的是主从Reactor模型。bossGroup负责处理Accept事件，workerGroup负责处理Read/Write事件。ChannelPipeline是一个双向的链表，里面存放着各种ChannelHandler。
+当收到事件，触发pipeline时，pipeline会按顺序根据事件调用ChannelHandler的相关方法。一次pipeline的所有ChannelHandler调用都是在一个eventGroup的同一个evenLoop线程中执行。由于单线程处理，不存在线程上下文切换，也无需对ChannelHandler的处理加锁，
+因此纵使在海量请求处理的情况下也能保证高效的性能。但是也是由于单线程，一旦某个ChannelHandler的执行出现阻塞，所在的evenLoop线程的所有pipeline事件处理都会被卡住。因此，在实际的使用场景中，eventLoop应该只做事件消息相关操作(比如编/解码，加/解密等)，业务相关的逻辑在额外的业务线程池中进行处理。这也就是许多高性能的分布式框架(比如Dubbo Kafka等)都会使用的三层处理模型。
+2、内存优化 Netty作为一款高性能的网络编程框架，能承受千万甚至上亿的流量挑战，也体现出了其内部的优秀的内存管理和优化设计。
+2.1 单例与@Sharable 当客户端与服务器建立起一个连接，便会在Netty中生成一个包含连接信息的Channel对象。每个Channel都有自己的ChannelPipeline，而每个ChannelPipeline也都有持有着一系列的ChannelHandler。
+因此当有大量连接建立时，服务端便会持有大量的ChannelHandler；当连接频繁建立、断开时，JVM的新生代也可能会因内存不足而频繁GC。因此对于ChannelHandler应该要尽量做到复用。对于一些无状态的ChannelHandler，Netty提供了@Sharable注解，以表示此ChannelHandler可以被所有ChannelPipeline共享。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 @Override protected void initChannel(Channel ch) throws Exception { ch.pipeline().addLast(&amp;#34;encoder&amp;#34;, ServerMessageEncoder.INSTANCE); ch.pipeline().addLast(&amp;#34;decoder&amp;#34;, new ServerMessageDecoder(...)); ch.pipeline().addLast(&amp;#34;handler&amp;#34;, ServerMessageHandler.INSTANCE); } @Sharable class ServerMessageEncoder { public static final ServerMessageEncoder INSTANCE = new ServerMessageEncoder(); // some code ... } @Sharable class ServerMessageHandler { public static final ServerMessageHandler INSTANCE = new ServerMessageHandler(); // some code .</description>
+    </item>
+    
   </channel>
 </rss>
