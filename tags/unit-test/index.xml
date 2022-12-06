@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>unit test on Lzero的小站</title>
+    <title>unit test on fzyho的小站</title>
     <link>https://fzyho.github.io/tags/unit-test/</link>
-    <description>Recent content in unit test on Lzero的小站</description>
+    <description>Recent content in unit test on fzyho的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
     <lastBuildDate>Fri, 02 Apr 2021 17:57:05 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/unit-test/index.xml" rel="self" type="application/rss+xml" />
@@ -73,10 +73,10 @@ VerificationsInOrder和Verification是相似的，但是加上了方法调用顺
     
     <item>
       <title>JMockit</title>
-      <link>https://fzyho.github.io/jmockit/</link>
+      <link>https://fzyho.github.io/docs/jmockit/</link>
       <pubDate>Sun, 19 Jan 2020 21:04:11 +0900</pubDate>
       
-      <guid>https://fzyho.github.io/jmockit/</guid>
+      <guid>https://fzyho.github.io/docs/jmockit/</guid>
       <description>开发者在实现了需求功能或者完成了某个模块后，时常需要对模块整体功能或者某些关键逻辑进行单元测试(Unit Test)以验证程序运行是否符合预期。而在运行程序时，程序不可避免的可能需要调用第三方库、连接网络、数据库等，需要依赖许多不同的外部模块。但这些可能在开发过程中未真正接入或者不可用。这时就需要将我们的测试从实际的运行环境中隔离开来(Test Isolation)。而Jmockit则是为解决这类问题而诞生的。
 Jmockit是一个对类或对象进行Mock的工具，它必须运行在JUnit或者TestNG框架中。
 This is a JMockit User Guide. Since the official guide is a bit obscure, I transalate and rearrange the content of it and hope it could be clearer and more heplful for readers.</description>

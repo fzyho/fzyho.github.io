@@ -12,6 +12,8 @@
 
 <title>Verifications</title>
 
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+
 
 <meta name="generator" content="Hugo 0.102.3" />
 
@@ -24,23 +26,70 @@
         <header class="header">
             <nav class="nav">
                 <div class="logo">
-                    <a href="https://fzyho.github.io/" title="Lzero的小站">Lzero的小站</a>
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
                 </div>
                 <ul class="menu" id="menu" onscroll="menu_on_scroll()">
                     <li>
-                        <a href="https://fzyho.github.io/archives" title="Archive">
-                            <span>Archive</span>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span>QUIC协议(RFC)</span>
                         </a>
                     </li>
                     <li>
-                        <a href="https://fzyho.github.io/brochures" title="Brochure">
-                            <span>Brochure</span>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
                         </a>
                     </li></ul>
             </nav>
         </header>
     </div>
 </div></div>
+	
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
 	<body class="docs">
 		<input type="checkbox" class="hidden toggle" id="menu-control" />
 		<main class="container flex single-post">
@@ -48,8 +97,12 @@
 				<div class="book-menu-content">
 					<nav>
   <h2 class="book-brand">
-  <a href="/"><span>Lzero的小站</span>
-  </a>
+  
+  
+  
+  
+  
+  <a href="/docs/jmockit"><span>JMockit</span></a>
 </h2>
 
   

@@ -10,6 +10,8 @@
 
 <title>动态规划回顾</title>
 
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+
 
 <meta name="generator" content="Hugo 0.102.3" />
 
@@ -22,17 +24,21 @@
         <header class="header">
             <nav class="nav">
                 <div class="logo">
-                    <a href="https://fzyho.github.io/" title="Lzero的小站">Lzero的小站</a>
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
                 </div>
                 <ul class="menu" id="menu" onscroll="menu_on_scroll()">
                     <li>
-                        <a href="https://fzyho.github.io/archives" title="Archive">
-                            <span>Archive</span>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span>QUIC协议(RFC)</span>
                         </a>
                     </li>
                     <li>
-                        <a href="https://fzyho.github.io/brochures" title="Brochure">
-                            <span>Brochure</span>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
                         </a>
                     </li></ul>
             </nav>
@@ -260,14 +266,15 @@
 			<div class="post-title">
 				动态规划回顾
 				
-				<div class="post-meta">
+			</div>
+			<div class="post-meta">
     <time class="post-meta-date" itemprop="datePublished">
         2021-06-29
     </time>
 
     <ul class="post-meta-tags">
         
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 28 24">
     <path d="M9.777 2l11.395 11.395-7.779 7.777-11.393-11.39v-7.782h7.777zm.828-2l-10.604.001v10.609l13.392 13.39 10.607-10.605-13.395-13.395zm-6.019 7.414c-.78-.781-.779-2.047.002-2.827.781-.782 2.047-.781 2.826-.003.783.783.782 2.049 0 2.83-.779.781-2.045.781-2.828 0zm5.824 7.947l-3.537-3.535.709-.707 3.535 3.535-.707.707zm4.242 0l-5.658-5.656.708-.708 5.657 5.657-.707.707zm2.121-2.121l-5.657-5.657.707-.707 5.657 5.657-.707.707z"/>
 </svg>
         
@@ -278,12 +285,9 @@
         
     </ul>
 </div>
-			</div>
 		</div>
-        
 		<div class="post-body-wrapper">
 			<div class="post-body" v-pre>
-				
 				
 				<p>最近打算重新复习基础逻辑方面的知识，对于一些有趣或者复杂的知识点打算较为详细地记录下来，以便后面继续回顾。此文便是出于重新理解和整理动态规划的知识点而写作的。</p>
 <p>什么是动态规划(Dynamic Programming)？动态规划是一种思想，一种运筹决策的方法。事实上许多能用动态规划解决的问题，同样可以使用<strong>回溯(backtracking)法</strong>解决。只是回溯法的时间复杂度高，而动态规划的时间复杂度低，即效率高，但相对的空间复杂度就可能会高一些。</p>

@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>QUIC</title>
+
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+
+
+<meta name="generator" content="Hugo 0.102.3" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div><div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span class="active">QUIC协议(RFC)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div></div>
+	
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+	<body class="docs">
+		<input type="checkbox" class="hidden toggle" id="menu-control" />
+		<main class="container flex single-post">
+			<aside class="book-menu">
+				<div class="book-menu-content">
+					<nav>
+  <h2 class="book-brand">
+  
+  
+  
+  
+  
+  <a href="/docs/quic"><span>QUIC</span></a>
+</h2>
+
+  
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+  
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://fzyho.github.io/docs/quic/%E6%B5%81/" class="">流</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://fzyho.github.io/docs/quic/%E6%B5%81%E7%8A%B6%E6%80%81/" class="">流状态</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+</nav>
+
+
+
+ 
+				</div>
+			</aside>
+		
+			<div class="book-page post-body-wrapper">
+			<header class="book-header">
+				
+				<div class="flex align-center justify-between">
+					<label for="menu-control">
+						<img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+					</label>
+				</div>
+			</header>
+			
+			
+			<article class="post-body"><blockquote>
+<p>QUIC is a secure general-purpose transport protocol</p>
+</blockquote>
+<p>包(packet)是QUIC协议进行数据传输的基本单位。大部分的packet里面是一连串的帧(frame)，帧则是协议配置(control information)和应用数据(application data)的集合。packet包含在UDP报文(datagram)中，QUIC会对每个packet进行校验和加密。QUIC的数据信息是以数据流(data stream)的形式传输(即有序的字节流)。这个数据流可以是双向的(bidirectional)，也可以是单向的(unidirectional)</p>
+<p>※ <em>另外，需要强调的一点是，QUIC是一个完整的名称，而非缩写简称</em></p>
+<h3 id="11-特性">1.1 特性</h3>
+<ul>
+<li>version-independent properties</li>
+<li>handshake combines negotiation of cryptographic and transport parameters</li>
+<li>0-RTT（requires some form of prior communication or configuration to enable）</li>
+<li>reliable delivery and congestion control</li>
+<li>connection migration(only clients enable)</li>
+</ul>
+<h3 id="12-术语和定义terms-and-definitions">1.2 术语和定义(Terms and Definitions)</h3>
+<ul>
+<li><strong>QUIC packet</strong>：是封装在UDP报文里的一个完整可处理的QUIC单元，一个UDP报文可以包含多个QUIC包</li>
+<li><strong>Ack-eliciting packet</strong>：此QUIC包包含除ACK、PADDING、CONNECTION_CLOSE以外的数据帧(frames)。这会导致接收者(recipient)发送一个响应(acknowledgment)。</li>
+<li><strong>Frame</strong>：协议信息结构的单元。帧(frame)有不同的类型，用于携带不同的信息。帧封装在包里面</li>
+<li><strong>Connection ID</strong>：用于终端(endpoint)识别不同QUIC连接的标识符。每个终端在发送包给其他终端时，需在包里塞入一个或多个connnect id。</li>
+</ul>
+</article>
+		
+			
+		
+			
+		
+			<label for="menu-control" class="hidden book-menu-overlay"></label>
+			</div>
+		
+			<aside class="book-toc">
+				<div class="book-toc-content">
+					<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#11-特性">1.1 特性</a></li>
+        <li><a href="#12-术语和定义terms-and-definitions">1.2 术语和定义(Terms and Definitions)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav> 
+				</div>
+			</aside>
+		</main>
+	</body>
+</html>

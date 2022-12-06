@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>流状态</title>
+
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+
+
+<meta name="generator" content="Hugo 0.102.3" />
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div><div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
+                </div>
+                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                    <li>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span>QUIC协议(RFC)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
+                        </a>
+                    </li></ul>
+            </nav>
+        </header>
+    </div>
+</div></div>
+	
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+	<body class="docs">
+		<input type="checkbox" class="hidden toggle" id="menu-control" />
+		<main class="container flex single-post">
+			<aside class="book-menu">
+				<div class="book-menu-content">
+					<nav>
+  <h2 class="book-brand">
+  
+  
+  
+  
+  
+  <a href="/docs/quic"><span>QUIC</span></a>
+</h2>
+
+  
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+  
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://fzyho.github.io/docs/quic/%E6%B5%81/" class="">流</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://fzyho.github.io/docs/quic/%E6%B5%81%E7%8A%B6%E6%80%81/" class=" active">流状态</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+</nav>
+
+
+
+ 
+				</div>
+			</aside>
+		
+			<div class="book-page post-body-wrapper">
+			<header class="book-header">
+				
+				<div class="flex align-center justify-between">
+					<label for="menu-control">
+						<img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+					</label>
+				</div>
+			</header>
+			
+			
+			<article class="post-body"><p>本节从发送方/接收方的角度来对流进行讲解。单向流中根据流的类型和终端角色的不同，可能是发送端也可能是接收端。而双向流的中的两终端既可以是发送端也可以是接收端。</p>
+<p>大多数情况下，发送端和接收端的情况都是一样的。但在打开流(open stream)的情况中，双向流会稍微复杂些，因为无论是发送还是接收端的打开，都会需要完成流的双向打开。</p>
+<p>此文档使用<strong>流状态(stream state)</strong> 来描述：何时以及如何发送不同类型的帧的规则，以及接收不同类型帧时预期的反应。实现上，可以定义多种端角色(不只是发送/接收端)，只需要保证流状态的实现与要求一致。</p>
+<p><strong>Note: 此处的发送/接收端，不是指具体的一个应用/实例端，而是流的发送/接收部分</strong></p>
+<h3 id="1发送端流状态">1、发送端流状态</h3>
+<p>发送端的状态转换如下表所示</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">       o
+	   | Create Stream (Sending)
+	   | Peer Creates Bidirectional Stream
+	   v
+	+-------+
+	| Ready | Send RESET_STREAM
+	|       |----------------------.
+	+-------+                      |
+	   |                           |
+	   | Send STREAM /             |
+	   | STREAM_DATA_BLOCKED       |
+	   v                           |
+	+-------+                      |
+	| Send  | Send RESET_STREAM    |
+	|       |---------------------&gt;|
+	+-------+                      |
+	   |                           |
+	   | Send STREAM + FIN         |
+	   v                           v
+	+-------+                   +-------+
+	| Data  | Send RESET_STREAM | Reset |
+	| Sent  |------------------&gt;| Sent  |
+	+-------+                   +-------+
+	   |                           |
+	   |Recv All ACK               | Recv ACK
+	   v                           v
+	+-------+                  +-------+
+	| Data  |                  | Reset |
+	| Recvd |                  | Recvd |
+	+-------+                  +-------+
+</code></pre><p><code>Ready</code>状态表示一个新创建的流可以从application中接收数据，在这状态中，流数据会被缓存(buffered)以准备发送。发送第一个<code>STREAM</code>或者<code>STREAM_DATA_BLOCKED</code>帧表示流的发送端进入<code>Send</code>状态。实现中，可以选择在发送了第一个<code>STREAM</code>帧并进入此状态时再分配stream ID，以便可以更好的利用流优先级。</p>
+<p>在双向流(bidirectional stream)中，对端(a peer)的发送端会在其接收端创建完成后，直接从<code>Ready</code>状态进行初始化。</p>
+<p>在<code>Send</code>状态下，终端以<code>STREAM</code>帧的方式传输流数据(必要的时候会重传)。终端会接收其对端设置的流量控制限制，并继续接收和处理<code>MAX_STREAM_DATA</code>帧。在受到流量控制限制而阻塞发送时，还会产生<code>STREAM_DATA_BLOCKED</code>帧。</p>
+<p>当应用表示所有流数据都已发送了，并发送了一个设置了<code>FIN位</code>的<code>STREAM</code>帧后，流的发送端进入<code>Data Sent</code>状态。在这种状态下，终端只在必要情况下重传数据，并且无需检测流量控制限制或发送<code>STREAM_DATA_BLOCKED</code>帧。</p>
+<p>一旦所有流数据都被响应，发送端将进入<code>Data Recvd</code>状态。这是一个终结状态(terminal state)。</p>
+<p>在<code>Ready</code>、<code>Send</code>或<code>Data Sent</code>状态下，应用都可以发送信号来放弃流数据传输；或者，可能会接收到来自对端的<code>STOP_SENDDING</code>帧。这这些情况下，终端都会发送<code>RESET_STREAM</code>帧并进入<code>Reset Sent</code>状态。甚至可能在流的第一个帧便发送<code>RESET_STREAM</code>，如此流的发送端便在打开后的一瞬间进入<code>Reset Sent</code>状态。</p>
+<p>一旦包含的<code>RESET_STREAM</code>帧的包被响应，发送端便会进入<code>&quot;Reset Recvd</code>状态。</p>
+<h3 id="2接收端流状态">2、接收端流状态</h3>
+<pre tabindex="0"><code class="language-log" data-lang="log">         o
+         | Recv STREAM / STREAM_DATA_BLOCKED / RESET_STREAM
+         | Create Bidirectional Stream (Sending)
+         | Recv MAX_STREAM_DATA / STOP_SENDING (Bidirectional)
+         | Create Higher-Numbered Stream
+         v
+     +-------+
+     | Recv  | Recv RESET_STREAM
+     |       |---------------------------.
+     +-------+                           |
+         |                               |
+         | Recv STREAM + FIN             |
+         v                               |
+     +-------+                           |
+     | Size  | Recv RESET_STREAM         |
+     | Known |--------------------------&gt;|
+     +-------+                           |
+         |                               |
+         | Recv All Data                 |
+         v                               v
+     +-------+   Recv RESET_STREAM   +-------+
+     | Data  |  --- (optional) ---&gt;  | Reset |
+     | Recvd |   Recv All Data       | Recvd |
+     +-------+  &lt;-- (optional) ----  +-------+
+         |                             |
+         | App Read All Data           | App Read Reset
+         v                             v
+     +-------+                     +-------+
+     | Data  |                     | Reset |
+     | Read  |                     | Read  |
+     +-------+                     +-------+
+</code></pre><p>接收端会在收到第一个<code>STREAM</code>、<code>STREAM_DATA_BLOCKED</code>或<code>RESET_STREAM</code>帧的时候被创建。对于由对端发起的双向流，当接收到<code>MAX_STREAM_DATA</code>或者<code> STOP_SENDING</code>帧时，也会创建接收端。接收端的初始状态时<code>Recv</code>。</p>
+<p>对于一个双向流，当发送端进入<code>Ready</code>状态时，接收端应该进入<code>Recv</code>状态。当从一个未打开的流中收到<code>MAX_STREAM_DATA</code>时，则表示对端已经打开流并使用了流量控制信用(flow control credit)；而从一个未打开的流中收到<code>STOP_SENDING</code>时，则表示对端不希望再接收数据。</p>
+<p><strong>在一个流创建之前，所有同类型(Stream Type)且stream ID比之要小的流必须全部创建完成。这保证了两端的流创建顺序时一致的。</strong></p>
+<p>在<code>Recv</code>状态下，传入的数据被缓冲，并可以按照正确的顺序重新组装。当数据被应用消费，有可用的缓冲空间后，终端会发送<code>MAX_STREAM_DATA</code>帧让对端发送更多的数据。</p>
+<p>当收到带<code>FIN位</code>的<code>STREAM</code>帧时，流的最终大小可被知。接收端进入了<code>Size Known</code>状态。此状态下，终端不在发送<code>MAX_STREAM_DATA</code>帧，只接收重传的流数据。</p>
+<p>一旦所有流数据都被接收了，接收端会进入<code>Data Recvd</code>状态。当所有数据都接收后，此流中的<code>STREAM</code>和<code> STREAM_DATA_BLOCKED</code>帧都会被丢弃。<code>Data Recvd</code>状态会持续到所有数据都传递给应用后。一旦所有数据都传递了，流将进入<code>Data Read</code>。这也是接收端的终结状态。</p>
+<p>在<code>Recv</code>或<code>Size Known</code>状态下接收到<code>RESET_STREAM</code>帧，流会进入<code>Reset Recvd</code>状态，这可能会导致传递流数据到应用的过程中断。<code>Data Recvd</code>状态下收到<code>RESET_STREAM</code>帧，或者<code>Reset Recvd</code>状态下收到剩余的流数据，这些情况都是有可能发生的。而具体的处理方式交由实现方抉择。</p>
+<p>发送<code>RESET_STREAM</code>意味着该终端不能保证流数据的传递(delivery)，但这不意味着收到<code>RESET_STREAM</code>帧后就要求不传递流数据。实现放可以中断传递，丢弃未消费的流数据，并发出响应<code>RESET_STREAM</code>帧接收的信号。如果流数据已经完全被接收并缓冲已准备被应用消费，<code>RESET_STREAM</code>信号可能就会被压抑或者拒绝。如果<code>RESET_STREAM</code>被拒绝，接收方就会停留在<code>&quot;Data Recvd</code>状态。</p>
+<p>一旦应用接收到流被重置的信号，接收端就会过渡到<code>&quot;Reset Read</code>状态。</p>
+<h3 id="3允许的帧类型">3、允许的帧类型</h3>
+<p>流的发送端只发送三种类型的帧：<code>STREAM</code>、<code>STREAM_DATA_BLOCKED</code>、<code>RESET_STREAM</code>，它们会在发送端或接收端影响流的状态。</p>
+<p>发送端不能再终结状态(<code>Data Recvd</code>或<code>Reset Recvd</code>)发送这些帧，也不能在<code>Reset sent</code>状态或者发送了<code>RESET_STREAM</code>帧后发送<code>STREAM</code>或<code>STREAM_DATA_BLOCKED</code>帧。但接收端可以在任意状态下接收这些帧数据，因为包传输可能会延迟。</p>
+<p>接收端会发送<code>MAX_STREAM_DATA</code>和<code>STOP_SENDING</code>帧。<code>MAX_STREAM_DATA</code>帧只会在<code>Recv</code>状态下发送。而<code>STOP_SENDING</code>帧可以在收到<code>RESET_STREAM</code>帧之前的任意状态下发送，也就是除了<code>Reset Recvd</code>和<code>Reset Read</code>外的状态。 同样由于传输的延迟性(delayed delivery)，发送端可以在任意状态下接收到这些帧。</p>
+<h3 id="4双向流状态">4、双向流状态</h3>
+<p>一个双向流是发送端和接收端复合结构的。下图是双向流与HTTP2状态的一个不大正式的映射关系。这只是映射关系中的其中一种可能性。</p>
+<table>
+<thead>
+<tr>
+<th>Sending Part</th>
+<th>Receiving Part</th>
+<th>Composite State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No Stream / Ready</td>
+<td>No Stream / Recv (*1)</td>
+<td>idle</td>
+</tr>
+<tr>
+<td>Ready/Send/Data Sent</td>
+<td>Recv / Size Known</td>
+<td>open</td>
+</tr>
+<tr>
+<td>Ready/Send/Data Sent</td>
+<td>Data Recvd/Data Read</td>
+<td>half-closed (remote)</td>
+</tr>
+<tr>
+<td>Ready/Send/Data Sent</td>
+<td>Reset Recvd/Reset Read</td>
+<td>half-closed (remote)</td>
+</tr>
+<tr>
+<td>Data Recvd</td>
+<td>Recv / Size Known</td>
+<td>half-closed (local)</td>
+</tr>
+<tr>
+<td>Reset Sent / Reset</td>
+<td>Recvd Recv / Size Known</td>
+<td>half-closed (local)</td>
+</tr>
+<tr>
+<td>Reset Sent / Reset</td>
+<td>Recvd Data Recvd / Data Read</td>
+<td>closed</td>
+</tr>
+<tr>
+<td>Reset Sent / Reset</td>
+<td>Recvd Reset Recvd / Reset Read</td>
+<td>closed</td>
+</tr>
+<tr>
+<td>Data Recvd</td>
+<td>Data Recvd / Data Read</td>
+<td>closed</td>
+</tr>
+<tr>
+<td>Data Recvd</td>
+<td>Reset Recvd / Reset Read</td>
+<td>closed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5诱动性状态转换solicited-state-transitions">5、诱动性状态转换(Solicited State Transitions)</h3>
+<p>如果应用不在对流中接收到的数据感兴趣，它可以中止读取流，并设置一个指定的错误码。</p>
+<p>若流状态处于<code>Recv</code>或<code>Size Known</code>状态，那么可以通过发送<code>STOP_SENDING</code>来告诉对端关闭流。这通常表示接受的应用不在从流中读取数据，但它不保证传入的数据不被忽略。但在发送到了<code>STOP_SENDING</code>收到的帧，仍然会计入连接和流量控制的计数中。</p>
+<p>当终端接收到<code>STOP_SENDING</code>后，若处于<code>Ready</code>或者<code>Sent</code>状态，则会发送一个<code>RESET_STREAM</code>帧。若流处于<code>Data Sent</code>状态，则<code>RESET_STREAM</code>帧可能会延迟发送，直到包含未完成的数据的包被确认或者声明丢失(declared lost)了。若有任意未完成数据被声明丢失了，终端会发送<code>RESET_STREAM</code>帧而不是重传数据(在上述情况下)。</p>
+<p>终端应该复制<code>STOP_SENDING</code>帧携带的错误码到<code>RESET_STREAM</code>中。<code>STOP_SENDING</code>应该只能在对端没有重置流之前发送。而它最有能发挥作用则是在流处于<code>Recv</code>或者<code>Size Known</code>状态下。而反过来说，除了<code>Recv</code>或者<code>Size Known</code>，在其他状态下发送<code>STOP_SENDING</code>是没啥用处的。</p>
+</article>
+		
+			
+		
+			
+		
+			<label for="menu-control" class="hidden book-menu-overlay"></label>
+			</div>
+		
+			<aside class="book-toc">
+				<div class="book-toc-content">
+					<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1发送端流状态">1、发送端流状态</a></li>
+        <li><a href="#2接收端流状态">2、接收端流状态</a></li>
+        <li><a href="#3允许的帧类型">3、允许的帧类型</a></li>
+        <li><a href="#4双向流状态">4、双向流状态</a></li>
+        <li><a href="#5诱动性状态转换solicited-state-transitions">5、诱动性状态转换(Solicited State Transitions)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav> 
+				</div>
+			</aside>
+		</main>
+	</body>
+</html>

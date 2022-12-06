@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QUIC on fzyho的小站</title>
+    <link>https://fzyho.github.io/docs/quic/</link>
+    <description>Recent content in QUIC on fzyho的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Sun, 04 Dec 2022 20:14:23 +0900</lastBuildDate><atom:link href="https://fzyho.github.io/docs/quic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>流</title>
+      <link>https://fzyho.github.io/docs/quic/%E6%B5%81/</link>
+      <pubDate>Sun, 04 Dec 2022 20:14:23 +0900</pubDate>
+      
+      <guid>https://fzyho.github.io/docs/quic/%E6%B5%81/</guid>
+      <description>流可以是单向(unidirection)的也可以是双向的(bidirection)。流可以通过传输数据来创建。单个STREAM帧可以创建/关闭流或者在流中传输数据。流可以在整个连接过程中存在。
+每个终端节点都可以创建多个流，并且并发的向其他终端节点传输数据。
+2.1 流的类型和标识符 流在连接中，通过一个Stream ID来进行标识。此ID是一个62位的整型($[0,2^{62}-1]$)，使用变长(variable-length)的整型值来来编码。QUIC节点在一个连接里，不会重用Stream ID，因此同一连接中的Stream ID是唯一的。
+Stream ID的最低位(0x01)表示的是流的创建者，若是client创建的流，最低位为0；server创建的流，最低位则为1。
+Stream ID的最第二低位(0x02)则用于区分双向流还是单向流。若为双向流，则设为0；单向流则设为1。
+Bits Stream Type 0x00 Client-Initiated, Bidirectional 0x01 Server-Initiated, Bidirectional 0x02 Client-Initiated, Unidirectional 0x03 Server-Initiated, Unidirectional 以下这段，不大理解，但应该是要求Stream ID是递增的
+The stream space for each type begins at the minimum value (0x00 through 0x03, respectively); successive streams of each type are created with numerically increasing stream IDs. A stream ID that is used out of order results in all streams of that type with lower-numbered stream IDs alsobeing opened.</description>
+    </item>
+    
+    <item>
+      <title>流状态</title>
+      <link>https://fzyho.github.io/docs/quic/%E6%B5%81%E7%8A%B6%E6%80%81/</link>
+      <pubDate>Sun, 04 Dec 2022 20:14:23 +0900</pubDate>
+      
+      <guid>https://fzyho.github.io/docs/quic/%E6%B5%81%E7%8A%B6%E6%80%81/</guid>
+      <description>本节从发送方/接收方的角度来对流进行讲解。单向流中根据流的类型和终端角色的不同，可能是发送端也可能是接收端。而双向流的中的两终端既可以是发送端也可以是接收端。
+大多数情况下，发送端和接收端的情况都是一样的。但在打开流(open stream)的情况中，双向流会稍微复杂些，因为无论是发送还是接收端的打开，都会需要完成流的双向打开。
+此文档使用流状态(stream state) 来描述：何时以及如何发送不同类型的帧的规则，以及接收不同类型帧时预期的反应。实现上，可以定义多种端角色(不只是发送/接收端)，只需要保证流状态的实现与要求一致。
+Note: 此处的发送/接收端，不是指具体的一个应用/实例端，而是流的发送/接收部分
+1、发送端流状态 发送端的状态转换如下表所示
+o | Create Stream (Sending) | Peer Creates Bidirectional Stream v +-------+ | Ready | Send RESET_STREAM | |----------------------. +-------+ | | | | Send STREAM / | | STREAM_DATA_BLOCKED | v | +-------+ | | Send | Send RESET_STREAM | | |---------------------&amp;gt;| +-------+ | | | | Send STREAM + FIN | v v +-------+ +-------+ | Data | Send RESET_STREAM | Reset | | Sent |------------------&amp;gt;| Sent | +-------+ +-------+ | | |Recv All ACK | Recv ACK v v +-------+ +-------+ | Data | | Reset | | Recvd | | Recvd | +-------+ +-------+ Ready状态表示一个新创建的流可以从application中接收数据，在这状态中，流数据会被缓存(buffered)以准备发送。发送第一个STREAM或者STREAM_DATA_BLOCKED帧表示流的发送端进入Send状态。实现中，可以选择在发送了第一个STREAM帧并进入此状态时再分配stream ID，以便可以更好的利用流优先级。</description>
+    </item>
+    
+  </channel>
+</rss>
