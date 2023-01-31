@@ -10,7 +10,7 @@
 
 <title>从CLH锁聊聊AQS的设计</title>
 
-<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
 <meta name="generator" content="Hugo 0.102.3" />
@@ -30,7 +30,7 @@
                             height="30px">
                     </a>
                 </div>
-                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                <ul class="menu">
                     <li>
                         <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
                             <span>QUIC协议(RFC)</span>
@@ -42,6 +42,7 @@
                         </a>
                     </li></ul>
             </nav>
+            
         </header>
     </div>
 </div><body>
@@ -102,135 +103,135 @@
 				
 				
 				
-				<label style="margin: auto;">-Catalogue-</label>
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
 				
 				
 				<ul></ul>
+				
+					
 					
 						
-						
+							
+							
 							
 								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#1clh-lock" onclick="onNavClick(`#1clh-lock-nav`)" id="1clh-lock-nav" class="animated-visibility">
-											1、CLH Lock
-										</a>
-									</li>
-								
+									<ul>
 								
 							
-						
-					
-						
-						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#11-clh%e9%98%9f%e5%88%97%e9%94%81%e6%98%af%e4%bb%80%e4%b9%88" onclick="onNavClick(`#11-clh队列锁是什么-nav`)" id="11-clh队列锁是什么-nav" class="animated-visibility">
-											1.1 CLH队列锁是什么
-										</a>
-									</li>
-								
-								
+							
+								<li>
+									<a href="#1clh-lock" onclick="onNavClick(`#1clh-lock-nav`)" id="1clh-lock-nav" class="animated-visibility">
+										1、CLH Lock
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#12-clh%e9%98%9f%e5%88%97%e9%94%81%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86" onclick="onNavClick(`#12-clh队列锁工作原理-nav`)" id="12-clh队列锁工作原理-nav" class="animated-visibility">
-											1.2 CLH队列锁工作原理
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#11-clh%e9%98%9f%e5%88%97%e9%94%81%e6%98%af%e4%bb%80%e4%b9%88" onclick="onNavClick(`#11-clh队列锁是什么-nav`)" id="11-clh队列锁是什么-nav" class="animated-visibility">
+										1.1 CLH队列锁是什么
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#2%e9%98%9f%e5%88%97%e5%90%8c%e6%ad%a5%e5%99%a8aqs" onclick="onNavClick(`#2队列同步器aqs-nav`)" id="2队列同步器aqs-nav" class="animated-visibility">
-											2、队列同步器(AQS)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#12-clh%e9%98%9f%e5%88%97%e9%94%81%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86" onclick="onNavClick(`#12-clh队列锁工作原理-nav`)" id="12-clh队列锁工作原理-nav" class="animated-visibility">
+										1.2 CLH队列锁工作原理
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#21-aqs%e7%ae%80%e8%bf%b0" onclick="onNavClick(`#21-aqs简述-nav`)" id="21-aqs简述-nav" class="animated-visibility">
-											2.1 AQS简述
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#2%e9%98%9f%e5%88%97%e5%90%8c%e6%ad%a5%e5%99%a8aqs" onclick="onNavClick(`#2队列同步器aqs-nav`)" id="2队列同步器aqs-nav" class="animated-visibility">
+										2、队列同步器(AQS)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#22-aqs%e4%bc%98%e5%8c%96" onclick="onNavClick(`#22-aqs优化-nav`)" id="22-aqs优化-nav" class="animated-visibility">
-											2.2 AQS优化
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#21-aqs%e7%ae%80%e8%bf%b0" onclick="onNavClick(`#21-aqs简述-nav`)" id="21-aqs简述-nav" class="animated-visibility">
+										2.1 AQS简述
+									</a>
+								</li>
+							
 							
 						
 					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#22-aqs%e4%bc%98%e5%8c%96" onclick="onNavClick(`#22-aqs优化-nav`)" id="22-aqs优化-nav" class="animated-visibility">
+										2.2 AQS优化
+									</a>
+								</li>
+							
+							
+						
+					
+				
 				</ul>
 			</div>
 		

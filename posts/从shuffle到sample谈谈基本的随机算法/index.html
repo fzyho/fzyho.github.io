@@ -10,7 +10,7 @@
 
 <title>从Shuffle到Sample——谈谈基本的随机算法</title>
 
-<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
 <meta name="generator" content="Hugo 0.102.3" />
@@ -30,7 +30,7 @@
                             height="30px">
                     </a>
                 </div>
-                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                <ul class="menu">
                     <li>
                         <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
                             <span>QUIC协议(RFC)</span>
@@ -42,6 +42,7 @@
                         </a>
                     </li></ul>
             </nav>
+            
         </header>
     </div>
 </div><body>
@@ -102,157 +103,157 @@
 				
 				
 				
-				<label style="margin: auto;">-Catalogue-</label>
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
 				
 				
 				<ul></ul>
+				
+					
 					
 						
-						
+							
+							
 							
 								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#1-%e4%b9%b1%e5%ba%8fshuffle" onclick="onNavClick(`#1-乱序shuffle-nav`)" id="1-乱序shuffle-nav" class="animated-visibility">
-											1. 乱序(Shuffle)
-										</a>
-									</li>
-								
+									<ul>
 								
 							
-						
-					
-						
-						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#11-%e7%ad%89%e6%a6%82%e7%8e%87%e8%ae%ba%e8%af%81" onclick="onNavClick(`#11-等概率论证-nav`)" id="11-等概率论证-nav" class="animated-visibility">
-											1.1 等概率论证
-										</a>
-									</li>
-								
-								
+							
+								<li>
+									<a href="#1-%e4%b9%b1%e5%ba%8fshuffle" onclick="onNavClick(`#1-乱序shuffle-nav`)" id="1-乱序shuffle-nav" class="animated-visibility">
+										1. 乱序(Shuffle)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#12-%e9%9a%8f%e6%9c%ba%e7%9a%84%e5%85%ac%e5%b9%b3%e6%80%a7" onclick="onNavClick(`#12-随机的公平性-nav`)" id="12-随机的公平性-nav" class="animated-visibility">
-											1.2 随机的公平性
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#11-%e7%ad%89%e6%a6%82%e7%8e%87%e8%ae%ba%e8%af%81" onclick="onNavClick(`#11-等概率论证-nav`)" id="11-等概率论证-nav" class="animated-visibility">
+										1.1 等概率论证
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#2-%e6%8a%bd%e6%a0%b7sample" onclick="onNavClick(`#2-抽样sample-nav`)" id="2-抽样sample-nav" class="animated-visibility">
-											2. 抽样(Sample)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#12-%e9%9a%8f%e6%9c%ba%e7%9a%84%e5%85%ac%e5%b9%b3%e6%80%a7" onclick="onNavClick(`#12-随机的公平性-nav`)" id="12-随机的公平性-nav" class="animated-visibility">
+										1.2 随机的公平性
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#21-%e9%9a%8f%e6%9c%ba%e7%9a%84%e7%ad%89%e6%a6%82%e7%8e%87%e6%80%a7%e8%af%81%e6%98%8e" onclick="onNavClick(`#21-随机的等概率性证明-nav`)" id="21-随机的等概率性证明-nav" class="animated-visibility">
-											2.1 随机的等概率性证明
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#2-%e6%8a%bd%e6%a0%b7sample" onclick="onNavClick(`#2-抽样sample-nav`)" id="2-抽样sample-nav" class="animated-visibility">
+										2. 抽样(Sample)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#22-%e5%8a%a0%e6%9d%83%e6%8a%bd%e6%a0%b7weighted-sampling" onclick="onNavClick(`#22-加权抽样weighted-sampling-nav`)" id="22-加权抽样weighted-sampling-nav" class="animated-visibility">
-											2.2 加权抽样(Weighted Sampling)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#21-%e9%9a%8f%e6%9c%ba%e7%9a%84%e7%ad%89%e6%a6%82%e7%8e%87%e6%80%a7%e8%af%81%e6%98%8e" onclick="onNavClick(`#21-随机的等概率性证明-nav`)" id="21-随机的等概率性证明-nav" class="animated-visibility">
+										2.1 随机的等概率性证明
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#3-%e6%80%bb%e7%bb%93" onclick="onNavClick(`#3-总结-nav`)" id="3-总结-nav" class="animated-visibility">
-											3. 总结
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#22-%e5%8a%a0%e6%9d%83%e6%8a%bd%e6%a0%b7weighted-sampling" onclick="onNavClick(`#22-加权抽样weighted-sampling-nav`)" id="22-加权抽样weighted-sampling-nav" class="animated-visibility">
+										2.2 加权抽样(Weighted Sampling)
+									</a>
+								</li>
+							
 							
 						
 					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#3-%e6%80%bb%e7%bb%93" onclick="onNavClick(`#3-总结-nav`)" id="3-总结-nav" class="animated-visibility">
+										3. 总结
+									</a>
+								</li>
+							
+							
+						
+					
+				
 				</ul>
 			</div>
 		

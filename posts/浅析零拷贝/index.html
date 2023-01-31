@@ -10,7 +10,7 @@
 
 <title>浅析零拷贝</title>
 
-<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
 <meta name="generator" content="Hugo 0.102.3" />
@@ -30,7 +30,7 @@
                             height="30px">
                     </a>
                 </div>
-                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                <ul class="menu">
                     <li>
                         <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
                             <span>QUIC协议(RFC)</span>
@@ -42,6 +42,7 @@
                         </a>
                     </li></ul>
             </nav>
+            
         </header>
     </div>
 </div><body>
@@ -102,131 +103,131 @@
 				
 				
 				
-				<label style="margin: auto;">-Catalogue-</label>
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
 				
 				
 				<ul></ul>
+				
+					
 					
 						
-						
+							
+							
 							
 								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#1%e6%88%90%e5%9b%a0" onclick="onNavClick(`#1成因-nav`)" id="1成因-nav" class="animated-visibility">
-											1、成因
-										</a>
-									</li>
-								
+									<ul>
 								
 							
-						
-					
-						
-						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#2%e9%9b%b6%e6%8b%b7%e8%b4%9d%e7%9a%84%e6%96%b9%e5%bc%8f" onclick="onNavClick(`#2零拷贝的方式-nav`)" id="2零拷贝的方式-nav" class="animated-visibility">
-											2、零拷贝的方式
-										</a>
-									</li>
-								
-								
+							
+								<li>
+									<a href="#1%e6%88%90%e5%9b%a0" onclick="onNavClick(`#1成因-nav`)" id="1成因-nav" class="animated-visibility">
+										1、成因
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#21-mmap%e5%86%85%e5%ad%98%e6%98%a0%e5%b0%84%e6%96%87%e4%bb%b6" onclick="onNavClick(`#21-mmap内存映射文件-nav`)" id="21-mmap内存映射文件-nav" class="animated-visibility">
-											2.1 mmap(内存映射文件)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#2%e9%9b%b6%e6%8b%b7%e8%b4%9d%e7%9a%84%e6%96%b9%e5%bc%8f" onclick="onNavClick(`#2零拷贝的方式-nav`)" id="2零拷贝的方式-nav" class="animated-visibility">
+										2、零拷贝的方式
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#22-sendfile" onclick="onNavClick(`#22-sendfile-nav`)" id="22-sendfile-nav" class="animated-visibility">
-											2.2 sendfile
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#21-mmap%e5%86%85%e5%ad%98%e6%98%a0%e5%b0%84%e6%96%87%e4%bb%b6" onclick="onNavClick(`#21-mmap内存映射文件-nav`)" id="21-mmap内存映射文件-nav" class="animated-visibility">
+										2.1 mmap(内存映射文件)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#3java-io%e7%9a%84%e5%ae%9e%e7%8e%b0" onclick="onNavClick(`#3java-io的实现-nav`)" id="3java-io的实现-nav" class="animated-visibility">
-											3、Java I/O的实现
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#22-sendfile" onclick="onNavClick(`#22-sendfile-nav`)" id="22-sendfile-nav" class="animated-visibility">
+										2.2 sendfile
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
-								
-								
-								
-									<li>
-										<a href="#4netty%e7%9a%84%e9%9b%b6%e6%8b%b7%e8%b4%9d" onclick="onNavClick(`#4netty的零拷贝-nav`)" id="4netty的零拷贝-nav" class="animated-visibility">
-											4、Netty的零拷贝
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#3java-io%e7%9a%84%e5%ae%9e%e7%8e%b0" onclick="onNavClick(`#3java-io的实现-nav`)" id="3java-io的实现-nav" class="animated-visibility">
+										3、Java I/O的实现
+									</a>
+								</li>
+							
 							
 						
 					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#4netty%e7%9a%84%e9%9b%b6%e6%8b%b7%e8%b4%9d" onclick="onNavClick(`#4netty的零拷贝-nav`)" id="4netty的零拷贝-nav" class="animated-visibility">
+										4、Netty的零拷贝
+									</a>
+								</li>
+							
+							
+						
+					
+				
 				</ul>
 			</div>
 		

@@ -10,7 +10,7 @@
 
 <title>分布式系统简述 Part 2</title>
 
-<link rel="icon" href="https://fzyho.github.io/theme/head-icon-2.jpeg">
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
 <meta name="generator" content="Hugo 0.102.3" />
@@ -30,7 +30,7 @@
                             height="30px">
                     </a>
                 </div>
-                <ul class="menu" id="menu" onscroll="menu_on_scroll()">
+                <ul class="menu">
                     <li>
                         <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
                             <span>QUIC协议(RFC)</span>
@@ -42,6 +42,7 @@
                         </a>
                     </li></ul>
             </nav>
+            
         </header>
     </div>
 </div><body>
@@ -102,633 +103,633 @@
 				
 				
 				
-				<label style="margin: auto;">-Catalogue-</label>
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
 				
 				
 				<ul></ul>
+				
+					
 					
 						
-						
+							
+							
 							
 								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#4replication" onclick="onNavClick(`#4replication-nav`)" id="4replication-nav" class="animated-visibility">
-											4、Replication
-										</a>
-									</li>
-								
+									<ul>
 								
 							
-						
-					
-						
-						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#41-%e5%90%8c%e6%ad%a5%e5%a4%8d%e5%88%b6synchronous-replication" onclick="onNavClick(`#41-同步复制synchronous-replication-nav`)" id="41-同步复制synchronous-replication-nav" class="animated-visibility">
-											4.1 同步复制(Synchronous replication)
-										</a>
-									</li>
-								
-								
+							
+								<li>
+									<a href="#4replication" onclick="onNavClick(`#4replication-nav`)" id="4replication-nav" class="animated-visibility">
+										4、Replication
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#42-%e5%bc%82%e6%ad%a5%e5%a4%8d%e5%88%b6asynchronous-replication" onclick="onNavClick(`#42-异步复制asynchronous-replication-nav`)" id="42-异步复制asynchronous-replication-nav" class="animated-visibility">
-											4.2 异步复制(Asynchronous replication)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#41-%e5%90%8c%e6%ad%a5%e5%a4%8d%e5%88%b6synchronous-replication" onclick="onNavClick(`#41-同步复制synchronous-replication-nav`)" id="41-同步复制synchronous-replication-nav" class="animated-visibility">
+										4.1 同步复制(Synchronous replication)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#43-%e4%b8%bb%e6%b5%81%e5%a4%8d%e5%88%b6%e7%ae%97%e6%b3%95%e7%bb%bc%e8%bf%b0an-overview-of-major-replication-approaches" onclick="onNavClick(`#43-主流复制算法综述an-overview-of-major-replication-approaches-nav`)" id="43-主流复制算法综述an-overview-of-major-replication-approaches-nav" class="animated-visibility">
-											4.3 主流复制算法综述(An overview of major replication approaches)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#42-%e5%bc%82%e6%ad%a5%e5%a4%8d%e5%88%b6asynchronous-replication" onclick="onNavClick(`#42-异步复制asynchronous-replication-nav`)" id="42-异步复制asynchronous-replication-nav" class="animated-visibility">
+										4.2 异步复制(Asynchronous replication)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#44-%e4%b8%bb%e5%a4%87%e4%bb%bd%e5%a4%8d%e5%88%b6primarybackup-replication" onclick="onNavClick(`#44-主备份复制primarybackup-replication-nav`)" id="44-主备份复制primarybackup-replication-nav" class="animated-visibility">
-											4.4 主/备份复制(Primary/Backup Replication)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#43-%e4%b8%bb%e6%b5%81%e5%a4%8d%e5%88%b6%e7%ae%97%e6%b3%95%e7%bb%bc%e8%bf%b0an-overview-of-major-replication-approaches" onclick="onNavClick(`#43-主流复制算法综述an-overview-of-major-replication-approaches-nav`)" id="43-主流复制算法综述an-overview-of-major-replication-approaches-nav" class="animated-visibility">
+										4.3 主流复制算法综述(An overview of major replication approaches)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#51-%e4%b8%a4%e9%98%b6%e6%ae%b5%e6%8f%90%e4%ba%a4two-phase-commit-2pc" onclick="onNavClick(`#51-两阶段提交two-phase-commit-2pc-nav`)" id="51-两阶段提交two-phase-commit-2pc-nav" class="animated-visibility">
-											5.1 两阶段提交(Two Phase Commit 2PC)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#44-%e4%b8%bb%e5%a4%87%e4%bb%bd%e5%a4%8d%e5%88%b6primarybackup-replication" onclick="onNavClick(`#44-主备份复制primarybackup-replication-nav`)" id="44-主备份复制primarybackup-replication-nav" class="animated-visibility">
+										4.4 主/备份复制(Primary/Backup Replication)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#61-%e5%88%86%e5%8c%ba%e5%ae%b9%e5%bf%8d%e7%9a%84%e5%85%b1%e8%af%86%e7%ae%97%e6%b3%95partition-tolerant-consensus-algorithms" onclick="onNavClick(`#61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav`)" id="61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav" class="animated-visibility">
-											6.1 分区容忍的共识算法(Partition tolerant consensus algorithms)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#51-%e4%b8%a4%e9%98%b6%e6%ae%b5%e6%8f%90%e4%ba%a4two-phase-commit-2pc" onclick="onNavClick(`#51-两阶段提交two-phase-commit-2pc-nav`)" id="51-两阶段提交two-phase-commit-2pc-nav" class="animated-visibility">
+										5.1 两阶段提交(Two Phase Commit 2PC)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#1%e5%a4%9a%e6%95%b0%e5%86%b3%e5%ae%9a%e6%b3%95majority-decision" onclick="onNavClick(`#1多数决定法majority-decision-nav`)" id="1多数决定法majority-decision-nav" class="animated-visibility">
-											1、多数决定法(Majority Decision)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#61-%e5%88%86%e5%8c%ba%e5%ae%b9%e5%bf%8d%e7%9a%84%e5%85%b1%e8%af%86%e7%ae%97%e6%b3%95partition-tolerant-consensus-algorithms" onclick="onNavClick(`#61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav`)" id="61-分区容忍的共识算法partition-tolerant-consensus-algorithms-nav" class="animated-visibility">
+										6.1 分区容忍的共识算法(Partition tolerant consensus algorithms)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#2%e8%a7%92%e8%89%b2roles" onclick="onNavClick(`#2角色roles-nav`)" id="2角色roles-nav" class="animated-visibility">
-											2、角色(Roles)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#1%e5%a4%9a%e6%95%b0%e5%86%b3%e5%ae%9a%e6%b3%95majority-decision" onclick="onNavClick(`#1多数决定法majority-decision-nav`)" id="1多数决定法majority-decision-nav" class="animated-visibility">
+										1、多数决定法(Majority Decision)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#3epochs" onclick="onNavClick(`#3epochs-nav`)" id="3epochs-nav" class="animated-visibility">
-											3、Epochs
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#2%e8%a7%92%e8%89%b2roles" onclick="onNavClick(`#2角色roles-nav`)" id="2角色roles-nav" class="animated-visibility">
+										2、角色(Roles)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#4%e9%80%9a%e8%bf%87%e5%af%b9%e5%86%b3%e6%94%b9%e5%8f%98leaderleader-changes-via-duels" onclick="onNavClick(`#4通过对决改变leaderleader-changes-via-duels-nav`)" id="4通过对决改变leaderleader-changes-via-duels-nav" class="animated-visibility">
-											4、通过对决改变Leader(Leader changes via duels)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#3epochs" onclick="onNavClick(`#3epochs-nav`)" id="3epochs-nav" class="animated-visibility">
+										3、Epochs
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#5numbered-proposals-within-an-epoch" onclick="onNavClick(`#5numbered-proposals-within-an-epoch-nav`)" id="5numbered-proposals-within-an-epoch-nav" class="animated-visibility">
-											5、Numbered proposals within an epoch
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#4%e9%80%9a%e8%bf%87%e5%af%b9%e5%86%b3%e6%94%b9%e5%8f%98leaderleader-changes-via-duels" onclick="onNavClick(`#4通过对决改变leaderleader-changes-via-duels-nav`)" id="4通过对决改变leaderleader-changes-via-duels-nav" class="animated-visibility">
+										4、通过对决改变Leader(Leader changes via duels)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#6%e6%99%ae%e9%80%9a%e6%93%8d%e4%bd%9cnormal-operation" onclick="onNavClick(`#6普通操作normal-operation-nav`)" id="6普通操作normal-operation-nav" class="animated-visibility">
-											6、普通操作(Normal Operation)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#5numbered-proposals-within-an-epoch" onclick="onNavClick(`#5numbered-proposals-within-an-epoch-nav`)" id="5numbered-proposals-within-an-epoch-nav" class="animated-visibility">
+										5、Numbered proposals within an epoch
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#47-%e7%ae%97%e6%b3%95%e5%ae%9e%e4%be%8bpaxos-raft-zab" onclick="onNavClick(`#47-算法实例paxos-raft-zab-nav`)" id="47-算法实例paxos-raft-zab-nav" class="animated-visibility">
-											4.7 算法实例：Paxos, Raft, ZAB
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#6%e6%99%ae%e9%80%9a%e6%93%8d%e4%bd%9cnormal-operation" onclick="onNavClick(`#6普通操作normal-operation-nav`)" id="6普通操作normal-operation-nav" class="animated-visibility">
+										6、普通操作(Normal Operation)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
-								
-								
-								
-									<li>
-										<a href="#48-%e5%bc%ba%e4%b8%80%e8%87%b4%e6%80%a7%e7%9a%84%e5%a4%8d%e5%88%b6%e6%96%b9%e6%b3%95replication-methods-with-strong-consistency" onclick="onNavClick(`#48-强一致性的复制方法replication-methods-with-strong-consistency-nav`)" id="48-强一致性的复制方法replication-methods-with-strong-consistency-nav" class="animated-visibility">
-											4.8 强一致性的复制方法(Replication methods with strong consistency)
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#47-%e7%ae%97%e6%b3%95%e5%ae%9e%e4%be%8bpaxos-raft-zab" onclick="onNavClick(`#47-算法实例paxos-raft-zab-nav`)" id="47-算法实例paxos-raft-zab-nav" class="animated-visibility">
+										4.7 算法实例：Paxos, Raft, ZAB
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#primarybackup" onclick="onNavClick(`#primarybackup-nav`)" id="primarybackup-nav" class="animated-visibility">
-											Primary/Backup
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#48-%e5%bc%ba%e4%b8%80%e8%87%b4%e6%80%a7%e7%9a%84%e5%a4%8d%e5%88%b6%e6%96%b9%e6%b3%95replication-methods-with-strong-consistency" onclick="onNavClick(`#48-强一致性的复制方法replication-methods-with-strong-consistency-nav`)" id="48-强一致性的复制方法replication-methods-with-strong-consistency-nav" class="animated-visibility">
+										4.8 强一致性的复制方法(Replication methods with strong consistency)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#2pc" onclick="onNavClick(`#2pc-nav`)" id="2pc-nav" class="animated-visibility">
-											2PC
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#primarybackup" onclick="onNavClick(`#primarybackup-nav`)" id="primarybackup-nav" class="animated-visibility">
+										Primary/Backup
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#paxos" onclick="onNavClick(`#paxos-nav`)" id="paxos-nav" class="animated-visibility">
-											Paxos
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#2pc" onclick="onNavClick(`#2pc-nav`)" id="2pc-nav" class="animated-visibility">
+										2PC
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#5%e5%a4%8d%e5%88%b6%e5%bc%b1%e4%b8%80%e8%87%b4%e6%80%a7%e6%a8%a1%e5%9e%8b%e5%8d%8f%e8%ae%aereplication-weak-consistency-model-protocols" onclick="onNavClick(`#5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav`)" id="5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav" class="animated-visibility">
-											5、复制：弱一致性模型协议(Replication: weak consistency model protocols)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#paxos" onclick="onNavClick(`#paxos-nav`)" id="paxos-nav" class="animated-visibility">
+										Paxos
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
+									</ul>
 								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#51-%e8%b0%83%e8%8a%82%e4%b8%8d%e5%90%8c%e7%9a%84%e6%93%8d%e4%bd%9c%e9%a1%ba%e5%ba%8freconciling-different-operation-orders" onclick="onNavClick(`#51-调节不同的操作顺序reconciling-different-operation-orders-nav`)" id="51-调节不同的操作顺序reconciling-different-operation-orders-nav" class="animated-visibility">
-											5.1 调节不同的操作顺序(Reconciling different operation orders)
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#5%e5%a4%8d%e5%88%b6%e5%bc%b1%e4%b8%80%e8%87%b4%e6%80%a7%e6%a8%a1%e5%9e%8b%e5%8d%8f%e8%ae%aereplication-weak-consistency-model-protocols" onclick="onNavClick(`#5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav`)" id="5复制弱一致性模型协议replication-weak-consistency-model-protocols-nav" class="animated-visibility">
+										5、复制：弱一致性模型协议(Replication: weak consistency model protocols)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#52-amazons-dynamo" onclick="onNavClick(`#52-amazons-dynamo-nav`)" id="52-amazons-dynamo-nav" class="animated-visibility">
-											5.2 Amazon’s Dynamo
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#51-%e8%b0%83%e8%8a%82%e4%b8%8d%e5%90%8c%e7%9a%84%e6%93%8d%e4%bd%9c%e9%a1%ba%e5%ba%8freconciling-different-operation-orders" onclick="onNavClick(`#51-调节不同的操作顺序reconciling-different-operation-orders-nav`)" id="51-调节不同的操作顺序reconciling-different-operation-orders-nav" class="animated-visibility">
+										5.1 调节不同的操作顺序(Reconciling different operation orders)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#%e4%b8%80%e8%87%b4%e6%80%a7%e5%93%88%e5%b8%8cconsistent-hashing" onclick="onNavClick(`#一致性哈希consistent-hashing-nav`)" id="一致性哈希consistent-hashing-nav" class="animated-visibility">
-											一致性哈希(Consistent Hashing)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#52-amazons-dynamo" onclick="onNavClick(`#52-amazons-dynamo-nav`)" id="52-amazons-dynamo-nav" class="animated-visibility">
+										5.2 Amazon’s Dynamo
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-								
-								
-									<li>
-										<a href="#%e9%83%a8%e5%88%86%e4%bb%b2%e8%a3%81partial-quorums" onclick="onNavClick(`#部分仲裁partial-quorums-nav`)" id="部分仲裁partial-quorums-nav" class="animated-visibility">
-											部分仲裁(Partial quorums)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#%e4%b8%80%e8%87%b4%e6%80%a7%e5%93%88%e5%b8%8cconsistent-hashing" onclick="onNavClick(`#一致性哈希consistent-hashing-nav`)" id="一致性哈希consistent-hashing-nav" class="animated-visibility">
+										一致性哈希(Consistent Hashing)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#is-r--w--n-the-same-as-strong-consistency" onclick="onNavClick(`#is-r--w--n-the-same-as-strong-consistency-nav`)" id="is-r--w--n-the-same-as-strong-consistency-nav" class="animated-visibility">
-											Is R &#43; W &gt; N the same as “strong consistency”?
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#%e9%83%a8%e5%88%86%e4%bb%b2%e8%a3%81partial-quorums" onclick="onNavClick(`#部分仲裁partial-quorums-nav`)" id="部分仲裁partial-quorums-nav" class="animated-visibility">
+										部分仲裁(Partial quorums)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#%e5%86%b2%e7%aa%81%e6%a3%80%e6%b5%8b%e5%92%8c%e8%af%bb%e4%bf%ae%e5%a4%8dconflict-detection-and-read-repair" onclick="onNavClick(`#冲突检测和读修复conflict-detection-and-read-repair-nav`)" id="冲突检测和读修复conflict-detection-and-read-repair-nav" class="animated-visibility">
-											冲突检测和读修复(Conflict detection and read repair)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#is-r--w--n-the-same-as-strong-consistency" onclick="onNavClick(`#is-r--w--n-the-same-as-strong-consistency-nav`)" id="is-r--w--n-the-same-as-strong-consistency-nav" class="animated-visibility">
+										Is R &#43; W &gt; N the same as “strong consistency”?
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#%e5%89%af%e6%9c%ac%e5%90%8c%e6%ad%a5%e6%b5%81%e8%a8%80%e5%8d%8f%e8%ae%ae%e5%92%8c%e9%bb%98%e5%85%8b%e5%b0%94%e6%a0%91replica-synchronization-gossip-and-merkle-trees" onclick="onNavClick(`#副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav`)" id="副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav" class="animated-visibility">
-											副本同步：流言协议和默克尔树(Replica synchronization: gossip and Merkle trees)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#%e5%86%b2%e7%aa%81%e6%a3%80%e6%b5%8b%e5%92%8c%e8%af%bb%e4%bf%ae%e5%a4%8dconflict-detection-and-read-repair" onclick="onNavClick(`#冲突检测和读修复conflict-detection-and-read-repair-nav`)" id="冲突检测和读修复conflict-detection-and-read-repair-nav" class="animated-visibility">
+										冲突检测和读修复(Conflict detection and read repair)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#dynamo%e5%ae%9e%e9%99%85%e5%ba%94%e7%94%a8%e6%a6%82%e7%8e%87%e6%80%a7%e6%9c%89%e8%be%b9%e7%95%8c%e7%9a%84%e8%bf%87%e6%97%b6dynamo-in-practice-probabilistically-bounded-staleness-pbs" onclick="onNavClick(`#dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav`)" id="dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav" class="animated-visibility">
-											Dynamo实际应用：概率性有边界的过时(Dynamo in practice: probabilistically bounded staleness (PBS))
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#%e5%89%af%e6%9c%ac%e5%90%8c%e6%ad%a5%e6%b5%81%e8%a8%80%e5%8d%8f%e8%ae%ae%e5%92%8c%e9%bb%98%e5%85%8b%e5%b0%94%e6%a0%91replica-synchronization-gossip-and-merkle-trees" onclick="onNavClick(`#副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav`)" id="副本同步流言协议和默克尔树replica-synchronization-gossip-and-merkle-trees-nav" class="animated-visibility">
+										副本同步：流言协议和默克尔树(Replica synchronization: gossip and Merkle trees)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#3%e6%97%a0%e5%ba%8f%e7%bc%96%e7%a8%8bdisorderly-programming" onclick="onNavClick(`#3无序编程disorderly-programming-nav`)" id="3无序编程disorderly-programming-nav" class="animated-visibility">
-											3、无序编程(Disorderly programming)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#dynamo%e5%ae%9e%e9%99%85%e5%ba%94%e7%94%a8%e6%a6%82%e7%8e%87%e6%80%a7%e6%9c%89%e8%be%b9%e7%95%8c%e7%9a%84%e8%bf%87%e6%97%b6dynamo-in-practice-probabilistically-bounded-staleness-pbs" onclick="onNavClick(`#dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav`)" id="dynamo实际应用概率性有边界的过时dynamo-in-practice-probabilistically-bounded-staleness-pbs-nav" class="animated-visibility">
+										Dynamo实际应用：概率性有边界的过时(Dynamo in practice: probabilistically bounded staleness (PBS))
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
+							
 								
+									</ul>
 								
-								
-								
-								
-									<li>
-										<a href="#4crdts-convergent-replicated-data-types" onclick="onNavClick(`#4crdts-convergent-replicated-data-types-nav`)" id="4crdts-convergent-replicated-data-types-nav" class="animated-visibility">
-											4、CRDTs: Convergent replicated data types
-										</a>
-									</li>
-								
-								
+							
+							
+								<li>
+									<a href="#3%e6%97%a0%e5%ba%8f%e7%bc%96%e7%a8%8bdisorderly-programming" onclick="onNavClick(`#3无序编程disorderly-programming-nav`)" id="3无序编程disorderly-programming-nav" class="animated-visibility">
+										3、无序编程(Disorderly programming)
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-								
-									<li>
-										<a href="#5the-calm-theorem" onclick="onNavClick(`#5the-calm-theorem-nav`)" id="5the-calm-theorem-nav" class="animated-visibility">
-											5、The CALM theorem
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#4crdts-convergent-replicated-data-types" onclick="onNavClick(`#4crdts-convergent-replicated-data-types-nav`)" id="4crdts-convergent-replicated-data-types-nav" class="animated-visibility">
+										4、CRDTs: Convergent replicated data types
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
-								
-								
-								
-								
-									
-										<ul>
-									
-								
-								
-									<li>
-										<a href="#1%e5%8d%95%e8%b0%83%e6%80%a7monotony" onclick="onNavClick(`#1单调性monotony-nav`)" id="1单调性monotony-nav" class="animated-visibility">
-											1、单调性(Monotony)
-										</a>
-									</li>
-								
-								
+							
+							
+							
+							
+								<li>
+									<a href="#5the-calm-theorem" onclick="onNavClick(`#5the-calm-theorem-nav`)" id="5the-calm-theorem-nav" class="animated-visibility">
+										5、The CALM theorem
+									</a>
+								</li>
+							
 							
 						
 					
-						
+				
+					
+					
 						
 							
+							
+							
 								
+									<ul>
 								
-								
-									
-										</ul>
-									
-								
-								
-								
-									<li>
-										<a href="#6what-is-non-mononicity-good-for" onclick="onNavClick(`#6what-is-non-mononicity-good-for-nav`)" id="6what-is-non-mononicity-good-for-nav" class="animated-visibility">
-											6、What is non-mononicity good for?
-										</a>
-									</li>
-								
-								
+							
+							
+							
+								<li>
+									<a href="#1%e5%8d%95%e8%b0%83%e6%80%a7monotony" onclick="onNavClick(`#1单调性monotony-nav`)" id="1单调性monotony-nav" class="animated-visibility">
+										1、单调性(Monotony)
+									</a>
+								</li>
+							
 							
 						
 					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#6what-is-non-mononicity-good-for" onclick="onNavClick(`#6what-is-non-mononicity-good-for-nav`)" id="6what-is-non-mononicity-good-for-nav" class="animated-visibility">
+										6、What is non-mononicity good for?
+									</a>
+								</li>
+							
+							
+						
+					
+				
 				</ul>
 			</div>
 		
