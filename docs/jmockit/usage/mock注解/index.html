@@ -15,7 +15,7 @@
 <link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
-<meta name="generator" content="Hugo 0.102.3" />
+<meta name="generator" content="Hugo 0.107.0">
 
 
 
@@ -114,7 +114,7 @@
   
   
   
-  <a href="/docs/jmockit"><span>JMockit</span></a>
+  <a href="/docs/jmockit/usage/Mock%e6%b3%a8%e8%a7%a3.md"><span>Mock注解</span></a>
 </h2>
 
   
@@ -131,120 +131,6 @@
 
   
   <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="">Mock相关概念</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/" class="">库API使用</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/expectations/" class="">Expectations</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/verifications/" class="">Verifications</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/" class="">方法参数匹配</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/mockup/" class="">MockUp</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/" class=" active">Mock注解</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/application/" class="">综合运用</a>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
     
   </ul>
 
@@ -323,8 +209,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotSame</span><span class="o">(</span><span class="n">date1</span><span class="o">,</span> <span class="n">date2</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">		<span class="c1">// date1对象或者new出来的对象的 getDayOfMonth() 
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 结果都为0，即@Mocked作用于类而不是实例对象
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">date1</span><span class="o">.</span><span class="na">getDayOfMonth</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">LocalDate</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">2021</span><span class="o">,</span> <span class="n">12</span><span class="o">,</span> <span class="n">12</span><span class="o">).</span><span class="na">getDayOfMonth</span><span class="o">());</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">date1</span><span class="o">.</span><span class="na">getDayOfMonth</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">LocalDate</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2021</span><span class="o">,</span> <span class="mi">12</span><span class="o">,</span> <span class="mi">12</span><span class="o">).</span><span class="na">getDayOfMonth</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">		<span class="c1">// date1.ToString返回的并不是null，因为toString方法是其父类Object的方法,
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// @Mocked注解只会关注与当前类
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">date1</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
@@ -426,7 +312,7 @@
 </span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
 </span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;john&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
-</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">LocalTime</span> <span class="n">myTime</span> <span class="o">=</span> <span class="n">LocalTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">13</span><span class="o">,</span> <span class="n">13</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">LocalTime</span> <span class="n">myTime</span> <span class="o">=</span> <span class="n">LocalTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">13</span><span class="o">,</span> <span class="mi">13</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
 </span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">&#34;aa&#34;</span><span class="o">,</span> <span class="s">&#34;bb&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">

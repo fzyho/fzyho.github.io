@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>读书笔记-The Art Of Multiprocessor Programing(一)</title>
+
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
+
+
+<meta name="generator" content="Hugo 0.107.0">
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
+                </div>
+                <ul class="menu">
+                    <li>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span>QUIC协议(RFC)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
+                        </a>
+                    </li></ul>
+            </nav>
+            
+        </header>
+    </div>
+</div><body>
+		<main class="content">
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+
+
+<div class="wrapper-toc">
+    <div class="toc">
+		
+		
+		
+			<div class="toc-content">
+			
+				
+				
+				
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
+				
+				
+				<ul></ul>
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#%e8%87%aa%e6%97%8b%e9%94%81%e4%b8%8e%e4%ba%89%e7%94%a8" onclick="onNavClick(`#自旋锁与争用-nav`)" id="自旋锁与争用-nav" class="animated-visibility">
+										自旋锁与争用
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#1%e6%b5%8b%e8%af%95-%e8%ae%be%e7%bd%aetest-and-set" onclick="onNavClick(`#1测试-设置test-and-set-nav`)" id="1测试-设置test-and-set-nav" class="animated-visibility">
+										1、测试-设置(Test-And-Set)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#2%e6%8c%87%e6%95%b0%e5%90%8e%e9%80%80exponential-backoff" onclick="onNavClick(`#2指数后退exponential-backoff-nav`)" id="2指数后退exponential-backoff-nav" class="animated-visibility">
+										2、指数后退(Exponential Backoff)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#3%e9%98%9f%e5%88%97%e9%94%81queue-locks" onclick="onNavClick(`#3队列锁queue-locks-nav`)" id="3队列锁queue-locks-nav" class="animated-visibility">
+										3、队列锁(Queue Locks)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#clhlock" onclick="onNavClick(`#clhlock-nav`)" id="clhlock-nav" class="animated-visibility">
+										CLHLock
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#mcslock" onclick="onNavClick(`#mcslock-nav`)" id="mcslock-nav" class="animated-visibility">
+										MCSLock
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#4%e9%99%90%e6%97%b6%e9%98%9f%e5%88%97%e9%94%81a-queue-lock-with-timeouts" onclick="onNavClick(`#4限时队列锁a-queue-lock-with-timeouts-nav`)" id="4限时队列锁a-queue-lock-with-timeouts-nav" class="animated-visibility">
+										4、限时队列锁(A Queue Lock with Timeouts)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#5%e5%a4%8d%e5%90%88%e9%94%81composite-lock" onclick="onNavClick(`#5复合锁composite-lock-nav`)" id="5复合锁composite-lock-nav" class="animated-visibility">
+										5、复合锁(Composite Lock)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#%e5%bf%ab%e9%80%9f%e8%b7%af%e5%be%84%e5%a4%8d%e5%90%88%e9%94%81fast-path-composite-lock" onclick="onNavClick(`#快速路径复合锁fast-path-composite-lock-nav`)" id="快速路径复合锁fast-path-composite-lock-nav" class="animated-visibility">
+										快速路径复合锁(Fast-Path-Composite-Lock)
+									</a>
+								</li>
+							
+							
+						
+					
+				
+				</ul>
+			</div>
+		
+    </div>
+</div>
+
+
+<div class="post-list">
+	<div class="single-post">
+		<div class="post-head-wrapper">
+			<div class="post-title">
+				读书笔记-The Art Of Multiprocessor Programing(一)
+				
+			</div>
+			<div class="post-meta">
+    <time class="post-meta-date" itemprop="datePublished">
+        2020-04-07
+    </time>
+
+    <ul class="post-meta-tags">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 28 24">
+    <path d="M9.777 2l11.395 11.395-7.779 7.777-11.393-11.39v-7.782h7.777zm.828-2l-10.604.001v10.609l13.392 13.39 10.607-10.605-13.395-13.395zm-6.019 7.414c-.78-.781-.779-2.047.002-2.827.781-.782 2.047-.781 2.826-.003.783.783.782 2.049 0 2.83-.779.781-2.045.781-2.828 0zm5.824 7.947l-3.537-3.535.709-.707 3.535 3.535-.707.707zm4.242 0l-5.658-5.656.708-.708 5.657 5.657-.707.707zm2.121-2.121l-5.657-5.657.707-.707 5.657 5.657-.707.707z"/>
+</svg>
+        
+        
+            <li><a href="https://fzyho.github.io/tags/java/" title="java">java</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="多线程">多线程</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/%E5%B9%B6%E5%8F%91/" title="并发">并发</a></li>
+        
+    </ul>
+</div>
+		</div>
+		<div class="post-body-wrapper">
+			<div class="post-body" v-pre>
+				
+				<h2 id="自旋锁与争用">自旋锁与争用<a hidden class="anchor" aria-hidden="true" href="#自旋锁与争用">#</a></h2>
+<h3 id="1测试-设置test-and-set">1、测试-设置(Test-And-Set)<a hidden class="anchor" aria-hidden="true" href="#1测试-设置test-and-set">#</a></h3>
+<p>如下图所示，是两个无死锁互斥的自旋锁实现。理论上TASLock和TTASLock算法应该没什么不同。但是实际上随着线程数的增加，线程争用锁愈发频繁。<strong>TTASLock的性能会比TASLock好上许多。</strong></p>
+<pre tabindex="0"><code>class SpinLock implements Lock {
+	AtomicBoolean state = new AtomicBoolean(false);
+	
+	// TASLock算法
+	void lock() {
+		while (state.getAndSet(true)) {
+		}
+	}
+
+    // TTASLock算法
+	void lock() {
+		while (true) {
+		    while (state.get()) {};
+		    if (!state.getAndSet(true)) {
+		        return;
+		    }
+		}
+	}
+
+	void unlock() {
+		state.set(false);
+	}
+}
+</code></pre><p>原因在于<code>state.getAndSet()</code>语句本质上是总线上的一个广播(volatile原因)，因而会延迟所有线程(线程必须通过总线才能和内存通信，而每个时刻只能有一个处理器或存储控制器访问总线)。TTASLock的<code>state.get()</code>判断一直循环，没有往下走，即 所在的线程一直本地旋转，没有产生总线流量(bus traffic)。</p>
+<blockquote>
+<p>本地旋转指线程反复地读取cache的值而不是访问总线。这一概念是设计高效自旋锁的一个重要的原则。</p>
+</blockquote>
+<h3 id="2指数后退exponential-backoff">2、指数后退(Exponential Backoff)<a hidden class="anchor" aria-hidden="true" href="#2指数后退exponential-backoff">#</a></h3>
+<p>当大量线程争用锁时(高争用)，那么纵然时TTASLock也会产生过多的总线流量——一个线程unlock后，会导致大量(甚至所有)争用的线程都去执行<code>state.getAndSet()</code>方法。因此可以通过backoff的方式回避这种情况。</p>
+<pre tabindex="0"><code>class BackoffLock implements Lock {
+	private AtomicBoolean state = new AtomicBoolean(false);
+	private static final int MIN_DELAY = ...;
+	private static final int MAX_DELAY = ...;
+
+	void lock() {
+		Backoff backoff = new Backoff(MIN_DELAY, MAX_DELAY);
+		while (true) {
+			while (state.get()) {}
+			if (!state.getAndSet(true)) {
+				return;
+			} else {
+				backoff.backoff();
+			}
+		}
+	}
+
+	void unlock() {
+		state.set(false);
+	}
+
+	static class Backoff {
+		final int minDelay, maxDelay;
+		int limit;
+
+		Backoff(int min, int max) {
+			minDelay = min;
+			maxDelay = max;
+			limit = minDelay;
+		}
+
+		void backoff() throws InterruptedException {
+			int delay = ThreadLocalRandom.current().nextInt(limit);
+			limit = Math.min(maxDelay, 2 * limit); // 每次的睡眠时间指数增加
+			Thread.sleep(delay);
+		}
+	}
+}
+</code></pre><p>BackoffLock在许多系统结构中的性能要比TASLock好。但这与minDelay和maxDelay密切相关。而其最优解又与所在机器的处理器的个数以及他们的速度密切相关。因此BackoffLock很难做统一的调整。</p>
+<h3 id="3队列锁queue-locks">3、队列锁(Queue Locks)<a hidden class="anchor" aria-hidden="true" href="#3队列锁queue-locks">#</a></h3>
+<blockquote>
+<p>Backoff Lock的两个不足：<!-- raw HTML omitted -->
+1、cache一致性流量：每次成功获取锁后，都会导致cache数据冲刷，其余线程为保证一致性而访问总线<!-- raw HTML omitted -->
+2、临界区利用率低下：线程延迟过长，导致临界区利用率下降。</p>
+</blockquote>
+<p><strong>解决方案：</strong> 将线程组织成一个队列。在队列中，每个线程通过检测其前驱线程是否已完成(获得并释放锁)来判断是否轮到自己。每个线程在不同的存储单元自旋，从而降低cache一致性流，并提高临界区利用率。最后队列FIFO的特性保证了公平性。</p>
+<h4 id="clhlock">CLHLock<a hidden class="anchor" aria-hidden="true" href="#clhlock">#</a></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CLHLock</span> <span class="kd">implements</span> <span class="n">Lock</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">myPred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">myNode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="nf">CLHLock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">tail</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="n">QNode</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myNode</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(</span><span class="n">QNode</span><span class="o">::</span><span class="k">new</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myPred</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">lock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span> <span class="o">=</span> <span class="n">myNode</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">qnode</span><span class="o">.</span><span class="na">locked</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">getAndSet</span><span class="o">(</span><span class="n">qnode</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myPred</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">pred</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="o">(</span><span class="n">pred</span><span class="o">.</span><span class="na">locked</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">unlock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span> <span class="o">=</span> <span class="n">myNode</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">qnode</span><span class="o">.</span><span class="na">locked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		<span class="c1">// 对于C/C++等无垃圾回收功能的语言，需要回收pre节点，也可以重用pre节点，以避免内存泄漏
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">myNode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">myPred</span><span class="o">.</span><span class="na">get</span><span class="o">());</span> <span class="c1">// 设置新的节点，防止死锁。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">QNode</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">locked</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如下是CLHLock的一次典型的执行过程。</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/F5E3D2793D974B7BB1274077BAF2872D?method=download&amp;shareKey=419e00916b51512a5f479bcdb826fbe3" alt="image">
+对于CLHLock算法而言，唯一的缺点或许就是其在无cache的NUMA系统结构下性能很差——每个线程自旋等待前驱节点的locked域变为false，若内存位置较远，则性能会受损。</p>
+<h4 id="mcslock">MCSLock<a hidden class="anchor" aria-hidden="true" href="#mcslock">#</a></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MCSLock</span> <span class="kd">implements</span> <span class="n">Lock</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">myNode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="nf">MCSLock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">tail</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;(</span><span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myNode</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(</span><span class="n">QNode</span><span class="o">::</span><span class="k">new</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">lock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span> <span class="o">=</span> <span class="n">myNode</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">getAndSet</span><span class="o">(</span><span class="n">qnode</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">pred</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">qnode</span><span class="o">.</span><span class="na">locked</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pred</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">qnode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">// wait until predecessor gives up the lock
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="k">while</span> <span class="o">(</span><span class="n">qnode</span><span class="o">.</span><span class="na">locked</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">unlock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span> <span class="o">=</span> <span class="n">myNode</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">qnode</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">tail</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">qnode</span><span class="o">,</span> <span class="kc">null</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">			<span class="c1">// 等待next线程节点被赋值(pred.next = qnode)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="c1">// 解决两线程 lock和unlock的并发
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="k">while</span> <span class="o">(</span><span class="n">qnode</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">qnode</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">locked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">qnode</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">QNode</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">boolean</span> <span class="n">locked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>MCSLock具有CLHLock的优点，并且更适用于NUMA的系统结构。但其不足的地方在于<strong>释放锁时也需要自旋，而且相对于CLHLock而言，其读、写和compareAndSet()方法的调用次数会更多些</strong>。以下是MCSLock算法的执行过程。
+<img src="https://note.youdao.com/yws/api/personal/file/102DDF159B6047D8B6F7121734785BAE?method=download&amp;shareKey=10f96f5d6b2e2aaf27e6abb73c36cc44" alt="image"></p>
+<h3 id="4限时队列锁a-queue-lock-with-timeouts">4、限时队列锁(A Queue Lock with Timeouts)<a hidden class="anchor" aria-hidden="true" href="#4限时队列锁a-queue-lock-with-timeouts">#</a></h3>
+<p>对于BackoffLock算法而言，超时无需等待是简单的。但是对于任一队列锁算法(Queue Lock)而言，超时控制却并不简单——任一线程节点锁的获得都是由前驱线程驱动的，假若一个线程简单的返回，那么其后面的线程将会饿死。
+如上所述，线程超时时不能简单忽略或放弃。而让一个线程节点从链表中删除而不影响并发锁的释放时十分困难的。因此可以采用一种取巧的方法——当一个线程超时时，将其线程节点标记为放弃，后续线程<em>发现</em>其已被放弃，则跳过该节点。</p>
+<pre tabindex="0"><code>public class TOLock implements Lock {
+	private final AtomicReference&lt;QNode&gt; tail;
+	private final ThreadLocal&lt;QNode&gt; myNode;
+
+	private final static QNode AVAILABLE = new QNode();
+
+	public TOLock() {
+		tail = new AtomicReference&lt;&gt;(null);
+		myNode = ThreadLocal.withInitial(QNode::new);
+	}
+
+	public boolean tryLock(long time, TimeUnit unit) {
+		long startTime = System.nanoTime();
+		long patience = TimeUnit.NANOSECONDS.convert(time, unit);
+		QNode qnode = new QNode();
+
+		myNode.set(qnode);
+		qnode.pred = null;
+		QNode myPred = tail.getAndSet(qnode);
+		if (myPred == null || myPred.pred == AVAILABLE) {
+			return true;
+		}
+
+		while (System.nanoTime() - startTime &lt; patience) {
+			QNode predPred = myPred.pred;
+			// 多个线程lock时，第一个获得锁的线程 unlock后必定AVAILABLE
+			// 即队列中必定有且只有一个 AVAILABLE节点。
+			if (predPred == AVAILABLE) {
+				return true;
+			} else if (predPred != null) { // 不为null，即前驱线程也超时了
+				myPred = predPred;
+			}
+		}
+
+		// 超时且当前节点不为tail，将当前节点指向其前驱线程节点
+		if (!tail.compareAndSet(qnode, myPred)) {
+			qnode.pred = myPred;
+		}
+		return false;
+
+	}
+
+	public void unlock() {
+		QNode qnode = myNode.get();
+		// 此时有线程等候获取锁，将当前节点指向AVAILABLE
+		if (!tail.compareAndSet(qnode, null)) {
+			qnode.pred = AVAILABLE;
+		}
+	}
+
+	private static class QNode {
+		private QNode pred = null;
+	}
+}
+</code></pre><p><strong>如同CLHLock一样，TOLock是一个虚拟的锁队列。当线程超时时，<code>qnode.pred</code>就会指向其前驱节点(同样，前驱线程超时时，前驱结点就指向其对应的前驱节点)。</strong>
+<img src="https://note.youdao.com/yws/api/personal/file/2D1B92C452B241E8A2007BCB6FB5CB9D?method=download&amp;shareKey=96a4ec0e8786d39a236b132adbd0ef99" alt="image"></p>
+<h3 id="5复合锁composite-lock">5、复合锁(Composite Lock)<a hidden class="anchor" aria-hidden="true" href="#5复合锁composite-lock">#</a></h3>
+<p>CompositeLock维护一个短的固定大小的所节点数组每个试图获得所得线程随机在数组中选择一个节点。若该节点正在使用(<code>WAITING</code>)，则backoff并再次尝试获取。若成功获取节点，则将该节点入队到类似TOLock的队列中。此过程中，困难部分在于处理多个线程同时试图获取节点控制权的情况以及回收数组中被释放(<code>FREE</code>、<code>ABORTED</code>、<code>RELEASED</code>)。此处我们使用<code>AtomicStampedReference</code>，通过版本号保证多个线程同时获取同一锁节点时，只有一个线程能成功获得。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CompositeLock</span> <span class="kd">implements</span> <span class="n">Lock</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">SIZE</span> <span class="o">=</span> <span class="mi">4</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MIN_BACKOFF</span> <span class="o">=</span> <span class="mi">1024</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_BACKOFF</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="n">MIN_BACKOFF</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicStampedReference</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">QNode</span><span class="o">[]</span> <span class="n">waiting</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">QNode</span><span class="o">&gt;</span> <span class="n">myNode</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="nf">CompositeLock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">tail</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicStampedReference</span><span class="o">&lt;&gt;(</span><span class="kc">null</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">waiting</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QNode</span><span class="o">[</span><span class="n">SIZE</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">waiting</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">waiting</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QNode</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">tryLock</span><span class="o">(</span><span class="kt">long</span> <span class="n">time</span><span class="o">,</span> <span class="n">TimeUnit</span> <span class="n">unit</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">long</span> <span class="n">patience</span> <span class="o">=</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">.</span><span class="na">convert</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">unit</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Backoff</span> <span class="n">backoff</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Backoff</span><span class="o">(</span><span class="n">MIN_BACKOFF</span><span class="o">,</span> <span class="n">MAX_BACKOFF</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		    <span class="c1">// acquire 获取固定数组中的随机节点，并更新他的状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">QNode</span> <span class="n">node</span> <span class="o">=</span> <span class="n">acquireQNode</span><span class="o">(</span><span class="n">backoff</span><span class="o">,</span> <span class="n">startTime</span><span class="o">,</span> <span class="n">patience</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">// splice 将节点放入虚拟的锁队列中，返回其对应的前驱节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">QNode</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">spliceQNode</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="n">startTime</span><span class="o">,</span> <span class="n">patience</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">// 等待获得锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">waitForPredecessor</span><span class="o">(</span><span class="n">pred</span><span class="o">,</span> <span class="n">node</span><span class="o">,</span> <span class="n">startTime</span><span class="o">,</span> <span class="n">patience</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">TimeoutException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">unlock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">acqNode</span> <span class="o">=</span> <span class="n">myNode</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">acqNode</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">RELEASED</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myNode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">QNode</span> <span class="nf">acquireQNode</span><span class="o">(</span><span class="n">Backoff</span> <span class="n">backoff</span><span class="o">,</span> <span class="kt">long</span> <span class="n">startTime</span><span class="o">,</span> <span class="kt">long</span> <span class="n">patience</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">node</span> <span class="o">=</span> <span class="n">waiting</span><span class="o">[</span><span class="n">ThreadLocalRandom</span><span class="o">.</span><span class="na">current</span><span class="o">().</span><span class="na">nextInt</span><span class="o">(</span><span class="n">SIZE</span><span class="o">)];</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">currTail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span><span class="o">[]</span> <span class="n">currStamp</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span> <span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">FREE</span><span class="o">,</span> <span class="n">State</span><span class="o">.</span><span class="na">WAITING</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="n">node</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="n">currTail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currStamp</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">State</span> <span class="n">state</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="na">ABORTED</span> <span class="o">||</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="na">RELEASED</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="o">(</span><span class="n">node</span> <span class="o">==</span> <span class="n">currTail</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    				<span class="c1">// 进入到此行的情况为：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    				<span class="c1">// node的状态为ABORTED或RELEASED
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    				<span class="c1">// 且node已在锁队列中并为尾节点，即当前node应该最先获得锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    				
+</span></span><span class="line"><span class="cl">					<span class="n">QNode</span> <span class="n">myPred</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">// 若state为RELEASED，即锁已经释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>					<span class="c1">// 若state为ABORTED，即节点超时了，要将链表重定向到节点前驱节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>					<span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="na">ABORTED</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">						<span class="n">myPred</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">pred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">					<span class="o">}</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">// 将随机到的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>					<span class="k">if</span> <span class="o">(</span><span class="n">tail</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">currTail</span><span class="o">,</span> <span class="n">myPred</span><span class="o">,</span> <span class="n">currStamp</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">currStamp</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">						<span class="n">node</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">WAITING</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">						<span class="k">return</span> <span class="n">node</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">					<span class="o">}</span>
+</span></span><span class="line"><span class="cl">				<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="n">backoff</span><span class="o">.</span><span class="na">backoff</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">timeout</span><span class="o">(</span><span class="n">patience</span><span class="o">,</span> <span class="n">startTime</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">throw</span> <span class="k">new</span> <span class="n">TimeoutException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将节点放入队列尾部中，并返回前驱节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">private</span> <span class="n">QNode</span> <span class="nf">spliceQNode</span><span class="o">(</span><span class="n">QNode</span> <span class="n">node</span><span class="o">,</span> <span class="kt">long</span> <span class="n">startTime</span><span class="o">,</span> <span class="kt">long</span> <span class="n">patience</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">currTail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span><span class="o">[]</span> <span class="n">currStamp</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span> <span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// splice node into queue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">do</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">currTail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currStamp</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">timeout</span><span class="o">(</span><span class="n">startTime</span><span class="o">,</span> <span class="n">patience</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">node</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">FREE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">				<span class="k">throw</span> <span class="k">new</span> <span class="n">TimeoutException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span> <span class="k">while</span> <span class="o">(!</span><span class="n">tail</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">currTail</span><span class="o">,</span> <span class="n">node</span><span class="o">,</span> <span class="n">currStamp</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">currStamp</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="mi">1</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">currTail</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kt">void</span> <span class="nf">waitForPredecessor</span><span class="o">(</span><span class="n">QNode</span> <span class="n">pred</span><span class="o">,</span> <span class="n">QNode</span> <span class="n">node</span><span class="o">,</span> <span class="kt">long</span> <span class="n">startTime</span><span class="o">,</span> <span class="kt">long</span> <span class="n">patience</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">TimeoutException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// wait for predecessor to release lock
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="kt">int</span><span class="o">[]</span> <span class="n">stamp</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span> <span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">pred</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 没有线程获取到锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">myNode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">State</span> <span class="n">predState</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 以下while循环操作，与TOLock类似
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">while</span> <span class="o">(</span><span class="n">predState</span> <span class="o">!=</span> <span class="n">State</span><span class="o">.</span><span class="na">RELEASED</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">predState</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="na">ABORTED</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">QNode</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">pred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">pred</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="na">pred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">temp</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">FREE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(</span><span class="n">timeout</span><span class="o">(</span><span class="n">patience</span><span class="o">,</span> <span class="n">startTime</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">node</span><span class="o">.</span><span class="na">pred</span> <span class="o">=</span> <span class="n">pred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">node</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">ABORTED</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">				<span class="k">throw</span> <span class="k">new</span> <span class="n">TimeoutException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="n">predState</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">pred</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">State</span><span class="o">.</span><span class="na">FREE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">myNode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">enum</span> <span class="n">State</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">FREE</span><span class="o">,</span> <span class="n">WAITING</span><span class="o">,</span> <span class="n">RELEASED</span><span class="o">,</span> <span class="n">ABORTED</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">QNode</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">State</span><span class="o">&gt;</span> <span class="n">state</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">pred</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">state</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;(</span><span class="n">State</span><span class="o">.</span><span class="na">FREE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>CompositeLock在锁切换方面和CLHLock和TOLock一样快，并且对于已获得队列锁节点的线程来说，超时退出直接设置节点状态即可，更加直接了。当多个线程backoff时，其访问不同存储单元，故而降低了争用。另外CompositeLock最坏情况需要O(L)存储空间，而TOLock则需要O(L·n)<em>(其中，L为锁节点数，n为线程数)</em>。不过CompositeLock有一个缺点——它并不保证FIFO的公平性。</p>
+<h4 id="快速路径复合锁fast-path-composite-lock">快速路径复合锁(Fast-Path-Composite-Lock)<a hidden class="anchor" aria-hidden="true" href="#快速路径复合锁fast-path-composite-lock">#</a></h4>
+<p>CompositeLock在争用的情况下能够获得很好的性能，但是在获取无争用锁时，它并不能像TASLock一样简单。因此我们可以在CompositeLock正常lock/unlock之前，可以先尝试快速获得lock。如下代码，通过一个stamp的高位置位来判断是否fastpath成功。</p>
+<blockquote>
+<p>而由于stamp时不断递增的，因此考虑极端情况，若stamp超过了FASTPATH设置为，此方法就会出错。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CompositeFastPathLock</span> <span class="kd">extends</span> <span class="n">CompositeLock</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 通过一个stamp的高位置位来判断是否fastpath成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">FASTPATH</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">30</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">fastPathLock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">stamp</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">oldStamp</span> <span class="o">=</span> <span class="n">stamp</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">qnode</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 若前面已经有线程fastpath成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="o">((</span><span class="n">oldStamp</span> <span class="o">&amp;</span> <span class="n">FASTPATH</span><span class="o">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">newStamp</span> <span class="o">=</span> <span class="o">(</span><span class="n">oldStamp</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">|</span> <span class="n">FASTPATH</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">tail</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">qnode</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">oldStamp</span><span class="o">,</span> <span class="n">newStamp</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">tryLock</span><span class="o">(</span><span class="kt">long</span> <span class="n">time</span><span class="o">,</span> <span class="n">TimeUnit</span> <span class="n">unit</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="n">fastPathLock</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(</span><span class="kd">super</span><span class="o">.</span><span class="na">tryLock</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">unit</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">while</span> <span class="o">((</span><span class="n">tail</span><span class="o">.</span><span class="na">getStamp</span><span class="o">()</span> <span class="o">&amp;</span> <span class="n">FASTPATH</span><span class="o">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">fastPathUnlock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">oldStamp</span><span class="o">,</span> <span class="n">newStamp</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">oldStamp</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">getStamp</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="o">((</span><span class="n">oldStamp</span> <span class="o">&amp;</span> <span class="n">FASTPATH</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span><span class="o">[]</span> <span class="n">stamp</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span> <span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="n">QNode</span> <span class="n">qnode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">do</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">qnode</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">stamp</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">oldStamp</span> <span class="o">=</span> <span class="n">stamp</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">			<span class="n">newStamp</span> <span class="o">=</span> <span class="n">oldStamp</span> <span class="o">&amp;</span> <span class="o">(</span><span class="err">ˆ</span><span class="n">FASTPATH</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span> <span class="k">while</span> <span class="o">(!</span><span class="n">tail</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">qnode</span><span class="o">,</span> <span class="n">qnode</span><span class="o">,</span> <span class="n">oldStamp</span><span class="o">,</span> <span class="n">newStamp</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">unlock</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">(!</span><span class="n">fastPathUnlock</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">super</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">###</span> <span class="mi">2</span><span class="err">、条件等待与唤醒</span>
+</span></span><span class="line"><span class="cl"><span class="err">将方法、互斥锁和条件对象组合在一起的整体就被称作</span><span class="o">**</span><span class="err">管程</span><span class="o">(</span><span class="n">Monitor</span><span class="o">)**</span><span class="err">。由于此处代码中的</span><span class="n">Condition</span><span class="err">对象用的是</span><span class="n">signal</span><span class="err">方法，只会唤醒一个等待的线程，因此不能添加注释中的代码，否则会产生唤醒丢失问题。</span>
+</span></span><span class="line"><span class="cl"><span class="err">```</span><span class="n">java</span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">LockedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">final</span> <span class="n">Lock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">final</span> <span class="n">Condition</span> <span class="n">notFull</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span> <span class="c1">// 等待队列非满
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">final</span> <span class="n">Condition</span> <span class="n">notEmpty</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span> <span class="c1">// 等待队列非空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">final</span> <span class="n">T</span><span class="o">[]</span> <span class="n">items</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">tail</span><span class="o">,</span> <span class="n">head</span><span class="o">,</span> <span class="n">count</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LockedQueue</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">items</span> <span class="o">=</span> <span class="o">(</span><span class="n">T</span><span class="o">[])</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="mi">100</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">enq</span><span class="o">(</span><span class="n">T</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">notFull</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="n">items</span><span class="o">[</span><span class="n">tail</span><span class="o">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(++</span><span class="n">tail</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">tail</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="o">++</span><span class="n">count</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//			if(count == 1) { 错误！会导致唤醒丢失问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				<span class="n">notEmpty</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//			}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">T</span> <span class="nf">deq</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">notEmpty</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="n">T</span> <span class="n">x</span> <span class="o">=</span> <span class="n">items</span><span class="o">[</span><span class="n">head</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">(++</span><span class="n">head</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">head</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">			<span class="o">--</span><span class="n">count</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">notFull</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">x</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+			</div>
+			<div class="post-copyright">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+	<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+</a>
+<br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+进行许可。
+<br />
+转载时请附上原文链接以注明出处，图片在使用时请保留全部内容(可适当缩放)并附上图片所属的文章链接。若进行商业性使用，请先联系笔者获取许可。
+			</div>
+		</div>
+		<div class="post-footer-wrapper">
+			<hr class="hr-fade"/>
+			<div class="post-comment-wrapper"></div> 
+		</div>
+	</div>
+</div>
+
+</main>
+	</body>
+</html>

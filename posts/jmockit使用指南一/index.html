@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html><meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>JMockit使用指南(一)</title>
+
+<link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
+
+
+<meta name="generator" content="Hugo 0.107.0">
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+<div class="fixed-header-slide">
+    <div class="fixed-header-wrap">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    
+                    <a href="https://fzyho.github.io/">
+                        <img src="/theme/title-1.png" alt="logo" aria-label="logo"
+                            height="30px">
+                    </a>
+                </div>
+                <ul class="menu">
+                    <li>
+                        <a href="https://fzyho.github.io/docs/quic" title="QUIC协议(RFC)">
+                            <span>QUIC协议(RFC)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fzyho.github.io/archives" title="Archives">
+                            <span>Archives</span>
+                        </a>
+                    </li></ul>
+            </nav>
+            
+        </header>
+    </div>
+</div><body>
+		<main class="content">
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+    
+    
+    var tables = document.querySelectorAll('.post-body > table');
+    for (let i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentElement.replaceChild(wrapper, table);
+      wrapper.appendChild(table);
+    }
+    
+
+
+    
+    
+      var mathElements = document.getElementsByClassName('math');
+      var options = {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$$\n", right: "\n$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      };
+
+      renderMathInElement(document.querySelector('.post-body'), options);
+    
+    
+  });
+</script>
+
+
+<div class="wrapper-toc">
+    <div class="toc">
+		
+		
+		
+			<div class="toc-content">
+			
+				
+				
+				
+				<div style="margin: auto; text-align: center;font-weight: bolder;">- 目录 -</div>
+				
+				
+				<ul></ul>
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#%e7%9b%b8%e5%85%b3%e6%a6%82%e5%bf%b5" onclick="onNavClick(`#相关概念-nav`)" id="相关概念-nav" class="animated-visibility">
+										相关概念
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#test-doubles" onclick="onNavClick(`#test-doubles-nav`)" id="test-doubles-nav" class="animated-visibility">
+										Test Doubles
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#%e6%ad%a4%e5%a4%84%e6%9c%89%e5%9b%be%e7%89%87test-doubles%e7%9a%84%e5%8c%85%e5%90%ab%e7%bb%93%e6%9e%84" onclick="onNavClick(`#此处有图片test-doubles的包含结构-nav`)" id="此处有图片test-doubles的包含结构-nav" class="animated-visibility">
+										此处有图片：Test Doubles的包含结构
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#record-replay-verify%e6%a8%a1%e5%9e%8b" onclick="onNavClick(`#record-replay-verify模型-nav`)" id="record-replay-verify模型-nav" class="animated-visibility">
+										Record-Replay-Verify模型
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#mock%e6%b3%a8%e8%a7%a3" onclick="onNavClick(`#mock注解-nav`)" id="mock注解-nav" class="animated-visibility">
+										Mock注解
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#mocked%e6%b3%a8%e8%a7%a3" onclick="onNavClick(`#mocked注解-nav`)" id="mocked注解-nav" class="animated-visibility">
+										@Mocked注解
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#injectable%e5%92%8ctested%e6%b3%a8%e8%a7%a3" onclick="onNavClick(`#injectable和tested注解-nav`)" id="injectable和tested注解-nav" class="animated-visibility">
+										@Injectable和@Tested注解
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+								
+									<ul>
+								
+							
+							
+							
+								<li>
+									<a href="#tested%e4%bf%ae%e9%a5%b0%e5%af%b9%e8%b1%a1%e5%ae%9e%e4%be%8b%e5%8c%96" onclick="onNavClick(`#tested修饰对象实例化-nav`)" id="tested修饰对象实例化-nav" class="animated-visibility">
+										@Tested修饰对象实例化
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+							
+								<li>
+									<a href="#%e5%8c%b9%e9%85%8d%e8%a7%84%e5%88%99" onclick="onNavClick(`#匹配规则-nav`)" id="匹配规则-nav" class="animated-visibility">
+										匹配规则
+									</a>
+								</li>
+							
+							
+						
+					
+				
+					
+					
+						
+							
+							
+							
+							
+								
+									</ul>
+								
+							
+							
+								<li>
+									<a href="#capturing" onclick="onNavClick(`#capturing-nav`)" id="capturing-nav" class="animated-visibility">
+										@Capturing
+									</a>
+								</li>
+							
+							
+						
+					
+				
+				</ul>
+			</div>
+		
+    </div>
+</div>
+
+
+<div class="post-list">
+	<div class="single-post">
+		<div class="post-head-wrapper">
+			<div class="post-title">
+				JMockit使用指南(一)
+				
+			</div>
+			<div class="post-meta">
+    <time class="post-meta-date" itemprop="datePublished">
+        2022-12-19
+    </time>
+
+    <ul class="post-meta-tags">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 28 24">
+    <path d="M9.777 2l11.395 11.395-7.779 7.777-11.393-11.39v-7.782h7.777zm.828-2l-10.604.001v10.609l13.392 13.39 10.607-10.605-13.395-13.395zm-6.019 7.414c-.78-.781-.779-2.047.002-2.827.781-.782 2.047-.781 2.826-.003.783.783.782 2.049 0 2.83-.779.781-2.045.781-2.828 0zm5.824 7.947l-3.537-3.535.709-.707 3.535 3.535-.707.707zm4.242 0l-5.658-5.656.708-.708 5.657 5.657-.707.707zm2.121-2.121l-5.657-5.657.707-.707 5.657 5.657-.707.707z"/>
+</svg>
+        
+        
+            <li><a href="https://fzyho.github.io/tags/java/" title="java">java</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/mock/" title="mock">mock</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/test/" title="test">test</a></li>
+        
+            <li><a href="https://fzyho.github.io/tags/unit-test/" title="unit test">unit test</a></li>
+        
+    </ul>
+</div>
+		</div>
+		<div class="post-body-wrapper">
+			<div class="post-body" v-pre>
+				
+				<p>开发者在实现了需求功能或者完成了某个模块后，时常需要对模块整体功能或者某些关键逻辑进行单元测试(Unit Test)以验证程序运行是否符合预期。而在运行程序时，程序不可避免的可能需要调用第三方库、连接网络、数据库等，需要依赖许多不同的外部模块。但这些可能在开发过程中未真正接入或者不可用。这时就需要将我们的测试从实际的运行环境中隔离开来(Test Isolation)。而<a href="http://jmockit.github.io/">Jmockit</a>则是为解决这类问题而诞生的。</p>
+<p>Jmockit是一个对类或对象进行Mock的工具，它必须运行在JUnit或者TestNG框架中。</p>
+<p>This is a JMockit User Guide. Since the <a href="http://jmockit.github.io/">official guide</a> is a bit obscure, I transalate and rearrange the content of it and hope it could be clearer and more heplful for readers.</p>
+<h2 id="相关概念">相关概念<a hidden class="anchor" aria-hidden="true" href="#相关概念">#</a></h2>
+<p>在讲解JMockit的使用之前，笔者想先简单描述一些与Mock相关的概念和定义，以便后面更好的进行讲解叙述。</p>
+<h3 id="test-doubles">Test Doubles<a hidden class="anchor" aria-hidden="true" href="#test-doubles">#</a></h3>
+<p>在自动化测试或者进行单元测试中，我们常常希望能够将某个模块隔离解耦出来，单独地进行测试。如此我们可以降低测试用例构建的难度和复杂度，并且无需担心测试的模块会受到系统其他模块的影响。为此，我们就需要构建一些行为与实际生产环境类似的简化的对象。Gerard Meszaros在其著作《<a href="http://xunitpatterns.com/Test%20Double.html">xUnit Test Patterns: Refactoring Test Code</a>》将此类对象用一个概括性的通用术语表示——<strong>Test Doubles</strong>(此术语源于<em>stunt double</em>，特技替身演员)：</p>
+<blockquote>
+<p>When we are writing a test in which we cannot (or chose not to) use a real depended-on component (DOC), we can replace it with a <em>Test Double</em>. The <em>Test Double</em> doesn&rsquo;t have to behave exactly like the real DOC; it merely has to provide the same API as the real one so that the SUT <em>thinks</em> it is the real one!</p>
+</blockquote>
+<p>书中，Gerard Meszaros将<strong>Test Doubles</strong>大体分为五种类型：<em>Dummy Object</em>、<em>Test Stub</em>、<em>Test Spy</em>、<em>Mock Object</em> 以及<em>Fake Object</em>，并对各种类型赋予不同的定义，详细地描述了各自的使用场景。不过通常的，人们会更喜欢直接使用<strong>Mock</strong>一词来统一表达不同的Test Doubles，这也就是JMockit的<em>Mock</em>之意。</p>
+<hr>
+<h4 id="此处有图片test-doubles的包含结构">此处有图片：Test Doubles的包含结构<a hidden class="anchor" aria-hidden="true" href="#此处有图片test-doubles的包含结构">#</a></h4>
+<hr>
+<p>第三方Mock库一般都会都会提供各种Test Doubles的构建方法，JMockit也是如此。JMockit允许使用者在non-mock类上mock其构造函数和方法——不论其权限是pulic、private、static还是final。根据<a href="https://jmockit.github.io/tutorial/Introduction.html">官方文档</a>的介绍，Jmockit提供的API可以大体分为两类：</p>
+<ul>
+<li><strong>mocking API</strong>——用于使用Mock后的依赖进行测试</li>
+<li><strong>faking API</strong>——用于创建并使用虚假实现来避免原本逻辑会导致的额外/巨大的性能消耗</li>
+</ul>
+<p>这两类接口其实都可以达到mock测试想要的效果，故容易混用。可以通过其使用意图来区分何时应该使用对应接口。</p>
+<h3 id="record-replay-verify模型">Record-Replay-Verify模型<a hidden class="anchor" aria-hidden="true" href="#record-replay-verify模型">#</a></h3>
+<p>Record-Replay-Verify模型，中文直译为“记录-重演-验证模型”，是Mock框架普遍使用的模型(有时也被称为Arrange-Act-Assert模型)，基本上所有Mocking库都会提供支持此模型，或者干脆就是直接按照此模型搭建框架。这模型将测试用例分成三部分：</p>
+<ul>
+<li><strong>Record阶段:</strong> 在此阶段，我们可以进行Mock对象/方法的替换；</li>
+<li><strong>Replay阶段:</strong> 在此阶段，核心的测试代码逻辑将会被调用，Record中进行Mock的对象/方法将可能被使用/调用到。此外Record和Replay并不存在一一对应的关系，即可以先执行多个Record，然后再执行Replay；</li>
+<li><strong>Verify阶段:</strong> 在此阶段，我们可以验证Record的调用是否有按照我们预期的设想执行——我们可以在此验证调用的执行次数、调用的输入以及输出；</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">mockit.*</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// ... other imports ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">RRVModelTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">void</span> <span class="nf">testMethod</span><span class="o">(</span><span class="n">mock</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 准备阶段，定义/执行无需Record的代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">      <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Expectation代码块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// 录制(Record)已经mock后的类型的方法调用期望(expectations)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此录制期望(但并不推荐这样做)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 执行测试代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">      <span class="k">new</span> <span class="n">Verifications</span><span class="o">()</span> <span class="o">{{</span> <span class="c1">// Verification代码块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// 已经mock后的类型的方法可以在此验证方法调用的期望(expectations)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="c1">// non-mocked类型的的方法调用也可以在此验证(但并不推荐这样做)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="o">}};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 非Verification代码块的验证代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可对类或实例实现mock的注解有三种：@Mocked、@Injectable、@Capturing。通常，@Injectable是最常用的，@Mocked比较少用，@Capturing更少。如果要Mock类静态方法或其他一些行为，之后讲到的Mock、MockUp也许会更强大一些。</p>
+<h2 id="mock注解">Mock注解<a hidden class="anchor" aria-hidden="true" href="#mock注解">#</a></h2>
+<h3 id="mocked注解">@Mocked注解<a hidden class="anchor" aria-hidden="true" href="#mocked注解">#</a></h3>
+<p><code>@Mocked</code>用于修饰类，告诉Jmockit为该类生成一个Mocked对象。@Mocked注解会影响到该类的所有方法(包括静态方法)，但是仅限于该类自身，其往下的子类或者往上的父类的方法不会被Mocked。而Mocked的方法都会返回确定的默认值：</p>
+<ul>
+<li>基础类型值(int、short、long等)返回0；</li>
+<li>String类型返回null；</li>
+<li>引用类型则返回该类型的一个Mocked对象，并对其方法和字段递归Mocked下去。</li>
+</ul>
+<p>由于@Mocked会影响到整个类，因此此注解使用起来并不灵活，用处不大，但是对于一些简单的只需要用到某个方法的返回结果而进行Mock的，使用@Mocked会直接简单许多。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MockedTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Mocked</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Mocked</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">IMockedThing</span> <span class="n">thing</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMocked</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">LocalDate</span> <span class="n">date2</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// @Mocked作用的两个字段 指向是不同的对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotSame</span><span class="o">(</span><span class="n">date1</span><span class="o">,</span> <span class="n">date2</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// date1对象或者new出来的对象的 getDayOfMonth() 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 结果都为0，即@Mocked作用于类而不是实例对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">date1</span><span class="o">.</span><span class="na">getDayOfMonth</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">LocalDate</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2021</span><span class="o">,</span> <span class="mi">12</span><span class="o">,</span> <span class="mi">12</span><span class="o">).</span><span class="na">getDayOfMonth</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// date1.ToString返回的并不是null，因为toString方法是其父类Object的方法,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// @Mocked注解只会关注与当前类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">date1</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// @Mocked修饰的类，影响其所有方法(包括今天方法)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNull</span><span class="o">(</span><span class="n">thing</span><span class="o">.</span><span class="na">something</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNull</span><span class="o">(</span><span class="n">IMockedThing</span><span class="o">.</span><span class="na">staticThing</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">interface</span> <span class="nc">IMockedThing</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">default</span> <span class="n">String</span> <span class="nf">something</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="s">&#34;something&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kd">static</span> <span class="n">String</span> <span class="nf">staticThing</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="s">&#34;something&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="injectable和tested注解">@Injectable和@Tested注解<a hidden class="anchor" aria-hidden="true" href="#injectable和tested注解">#</a></h3>
+<p><code>@Injectable</code>同样也是告诉Jmockit生成Mocked对象。但与@Mocked不同的是，其用于修饰的是对象实例而不是类。因为只修饰对象，所以此注解不会影响类的静态方法和构造函数。</p>
+<p>除此之外，@Injectable注解还有一个区别于@Mocked和@Capturing注解的重要能力——元素注入。一个用<code>@Tested</code>注解修饰的<code>non-final</code>声明的实例对象，可以在测试方法执行前被自动实例化和注入。而为了将Mocked实例注入到<code>@Tested</code>对象中，测试类必须包含有使用@Injectable或者@Tested修饰的仿造类。在一次测试中，Injectable/Tested实例的集合包括了测试类声明的Injectable/Tested实例以及测试方法参数的Injectable实例。因此同一个测试类中的不同测试用例所提供的Injectable/Tested实例集合是不一样的。</p>
+<h4 id="tested修饰对象实例化">@Tested修饰对象实例化<a hidden class="anchor" aria-hidden="true" href="#tested修饰对象实例化">#</a></h4>
+<p>当@Tested修饰的对象没有被赋值时，Jmockit就会尝试去对其进行实例化。若此类有多个构造函数，则会根据内在逻辑选取适合的构造函数(详见源码中的<code>ConstructorSearch.findConstructorToUse()</code>方法)。</p>
+<p>另外，前面提到Injectable/Tested实例集合包括了类声明实例以及测试方法参数实例。但若@Tested修饰的实例在测试方法参数中，那么其所能使用的Injectable实例也只能是测试方法参数中的。</p>
+<h4 id="匹配规则">匹配规则<a hidden class="anchor" aria-hidden="true" href="#匹配规则">#</a></h4>
+<p>当@Tested的实例化对象创建后，Jmockit还会对未赋值的字段尝试注入元素。首先根据需要的类型去找对应的Injectable实例。若找到多个，则通过名字去对应(构造函数的参数名、类的字段名称)。若还是找到多个Injectable对象或者找不到对应名称的Injectable对象，则选择最先定义的Injectable对象。</p>
+<p>另外，当测试方法参数使用@Injectable修饰时，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InjectableTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Tested</span>
+</span></span><span class="line"><span class="cl">	<span class="n">InjectableTestObj</span> <span class="n">obj</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Tested</span>
+</span></span><span class="line"><span class="cl">	<span class="n">InjectableContent</span> <span class="n">content</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;john&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">LocalTime</span> <span class="n">myTime</span> <span class="o">=</span> <span class="n">LocalTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">13</span><span class="o">,</span> <span class="mi">13</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Injectable</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">&#34;aa&#34;</span><span class="o">,</span> <span class="s">&#34;bb&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testOne</span><span class="o">(</span><span class="nd">@Injectable</span><span class="o">(</span><span class="s">&#34;mary&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">name</span><span class="o">,</span> 
+</span></span><span class="line"><span class="cl">			<span class="nd">@Injectable</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// Injectable的字段注入到 InjectableTestObj中，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 而InjectableTestObj又注入到InjectableContent
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">date</span><span class="o">,</span> <span class="n">date</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">theTime</span><span class="o">,</span> <span class="n">myTime</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">list</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">list</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">content</span><span class="o">.</span><span class="na">obj</span><span class="o">,</span> <span class="n">obj</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testTwo</span><span class="o">(</span><span class="nd">@Injectable</span><span class="o">(</span><span class="s">&#34;mary&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">name</span><span class="o">,</span> 
+</span></span><span class="line"><span class="cl">			<span class="nd">@Tested</span> <span class="n">InjectableContent</span> <span class="n">contentP</span><span class="o">,</span> 
+</span></span><span class="line"><span class="cl">			<span class="nd">@Injectable</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nd">@Injectable</span> <span class="n">LocalTime</span> <span class="n">otherTime</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">date</span><span class="o">,</span> <span class="n">date</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">theTime</span><span class="o">,</span> <span class="n">myTime</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="na">list</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">list</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 因为方法参数中没有InjectableTestObj类型的实例对象，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 因此contentP只new出来，并没有对contentP.obj进行实例化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNull</span><span class="o">(</span><span class="n">contentP</span><span class="o">.</span><span class="na">obj</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">content</span><span class="o">.</span><span class="na">obj</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">InjectableContent</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">InjectableTestObj</span> <span class="n">obj</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">InjectableTestObj</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">LocalTime</span> <span class="n">theTime</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kd">public</span> <span class="nf">InjectableTestObj</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">LocalTime</span> <span class="n">myTime</span><span class="o">,</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">this</span><span class="o">.</span><span class="na">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">this</span><span class="o">.</span><span class="na">theTime</span> <span class="o">=</span> <span class="n">myTime</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="capturing">@Capturing<a hidden class="anchor" aria-hidden="true" href="#capturing">#</a></h3>
+<p><code>@Capturing</code>和@Mocked类似，但不同在于Capturing将Mock的能力延伸覆盖到其子类或者接口实现类的方法实现中。当使用别人提供的第三方接口库，里面只有接口或者抽象方法时；或者实现类是以代理/AOP的形式存在的时候，此注解就能派上用场了。</p>
+<p>如下代码，我们将<code>@Capturing</code>和<code>@Mocked</code>相互作为参照进行对比，使用<code>@Mocked</code>修饰IMockedThing并没有影响到test方法中的unit.mocked。但<code>@Capturing</code>ICaptureThing会使得unit.capture的结果按照Expectations()代码块中的期望进行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CapturingTest</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Capturing</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">ICaptureThing</span> <span class="n">captureThing</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nd">@Mocked</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="n">IMockedThing</span> <span class="n">mockedThing</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">captureThing</span><span class="o">.</span><span class="na">capture</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">				<span class="n">result</span> <span class="o">=</span> <span class="s">&#34;annotation capture&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">				<span class="n">mockedThing</span><span class="o">.</span><span class="na">mocked</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">				<span class="n">result</span> <span class="o">=</span> <span class="s">&#34;annotation mocked&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="n">TestUnit</span> <span class="n">unit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TestUnit</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">unit</span><span class="o">.</span><span class="na">capture</span><span class="o">.</span><span class="na">capture</span><span class="o">());</span> <span class="c1">// 输出： annotation capture
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">unit</span><span class="o">.</span><span class="na">capture</span><span class="o">.</span><span class="na">getNum</span><span class="o">());</span> <span class="c1">// 输出： 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">unit</span><span class="o">.</span><span class="na">mocked</span><span class="o">.</span><span class="na">mocked</span><span class="o">());</span> <span class="c1">// 输出： mocked
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">unit</span><span class="o">.</span><span class="na">mocked</span><span class="o">.</span><span class="na">getNum</span><span class="o">());</span> <span class="c1">// 输出： 6
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		
+</span></span><span class="line"><span class="cl">		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">mockedThing</span><span class="o">.</span><span class="na">mocked</span><span class="o">());</span> <span class="c1">// 输出： mocked
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TestUnit</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="kd">final</span> <span class="n">ICaptureThing</span> <span class="n">capture</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ICaptureThing</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="n">String</span> <span class="nf">capture</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="s">&#34;capture&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getNum</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="n">capture</span><span class="o">().</span><span class="na">length</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">};</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">private</span> <span class="n">IMockedThing</span> <span class="n">mocked</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IMockedThing</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="n">String</span> <span class="nf">mocked</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="s">&#34;mocked&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">			<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getNum</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="n">mocked</span><span class="o">().</span><span class="na">length</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="o">};</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">interface</span> <span class="nc">ICaptureThing</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">String</span> <span class="nf">capture</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="nf">getNum</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">interface</span> <span class="nc">IMockedThing</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">String</span> <span class="nf">mocked</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="nf">getNum</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+			</div>
+			<div class="post-copyright">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+	<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+</a>
+<br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+进行许可。
+<br />
+转载时请附上原文链接以注明出处，图片在使用时请保留全部内容(可适当缩放)并附上图片所属的文章链接。若进行商业性使用，请先联系笔者获取许可。
+			</div>
+		</div>
+		<div class="post-footer-wrapper">
+			<hr class="hr-fade"/>
+			<div class="post-comment-wrapper"></div> 
+		</div>
+	</div>
+</div>
+
+</main>
+	</body>
+</html>

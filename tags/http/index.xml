@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>http on fzyho的小站</title>
+    <link>https://fzyho.github.io/tags/http/</link>
+    <description>Recent content in http on fzyho的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Fri, 14 May 2021 12:41:22 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTTP笔记</title>
+      <link>https://fzyho.github.io/posts/http%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 14 May 2021 12:41:22 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/http%E7%AC%94%E8%AE%B0/</guid>
+      <description>响应状态码 状态码分为5类，从100~599。数字第一位，即百位表示类别：
+1xx：提示信息，表示目前是协议处理的中间状态，还需后续操作 2xx：成功，报文已经收到并被正确处理 3xx：重定向，资源位置发生变动，需要客户端重新发送请求 4xx：客户端错误，请求保温有误，服务器无法处理 5xx：服务器错误，服务器在处理请求时内部发生错误 1xx 1xx其实很少用到，目前用的比较多的是“101 switching protocol”，表示客户端使用了Upgrade字段，要求在HTTP协议基础上升级为其他通信协议，比如说WebSocket。若服务器也同意则返回101，后续就不用HTTP了
+2xx &amp;ldquo;200 OK&amp;rdquo;，最常见的成功返回码 &amp;ldquo;200 No Content&amp;rdquo;，也是成功，不过响应头后没有Body信息 &amp;ldquo;200 Partial Content&amp;rdquo;，HTTP分快下载和断点续传的基础。通常还伴随着字段Content-Range表示body数据的具体范围。例如，“Content-Range：bytes 0-99/2000”，表示此次获取2000字节中的前100字节。 3xx 301 Moved Permanently，俗称 永久重定向，表明请求的资源不在了，要使用新的URI访问 302 Found，表明请求的资源还在，但暂时需要使用新的URI访问 304 Not Modified，表示资源未修改，用于缓存控制。不具备通常的跳转含义，可理解为“重定向到缓存的文件”。 连接管理 HTTP早期只有短连接，即一次请求-应答必定有一次连接的建立与断开。毫无疑问这是十分浪费时间的。因此后来提出长连接的概念，通过在Header添加字段Connection: keep-alive来告诉客户端，服务器支持长连接。不过TCP连接一直不关闭也是在暂用资源。所以客户端可以使用Connection: close来告诉服务器这次应答后可以关闭连接。服务器一般不主动断开连接，不过会采取一些策略，如Nginx的keepalive_timeout。
+队头阻塞(Head-of-line blocking) 跳转与重定向 由浏览器发起的跳转，叫主动跳转；而由服务器发起，浏览器无法控制的则称为被动跳转，在HTTP中还有另一个专有名词，称为重定向。重定向分两种：301——永久重定向 以及 302——临时重定向。重定向都需要携带一个响应字段Location，它标记了服务器要求重定向的URI。URI可以是绝对路径，也可以是相对路径。
+临时与永久重定向区别 永久：原来的URI已经不存在了，今后的所有请求都必须用新的URI。浏览器看到301，会作出适当的优化，如：历史记录、更新书签，下次就直接使用新的URI去访问；搜索引擎也会更新索引库，不再使用老旧的URI。 临时：浏览器/爬虫看到302，会认为原来的URI还存在，下次还会访问原来的URI。例如在双十一大促期间，将一些不重要的功能临时关闭，保证核心功能正常运行 应用场景 使用重定向跳转，核心在于理解重定向和永久/临时。一般使用重定向会在：
+资源不可用，使用新的URI——域名/服务器变更，网站改版，系统维护等 避免重复，让多个网站跳转同一个URI，增加访问入口的同时还不会增加工作量。某些网站会申请多个类似的域名，再重定向到主网站上。 重定向的问题 首先，重定向必然会导致性能的损耗，301/302的报文虽小，但是大量跳转也会对服务器造成影响。另外站内重定向还好，可以长连接复用；站外重定向就要开两个连接，对用户的体验影响也颇大。另外，如果重定向的策略欠缺考虑，可能会导致循环跳转：A-&amp;gt;B-&amp;gt;C-&amp;gt;A的情况。因此HTTP特别规定了，浏览器必须具有检测“循环跳转”的能力。如Chrome在检测到循环跳转后，会爆出“页面无法正常运行的”报错页面
+Cookie Cookie存储在浏览器中，让服务器知道前端的状态(如当前用户是谁，状态如何)。cookie的使用需要用到两个字段Set-Cookie以及Cookie。Set-Cookie是一个响应字段，由服务器发给前端，格式是Key=Value的格式，分号“;”隔开。前端/浏览器收到了响应报文，看到里面有Set-Cookie，就会将数据保存起来，下次再请求时就将Cookie一并发给后端。
+Cookie的属性 Cookie的生命周期。Cookie可以只在一段时间内可用。过期了浏览器就会认为Cookie失效，将其从存储中删除。Cookie的有效期可食用Expires以及Max-Age两个属性来设置。Expires和Max-Age可以同时出现，浏览器会优先使用Max-Age进行计算。
+Expires是过期时间/截止日期，使用绝对时间点。 Max-Age则是时间间隔，单位是秒。 Cookie的作用域。作用域限制浏览器只能将Cookie发送给特定的服务器或者URI，避免被其他网站盗用。Domain和Path字段分别指定Cookie的所属域名以及路径。
+Cookie的安全性。
+HttpOnly属性用于告诉浏览器，此Cookie只能通过浏览器HTTP协议传输，禁止其他访问方式。浏览器引擎就会禁用document.cookie，相关脚本攻击(如跨站脚本攻击-XSS)就无从谈起了。 SameSite可用于防范跨站请求伪造(XSRF)攻击。设置SameSite=Strict限制cookie不能随跳转连接跨站发送；SameSite=Lax则宽松些——允许GET/HEAD等安全发送，但禁止POST跨站发送。 Secure则表示仅能在HTTPS协议上使用此cookie；不过浏览器上的cookie还是明文存放，不加密的。 Cookie的应用 身份识别：用于保存用户的登录信息，实现会话事务； 广告追踪： HTTP代理 HTTPS HTTPS将HTTP的下层传输协议从TCP/IP转为SSL/TLS，即IP-&amp;gt;TCP-&amp;gt;SSL/TLS-&amp;gt;HTTP。SSL(Secure Socket Layer)后面纳入标准，改名为TLS(Transpor Layer Secure)。TLS由记录协议，握手协议，警告协议，变更密码规范协议以及扩展协议等几个子协议组成。</description>
+    </item>
+    
+  </channel>
+</rss>

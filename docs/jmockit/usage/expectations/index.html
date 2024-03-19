@@ -15,7 +15,7 @@
 <link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
-<meta name="generator" content="Hugo 0.102.3" />
+<meta name="generator" content="Hugo 0.107.0">
 
 
 
@@ -114,7 +114,7 @@
   
   
   
-  <a href="/docs/jmockit"><span>JMockit</span></a>
+  <a href="/docs/jmockit/usage/Expectations.md"><span>Expectations</span></a>
 </h2>
 
   
@@ -131,120 +131,6 @@
 
   
   <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="">Mock相关概念</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/" class="">库API使用</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/expectations/" class=" active">Expectations</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/verifications/" class="">Verifications</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D/" class="">方法参数匹配</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/mockup/" class="">MockUp</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/usage/mock%E6%B3%A8%E8%A7%A3/" class="">Mock注解</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://fzyho.github.io/docs/jmockit/application/" class="">综合运用</a>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
     
   </ul>
 
@@ -285,12 +171,12 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">testExample</span><span class="o">(</span><span class="nd">@Mocked</span> <span class="n">Example</span> <span class="n">mockInstance</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">   <span class="k">new</span> <span class="n">Expectations</span><span class="o">()</span> <span class="o">{{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">=</span> <span class="s">&#34;mocked&#34;</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">   <span class="o">}};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Assert</span><span class="o">.</span><span class="na">assertSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Assert</span><span class="o">.</span><span class="na">assertNotSame</span><span class="o">(</span><span class="n">mockInstance</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="s">&#34;test&#34;</span><span class="o">),</span> <span class="s">&#34;mocked&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -393,9 +279,9 @@
 </span></span><span class="line"><span class="cl">    <span class="o">}};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 以此输出：mocked1 mocked2 mocked3 mocked4 mocked3 mocked4 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">example2</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="n">otherExample1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -437,7 +323,7 @@
 </span></span><span class="line"><span class="cl">        <span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">anyInt</span><span class="o">,</span> <span class="n">anyString</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Delegate</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="nf">toDelegate</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">,</span> <span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="n">1</span> <span class="o">?</span> <span class="s">&#34;mock&#34;</span> <span class="o">+</span> <span class="n">num</span> <span class="o">:</span> <span class="n">str</span> <span class="o">+</span> <span class="n">num</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">?</span> <span class="s">&#34;mock&#34;</span> <span class="o">+</span> <span class="n">num</span> <span class="o">:</span> <span class="n">str</span> <span class="o">+</span> <span class="n">num</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="o">};</span>
 </span></span><span class="line"><span class="cl">
@@ -449,9 +335,9 @@
 </span></span><span class="line"><span class="cl">        <span class="o">};</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">OtherExample</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">example1</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">OtherExample</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>

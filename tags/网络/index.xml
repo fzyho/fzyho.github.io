@@ -6,11 +6,11 @@
     <description>Recent content in 网络 on fzyho的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Sun, 06 Feb 2022 23:38:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 Oct 2022 23:38:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅析零拷贝</title>
       <link>https://fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</link>
-      <pubDate>Sun, 06 Feb 2022 23:38:47 +0800</pubDate>
+      <pubDate>Thu, 06 Oct 2022 23:38:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E6%B5%85%E6%9E%90%E9%9B%B6%E6%8B%B7%E8%B4%9D/</guid>
       <description>在Linux/Unix体系中，一切皆为文件(everything is a file)。这在Unix最初的论文《The UNIX TimeSharing System》中便有所体现。而对于文件，最常见而又频繁的操作便是读/写操作。Linux的读写操作，也就是标准的I/O接口是基于数据拷贝的方式实现的。
@@ -32,7 +32,7 @@ mmap存在一个问题，就是多进程同时操作统一文件时，会触发S
     <item>
       <title>Netty浅析小记</title>
       <link>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</link>
-      <pubDate>Mon, 18 Oct 2021 12:41:22 +0800</pubDate>
+      <pubDate>Thu, 18 Aug 2022 12:41:22 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/netty%E6%B5%85%E6%9E%90%E5%B0%8F%E8%AE%B0/</guid>
       <description>Netty是使用Java编写的一个网络编程框架。直至目前，可以说Netty是Java网络编程的主流选择，其在各种业务场景，如直播、社交、游戏、电商等领域都有广泛应用。笔者在工作中也不可避免的经常与其打交道。以下便是笔者对Netty的一些特点的小记。这些特点并不是Netty独有的，只是笔者个人觉得它们或者是重要的地基，或者是有趣的设计，故而在此进行分析记录。

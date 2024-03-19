@@ -13,7 +13,7 @@
 <link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
-<meta name="generator" content="Hugo 0.102.3" />
+<meta name="generator" content="Hugo 0.107.0">
 
 
 
@@ -266,7 +266,7 @@
 			</div>
 			<div class="post-meta">
     <time class="post-meta-date" itemprop="datePublished">
-        2021-10-18
+        2022-08-18
     </time>
 
     <ul class="post-meta-tags">
@@ -378,7 +378,7 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">PooledHeapByteBuf</span> <span class="kd">extends</span> <span class="n">PooledByteBuf</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Recycler</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;</span> <span class="n">RECYCLER</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Recycler</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kd">protected</span> <span class="n">PooledHeapByteBuf</span> <span class="nf">newObject</span><span class="o">(</span><span class="n">Recycler</span><span class="o">.</span><span class="na">Handle</span><span class="o">&lt;</span><span class="n">PooledHeapByteBuf</span><span class="o">&gt;</span> <span class="n">handle</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="k">new</span> <span class="n">PooledHeapByteBuf</span><span class="o">(</span><span class="n">handle</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="k">new</span> <span class="n">PooledHeapByteBuf</span><span class="o">(</span><span class="n">handle</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">};</span>
 </span></span><span class="line"><span class="cl">
@@ -424,11 +424,11 @@ keepalive默认的超时是7200秒(2小时)，探测次数为5次。这对于实
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">bootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerBootstrap</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="n">bossGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="s">&#34;bossLoopGroup&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">workerGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="n">32</span><span class="o">,</span> <span class="s">&#34;workerLoopGroup&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">bossGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="s">&#34;bossLoopGroup&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">workerGroup</span> <span class="o">=</span> <span class="n">NettyFactory</span><span class="o">.</span><span class="na">eventLoopGroup</span><span class="o">(</span><span class="mi">32</span><span class="o">,</span> <span class="s">&#34;workerLoopGroup&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">bootstrap</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">channel</span><span class="o">(...)</span>
-</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_BACKLOG</span><span class="o">,</span> <span class="n">2048</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_BACKLOG</span><span class="o">,</span> <span class="mi">2048</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_REUSEADDR</span><span class="o">,</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">TCP_NODELAY</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_KEEPALIVE</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
@@ -487,7 +487,7 @@ keepalive默认的超时是7200秒(2小时)，探测次数为5次。这对于实
 </span></span><span class="line"><span class="cl">            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">()</span>
 </span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;encoder&#34;</span><span class="o">,</span> <span class="n">ServerMessageEncoder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;decoder&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">ServerMessageDecoder</span><span class="o">(...))</span>
-</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;idle-handler&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">IdleStateHandler</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">idleTimeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECOND</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;idle-handler&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">IdleStateHandler</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">idleTimeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECOND</span><span class="o">))</span>
 </span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="s">&#34;msg-handler&#34;</span><span class="o">,</span> <span class="n">ServerMessageHandler</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="o">});</span>
 </span></span><span class="line"><span class="cl">

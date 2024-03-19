@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GO on fzyho的小站</title>
+    <link>https://fzyho.github.io/tags/go/</link>
+    <description>Recent content in GO on fzyho的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Sun, 14 Jan 2024 12:41:22 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GO语言笔记</title>
+      <link>https://fzyho.github.io/posts/go%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Sun, 14 Jan 2024 12:41:22 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/go%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0/</guid>
+      <description>调度器和GPM模型 在Go中，线程是运行Goroutine的实体，调度器的功能是把可运行的Goroutine分配到工作线程上。而调度器的运作机制即为GPM模型。
+G : 协程(Goroutine) P : 处理器(Processor) M : 线程(Thread) GPM模型的组成 全局队列(Global Queue): 存放等待运行的G。全局队列可能被任意的P去获取里面的G， P的本地队列: 和全局队列类似，但存放数量不超过256个。新创建的**G&amp;rsquo;**会先加入本地队列，若本地队列满了，会将本地队列的一般加入全局队列。 P列表: 所有的P都在程序启动时就创建，最多 GOMAXPROC个。 M: 线程运行的是P的逻辑——从P的本地队列获取G，如果队列为空，则会尝试从全局队列中获取一批G，放入本地队列中；或者从其他本地队列中偷取一批。M的创建时机是 当P中有任务，但没有空闲的M进行关联时，就会创建新的M。 程序运行中，有两个释放G的情况，一个是移交机制，另一个是抢占机制。
+移交(hand off)：当G进行系统调用阻塞时，线程会释放绑定的P，将P交给其他空闲的线程处理，如果没有空闲线程，则会新创建一个。当G不阻塞后，会重新走放入队列的流程。 抢占：在Go中，一个协程(Goroutine)最多只占用CPU 10ms时间。 go func()调度流程 通过 go func()创建一个Goroutine 新创建的 G 会优先保存在 P的本地队列中，如果 P的本地队列已满(最多256)，则保存在全局队列中 G只能运行在M中。M会从 P的本地队列中弹出一个可执行的G进行处理，若本地队列为空，则从全局队列中获取一批 放入本地队列；若全局队列也为空，则从其他本地队列中偷取 一个M调用 G的过程 是一个循环机制，单个G运行不超过10ms 当运行中的G 发生阻塞操作导致 M阻塞了，runtime会将 此M-P关系解绑，创建/复用空闲线程来关联P 当阻塞的G 唤醒后，会尝试获取一个空闲的P(即无绑定关系的)，加入其中，并进行M-P关联；若获取不到空闲的P，则加入全局队列，M变为空闲的M M0：编号为0的主线程，负责执行初始化操作以及启动第一个G(即G0)。启动G0后，M0便和其他M一样 G0：每次启动一个M，创建的第一个Goroutine。G0仅负责调度G，在调度或者系统调度时，会使用M切换到G0，再通过G0进行调度。 GPM的调度场景 GPM调度器具有局部性。如果G1创建了G2，则G2会优先放在G1所在的本地队列 GPM调度器具有复用性。当一个G执行完后，不管其他P是否空闲，M都一定从绑定的 P的本地队列中获取 G。 全局队列的乱序性。如果当创建的G加入 本地队列时，发现队列已满，会将新创建的G和队列中前一半的G 以乱序的方式移到全局队列中。 M-P的自旋。在创建一个G的时候，会触发唤醒其他空闲的P和M(空闲的线程不会立刻被操作系统回收，而是放到一个休眠线程队列中)。唤醒的P和M会自动关联组合到一起，并执行M中的G0任务，此时状态被称为自旋。 M从P的队列中获取不到G，就会从全局队列中获取，获取公式为：min(len(GQ) / GOMAXPROCS + 1, cap(LQ) / 2)。 从全局队列也为空时，就会从其他本地队列的队尾获取一半的G。 因为最多只有GOMAXPROCS个P，因此程序中最多只有 GOMAXPROCS 个自旋的线程 内存分配和GC GC场景 Go采用的垃圾标记法是 三色标记法。为了能够进行并发标记，需要使用混合写屏障机制。</description>
+    </item>
+    
+  </channel>
+</rss>

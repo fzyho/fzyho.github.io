@@ -6,7 +6,7 @@
     <description>Recent content in mock on fzyho的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Fri, 02 Apr 2021 17:57:05 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/mock/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 Jan 2023 21:41:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/mock/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mock相关概念</title>
       <link>https://fzyho.github.io/docs/jmockit/mock%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/</link>
@@ -34,6 +34,34 @@ When we are writing a test in which we cannot (or chose not to) use a real depen
       
       <guid>https://fzyho.github.io/docs/jmockit/application/</guid>
       <description>This is a JMockit User</description>
+    </item>
+    
+    <item>
+      <title>JMockit使用指南(二)</title>
+      <link>https://fzyho.github.io/posts/jmockit%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E4%BA%8C/</link>
+      <pubDate>Mon, 09 Jan 2023 21:41:47 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/jmockit%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E4%BA%8C/</guid>
+      <description>前面我们提到Record-Replay-Verify模型，在JMockit中，Expectations{}则是用于录制(Record)。
+Record(录制) 录制类/对象的调用 Expectations代码块中，可以让特定方法调用(实例方法、静态方法皆可)输出指定的结果，而不用走原本方法内部的逻辑，并且可以指定只有当输入特定(范围)的参数时，才输出特定结果。需要注意的是，Expectations只能够改写非private且非static的非构造函数的方法。如果要仿造构造方法/静态方法，可以使用MockUp。
+1 2 3 4 5 6 7 8 9 10 @Test void testExample(@Mocked Example mockInstance) { new Expectations() {{ mockInstance.sayHello(1, &amp;#34;test&amp;#34;); result = &amp;#34;mocked&amp;#34;; }}; Assert.assertSame(mockInstance.sayHello(1,&amp;#34;test&amp;#34;), &amp;#34;mocked&amp;#34;); Assert.assertNotSame(mockInstance.sayHello(2,&amp;#34;test&amp;#34;), &amp;#34;mocked&amp;#34;); } 如上，在Expectations代码块中指定当sayHello方法被调用且参数为1, &amp;quot;test&amp;quot;时，直接返回结果&amp;quot;mocked&amp;quot;。而参数为其他值是，走原本的方法逻辑返回结果。
+除了上述代码例子，Expectations是配合Mock实例对象(@Mocked/@Injectable/@Capturing)进行录制的。Mock对象是对方法和字段都进行mock了。但某些情况我们需要使用真实的实例，但只需要对部分方法进行结果返回修改。此时可以使用Expectations(Object... )构造函数，指定对象修改其方法。
+如下代码例子，向Expectations()构造函数中传入参数Example实例对象example1以及OtherExample类，并改写sayHello()方法。可以看到Example对象的sayHello方法分别返回了不同的值，而OtherExample对象的sayHello方法则返回相同结果。另外，Expectations构造函数传入的参数并没有example2，但Expectations代码块中有Mockexample2的实例方法，并且也生效了。这是因为构造函数参数只会区分是是类定义还是类实例，若是类定义则会整个类方法生效，若是类实例，则只会对代码块中mock的实例方法生效。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 @Test public void testExample2() { Example example1 = new Example(); Example example2 = new Example(); OtherExample otherExample1 = new OtherExample(); OtherExample otherExample2 = new OtherExample(); new Expectations(example1, OtherExample.</description>
+    </item>
+    
+    <item>
+      <title>JMockit使用指南(一)</title>
+      <link>https://fzyho.github.io/posts/jmockit%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E4%B8%80/</link>
+      <pubDate>Mon, 19 Dec 2022 22:01:47 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/jmockit%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E4%B8%80/</guid>
+      <description>开发者在实现了需求功能或者完成了某个模块后，时常需要对模块整体功能或者某些关键逻辑进行单元测试(Unit Test)以验证程序运行是否符合预期。而在运行程序时，程序不可避免的可能需要调用第三方库、连接网络、数据库等，需要依赖许多不同的外部模块。但这些可能在开发过程中未真正接入或者不可用。这时就需要将我们的测试从实际的运行环境中隔离开来(Test Isolation)。而Jmockit则是为解决这类问题而诞生的。
+Jmockit是一个对类或对象进行Mock的工具，它必须运行在JUnit或者TestNG框架中。
+This is a JMockit User Guide. Since the official guide is a bit obscure, I transalate and rearrange the content of it and hope it could be clearer and more heplful for readers.
+相关概念 在讲解JMockit的使用之前，笔者想先简单描述一些与Mock相关的概念和定义，以便后面更好的进行讲解叙述。
+Test Doubles 在自动化测试或者进行单元测试中，我们常常希望能够将某个模块隔离解耦出来，单独地进行测试。如此我们可以降低测试用例构建的难度和复杂度，并且无需担心测试的模块会受到系统其他模块的影响。为此，我们就需要构建一些行为与实际生产环境类似的简化的对象。Gerard Meszaros在其著作《xUnit Test Patterns: Refactoring Test Code》将此类对象用一个概括性的通用术语表示——Test Doubles(此术语源于stunt double，特技替身演员)：
+When we are writing a test in which we cannot (or chose not to) use a real depended-on component (DOC), we can replace it with a Test Double.</description>
     </item>
     
     <item>

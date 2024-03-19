@@ -13,7 +13,7 @@
 <link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
-<meta name="generator" content="Hugo 0.102.3" />
+<meta name="generator" content="Hugo 0.107.0">
 
 
 
@@ -270,7 +270,7 @@
 			</div>
 			<div class="post-meta">
     <time class="post-meta-date" itemprop="datePublished">
-        2020-10-04
+        2021-08-04
     </time>
 
     <ul class="post-meta-tags">
@@ -306,7 +306,7 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">randomPrizeIds</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">allPrizeIds</span><span class="o">,</span> <span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">	<span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArraysList</span><span class="o">(</span><span class="n">allPrizeIds</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">	<span class="n">Collections</span><span class="o">.</span><span class="na">shuffle</span><span class="o">(</span><span class="n">copy</span><span class="o">);</span> <span class="c1">// 打乱列表元素原本的排列顺序
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="na">subList</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">num</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="na">subList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">num</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -325,8 +325,8 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">shuffle</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="n">Random</span> <span class="n">rnd</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">swap</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">1</span><span class="o">,</span> <span class="n">rnd</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">swap</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">rnd</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
 </span></span><span class="line"><span class="cl">	<span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>

@@ -13,7 +13,7 @@
 <link rel="icon" href="https://fzyho.github.io/theme/head-icon-3.png">
 
 
-<meta name="generator" content="Hugo 0.102.3" />
+<meta name="generator" content="Hugo 0.107.0">
 
 
 
@@ -248,7 +248,7 @@
 			</div>
 			<div class="post-meta">
     <time class="post-meta-date" itemprop="datePublished">
-        2021-02-08
+        2021-01-02
     </time>
 
     <ul class="post-meta-tags">
@@ -314,13 +314,13 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 表示线程取消等待，不竞争资源的获取
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CANCELLED</span> <span class="o">=</span>  <span class="n">1</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CANCELLED</span> <span class="o">=</span>  <span class="mi">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 表示获得资源锁了，对应线程无需挂起，需要唤醒
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">SIGNAL</span>    <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">SIGNAL</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 用于表示线程节点在做条件等待
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CONDITION</span> <span class="o">=</span> <span class="o">-</span><span class="n">2</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CONDITION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 表示后续线程/节点在调用acquireShare()方法时可以无条件获得锁
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">PROPAGATE</span> <span class="o">=</span> <span class="o">-</span><span class="n">3</span><span class="o">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">PROPAGATE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 初始化为0，而后或为上述4中状态值。
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">volatile</span> <span class="kt">int</span> <span class="n">waitStatus</span><span class="o">;</span>

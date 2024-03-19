@@ -6,11 +6,11 @@
     <description>Recent content in 队列锁 on fzyho的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Mon, 08 Feb 2021 14:16:15 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E9%98%9F%E5%88%97%E9%94%81/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Jan 2021 14:16:15 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E9%98%9F%E5%88%97%E9%94%81/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从CLH锁聊聊AQS的设计</title>
       <link>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
-      <pubDate>Mon, 08 Feb 2021 14:16:15 +0800</pubDate>
+      <pubDate>Sat, 02 Jan 2021 14:16:15 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/%E4%BB%8Eclh%E9%94%81%E8%81%8A%E8%81%8Aaqs%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
       <description>AbstractQueuedSynchronizer，即AQS，是Java并发工具包(JUC)中的锁和同步器(Semophore、CountDownLatch等)的基础。它提供了一个上锁、释放以及锁等待的整体流程框架。AQS是基于一个FIFO的等待队列实现的，它是CLH队列锁(CLH Queuing Lock)的一种变体。因此，秉着从简到深的想法，我们先来了解下CLH队列锁。

@@ -6,11 +6,11 @@
     <description>Recent content in 数据库 on fzyho的小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-ch</language>
-    <lastBuildDate>Thu, 25 Aug 2022 18:01:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Nov 2023 18:01:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mysql的自我使用规范</title>
       <link>https://fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</link>
-      <pubDate>Thu, 25 Aug 2022 18:01:47 +0800</pubDate>
+      <pubDate>Sat, 25 Nov 2023 18:01:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/mysql%E7%9A%84%E4%BD%BF%E7%94%A8%E8%87%AA%E6%88%91%E8%A7%84%E8%8C%83/</guid>
       <description>以下笔者在多年后端工作中MySQL数据库使用经历的归纳总结。内容不长，要点不多，会尽量避免常识性的规范。以免以后自己回顾也没心情看下去。
@@ -41,7 +41,7 @@ SELECT语句必须指定具体字段名称，禁止写成*，并且应该带上l
     <item>
       <title>mysql索引浅析</title>
       <link>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</link>
-      <pubDate>Tue, 07 Sep 2021 23:01:47 +0800</pubDate>
+      <pubDate>Mon, 07 Feb 2022 23:01:47 +0800</pubDate>
       
       <guid>https://fzyho.github.io/posts/mysql%E7%B4%A2%E5%BC%95%E6%B5%85%E6%9E%90/</guid>
       <description>什么是索引？根据mysql官方文档的阐述：

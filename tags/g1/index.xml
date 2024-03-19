@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>G1 on fzyho的小站</title>
+    <link>https://fzyho.github.io/tags/g1/</link>
+    <description>Recent content in G1 on fzyho的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-ch</language>
+    <lastBuildDate>Mon, 13 Sep 2021 23:11:47 +0800</lastBuildDate><atom:link href="https://fzyho.github.io/tags/g1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>垃圾收集器-CMS和G1</title>
+      <link>https://fzyho.github.io/posts/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8-cms%E5%92%8Cg1/</link>
+      <pubDate>Mon, 13 Sep 2021 23:11:47 +0800</pubDate>
+      
+      <guid>https://fzyho.github.io/posts/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8-cms%E5%92%8Cg1/</guid>
+      <description>CMS收集器 CMS收集器有三个基本操作：
+对新生代的对象进行回收(STOP-THE-WORLD) 启动一个并发线程对老年代空间的垃圾进行回收 如若必要，CMS会发起FullGC JVM会根据堆的使用情况启动并发回收。当堆的占用达到某个程度时，JVM会启动后台线程扫描堆，回收不用的数据。需要注意的是，使用CMS回收器，老年代空间不会进行压缩整理——老年代空间由已分配对象的空间和空闲空间组成。
+CMS的回收过程 CMS的回收过程分为好几个阶段，虽然主要的并发回收(Concurrent Cycle)阶段是使用后台线程工作的，但有些阶段还是会暂停所有的应用线程，因此会引入短暂的停顿。
+初始标记 并发回收有“初始标记”阶段开始，这个阶段会暂停所有的应用程序线程。此阶段的主要任务就是找到堆中所有的垃圾回收根节点对象。
+// 对象占用了老年代空间(1398MB)中的702MB，堆的大小为2027MB，其中772MB被占用。// 应用线程在CMS回收周期中被暂停了0.08s89.876: [GC [1 CMS-initial-mark: 702254K(1398144K)772530K(2027264K), 0.0830120 secs] [Times: user=0.08 sts=0.00, real=0.08 secs] 标记阶段 此阶段进行时，应用线程也可以同步持续运行，不会被中断。由于此阶段的工作只是标记，不会对堆的使用有实质的影响，所以GC日志不会有没有相关的数据输出。若此阶段还有数据输出，很可能是由于0.83s内新生代对象的分配导致的堆增长。
+// 标记阶段好事0.83s(以及1.11s的CPU时间)。90.059: [CMS-concurrent-mark-start]90.887: [CMS-concurrent-mark: 0.823/0.828 secs][Times: user=1.11 sys=0.00, real=0.83 secs] 预清理 此阶段也是与应用线程的运行并发进行的。
+90.887: [CMS-concurrent-preclean-start]90.892: [CMS-concurrent-preclean: 0.005/0.005 secs][Times: user=0.01 sys=0.00, real=0.01 secs] 重新标记 此阶段涵盖了多个操作：
+90.892: [CMS-concurrent-abortable-preclean-start]92.382: [GC 92.393: ParNew: 629120K-&amp;gt;69888K(629120K), 0.1289040 secs]1331374K-&amp;gt;803967K(2027264K), 0.1290200 secs][Times: user=0.</description>
+    </item>
+    
+  </channel>
+</rss>
